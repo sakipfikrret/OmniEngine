@@ -162,7 +162,6 @@ OmniEngine, halüsinasyonu yazılım katmanında teknik olarak engelleyen **üç
 - **Key IP / Temel Fikri Mülkiyet:** Holographic Quantization, MoE Hard-Router, Bidirectional Schema Lock, Verifier Loop
 
 📄 **[WHITEPAPER.md](./WHITEPAPER.md)** — Full technical algorithms / Tam teknik algoritmalar  
-📊 **[market_valuation_report.md](./market_valuation_report.md)** — Market analysis / Piyasa analizi
 
 ---
 
