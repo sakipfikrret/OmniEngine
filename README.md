@@ -1,168 +1,275 @@
 <div align="center">
 
-# ⚡ OmniEngine v7 — Titan Protocol
+# OmniEngine v7.4
 
-**EN:** *The World's First Decentralized Sovereign Enterprise AGI*  
-**TR:** *Dünyanın İlk Merkeziyetsiz Egemen Kurumsal Yapay Zekası*
+### Titan Protocol
 
-[![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)](.)
-[![Version](https://img.shields.io/badge/Version-7.1_Core_Safety-purple)](.)
-[![License](https://img.shields.io/badge/License-Non--Commercial_Academic-blue)](.)
-[![RAM](https://img.shields.io/badge/RAM_Usage-Under_200MB-success)](.)
-[![Security](https://img.shields.io/badge/Encryption-AES--256_Air--Gapped-red)](.)
-[![Experts](https://img.shields.io/badge/MoE_Experts-8_Isolated_Domains-orange)](.)
-[![Hallucination](https://img.shields.io/badge/Hallucination_Rate-~0%25_Symbolic_Gate-brightgreen)](.)
-[![Schema](https://img.shields.io/badge/Schema_Lock-Bidirectional-blueviolet)](.)
-[![Verifier](https://img.shields.io/badge/Verifier_Loop-Verify_%2F_Correct_%2F_Reject-blue)](.)
+**TR:** Yerel, denetlenebilir ve uzman yönlendirmeli kurumsal yapay zeka altyapısı  
+**EN:** Local-first, auditable enterprise AI with deterministic expert routing
+
+[![Build](https://img.shields.io/badge/build-passing-16a34a)](.)
+[![Runtime](https://img.shields.io/badge/python-runtime_ready-2563eb)](.)
+[![Database](https://img.shields.io/badge/persistence-prisma_sqlite-7c3aed)](.)
+[![OCR](https://img.shields.io/badge/OCR-tesseract_poppler-f59e0b)](.)
+[![Mode](https://img.shields.io/badge/deployment-local_air--gapped-b91c1c)](.)
+[![Experts](https://img.shields.io/badge/experts-legal_medical_finance_cyber-0f766e)](.)
 
 </div>
 
 ---
 
-## What is OmniEngine? / OmniEngine Nedir?
+## Kısa Özet / Executive Summary
 
-**EN:** OmniEngine is NOT a chatbot wrapper. It is a fully sovereign, air-gapped enterprise AI system that runs 100% locally. It compresses 1000 GB of expert knowledge into 10 GB using a novel Holographic Quantization algorithm, routes queries to 8 isolated domain experts with zero cross-contamination, and guarantees zero hallucination in critical medical and legal domains via a multi-layer safety architecture: **Two-Way Schema Lock → Verifier Loop (Verify / Correct / Reject) → Deterministic Symbolic Gate**.
+**TR**  
+OmniEngine, hassas alanlarda kullanılmak üzere tasarlanmış yerel bir AI orkestrasyon sistemidir. Amaç yalnızca cevap üretmek değil; isteği doğru uzmana yönlendirmek, yerel bilgi tabanından kanıt çekmek, şema ve doğrulayıcı katmanlarından geçirmek, gerekirse güvenli biçimde reddetmektir.
 
-**TR:** OmniEngine bir chatbot arayüzü değildir. 1000 GB'lık uzman bilgisini 10 GB'a sıkıştıran Holografik Kuantizasyon algoritması, 8 izole uzman beyin ve çok katmanlı güvenlik mimarisiyle (**İki Yönlü Şema Kilidi → Doğrulayıcı Döngüsü → Deterministik Sembolik Kapı**) kritik tıbbi ve hukuki alanlarda sıfır halüsinasyon garantisi sunan, %100 yerel ve hava boşluklu (Air-Gapped) egemen bir kurumsal yapay zeka sistemidir.
-
----
-
-## Architecture / Mimari
-
-```
-User Query / Kullanıcı Sorusu
-          ↓
- ┌─────────────────────────────────────────┐
- │ INPUT SCHEMA LOCK                        │
- │ Giriş JSON şemaya zorlanır; uymazsa red │
- └─────────────────────────────────────────┘
-          ↓
- Intent Parser (inference.py)
-   → Niyet: chat / query_fact / query_memory
-   → query_legal / analyze_medical  [yakında]
-          ↓
- Memory Graph (Memory.ts)
-   → Kullanıcı profili güncellenir
-   → Hafıza bağlamı Composer'a iletilir
-          ↓
- Holo DB Retrieval (RAG.ts — versioned v1.0.0)
-   → Sub-millisecond vector retrieval
-   → Graph-RAG ilişkisel bağlam
-          ↓
- Response Composer (composer.py)
-          ↓
- ┌─────────────────────────────────────────┐
- │ VERIFIER LOOP                            │
- │ Doğrula → Düzelt → veya Reddet (Abstain)│
- └─────────────────────────────────────────┘
-          ↓
- ┌─────────────────────────────────────────┐
- │ OUTPUT SCHEMA LOCK                       │
- │ Çıkış JSON şemaya zorlanır; uymazsa red │
- └─────────────────────────────────────────┘
-          ↓
- Response to User / Kullanıcıya Yanıt
-```
+**EN**  
+OmniEngine is a local AI orchestration system for sensitive enterprise domains. It does not rely on fluent generation alone; it routes each request to a domain expert, retrieves local evidence, validates outputs through schema and verifier layers, and can abstain when the safe answer is not to answer.
 
 ---
 
-## Development Roadmap / Geliştirme Yol Haritası
+## Neden Farklı? / Why It Matters
 
-| Aşama | Modül | Durum |
-|:--|:--|:--:|
-| **Aşama 1** | Çekirdek Altyapı (Schema Lock + Verifier + Versiyonlama) | ✅ Tamamlandı |
-| **Aşama 2** | Hukuk Asistanı (Legal Holo DB + Madde Eşleme + Dilekçe) | 🔄 Devam ediyor |
-| **Aşama 3** | Tıbbi Analiz (OCR + Referans Karşılaştırma + Risk Matrisi) | ⏳ Bekliyor |
-| **Aşama 4** | Akıcı Diyalog (Generative Decoder + SFT) | ⏳ Bekliyor |
-
----
-
-## Why Competitors Can't Match This / Rakipler Neden Eşleşemiyor?
-
-| Feature | OmniEngine v7 | GPT-4o | Claude | Gemini |
-|:--|:--:|:--:|:--:|:--:|
-| 🔒 Air-Gapped (100% Offline) | **✅** | ❌ | ❌ | ❌ |
-| 🛡️ AES-256 Local Encryption | **✅** | ❌ | ❌ | ❌ |
-| 🎯 ~0% Hallucination (Schema Lock + Verifier + Gate) | **✅** | ❌ | ❌ | ❌ |
-| 🔐 Bidirectional Schema Lock | **✅** | ❌ | ❌ | ❌ |
-| 🔁 Verify / Correct / Reject Loop | **✅** | ❌ | ❌ | ❌ |
-| 🗂️ Versioned Knowledge Databases | **✅** | ❌ | ❌ | ❌ |
-| 🧬 8 Isolated Expert Brains (MoE) | **✅** | ❌ | Partial | ❌ |
-| 🧠 Persistent Episodic Memory Graph | **✅** | ❌ | ❌ | ❌ |
-| 🗜️ 100x Storage Compression | **✅** | ❌ | ❌ | ❌ |
-| 🌙 Autonomous REM Learning | **✅** | ❌ | ❌ | ❌ |
-| 🔍 XAI Evidence Chain | **✅** | ❌ | ❌ | ❌ |
-| 📋 Legal-Grade Audit Trail | **✅** | ❌ | ❌ | ❌ |
-| ⚖️ Multi-Jurisdiction Law (TR+EU+US) | **✅** | Limited | Limited | ❌ |
-| 🏥 Medical Pre-Analysis (OCR + Risk Matrix) | **🔄 dev** | ❌ | ❌ | ❌ |
+| Sorun / Problem | OmniEngine Yaklaşımı / Approach |
+|:--|:--|
+| Hassas verinin buluta çıkması | Local-first runtime, SQLite/Prisma persistence, air-gapped Docker target |
+| Kritik alanlarda halüsinasyon | Legal, medical, finance, cyber uzmanları + verifier/abstain kararları |
+| Cevabın nasıl üretildiğinin belirsizliği | CSL metrics, expert identity, risk level, source/citation context |
+| Demo sırasında “AI çalışıyor mu?” hissinin zayıf olması | Canlı memory graph, benchmark dashboard, PDF trust report |
+| Kurumsal entegrasyon için zayıf veri kalıcılığı | Conversations, messages, memory graph, benchmark/audit modelleri için Prisma schema |
 
 ---
 
-## 8 Elite Expert Domains / 8 Elit Uzman Alanı
+## Sistem Akışı / System Flow
 
-```
-Expert 0 → 🧠 Logic & Strategy      / Mantık ve Strateji
-Expert 1 → ✍️  Language & Creative   / Dil ve Yaratıcılık  
-Expert 2 → 💻 Polyglot Coder        / Python, Swift, Go, .NET, SQL, Kotlin, TS
-Expert 3 → 💰 Finance & Banking     / Basel III, BDDK, Risk Skoru, SPK
-Expert 4 → 🔬 Science & Engineering / Fizik, Kimya, Mühendislik
-Expert 5 → 🛡️  Defense & Cyber      / NATO, MITRE ATT&CK, AES-256, CVE
-Expert 6 → ⚖️  Legal & Justice      / TR (TCK/Yargıtay) + EU (GDPR) + US (18 USC)
-Expert 7 → 🏥 Medical & Healthcare  / Ön-Analiz, Farmakoloji, Risk Matrisi, TR+EN
+```mermaid
+flowchart TD
+  A["User Message / Kullanıcı Mesajı"] --> B["Intent Parser"]
+  B --> C["Prisma Memory Graph"]
+  C --> D["Retrieval Layer"]
+  D --> D1["Vector RAG"]
+  D --> D2["Holographic DB"]
+  D --> D3["Graph Memory"]
+  D1 --> E["Expert Router"]
+  D2 --> E
+  D3 --> E
+  E --> F1["Legal Expert"]
+  E --> F2["Medical Expert"]
+  E --> F3["Finance Expert"]
+  E --> F4["CyberSec Expert"]
+  E --> F5["General Composer"]
+  F1 --> G["Verifier + Schema Lock"]
+  F2 --> G
+  F3 --> G
+  F4 --> G
+  F5 --> G
+  G --> H["Answer + CSL Metrics + Sources"]
 ```
 
-**MoE Router** instantly detects which expert to activate in milliseconds.  
-**MoE Yönlendirici** hangi uzmanın devreye gireceğini milisaniyeler içinde algılar.
-
 ---
 
-## API Endpoints
+## Güncel Durum / Current State
 
-| Endpoint | Domain | Description / Açıklama |
-|:--|:--|:--|
-| `POST /api/chat` | All | Ana Sohbet + Hafıza Grafiği |
-| `GET  /api/memory` | Memory | Canlı Hafıza Grafiği Snapshot |
-| `POST /api/legal` | Legal | Madde eşleme + Dilekçe üretimi *(yakında)* |
-| `POST /api/diagnosis` | Medical | Ön-analiz + Risk Matrisi *(yakında)* |
-| `POST /api/banking` | Finance | Kredi Risk Skoru |
-| `GET  /api/seed` | All | Bilgi Tabanı Başlat |
+Son kontrol: **2026-05-27**
 
----
+| Katman / Layer | Durum / Status |
+|:--|:--|
+| Next.js build | Passing |
+| ESLint | Passing |
+| Python runtime | Healthy |
+| CUDA | Available on local RTX 4060 Laptop GPU |
+| Prisma schema | Valid |
+| OCR dependencies | PyMuPDF, pdf2image, pytesseract, PIL installed |
+| Model registry | Intent parser and composer checkpoints found |
 
-## Installation / Kurulum
+Doğrulanan komutlar:
 
 ```bash
-# 1. Python bağımlılıkları
-pip install torch numpy transformers
+npm run build
+npm run lint
+npx prisma validate
+npm run python:diagnose
+```
 
-# 2. Node bağımlılıkları
+---
+
+## Özellik Haritası / Feature Map
+
+| Alan / Area | Özellik / Capability |
+|:--|:--|
+| Chat Orchestration | `/api/chat` üzerinden legal, medical, finance, cyber ve general routing |
+| Interactive Memory | `react-force-graph-2d` ile canlı node-edge hafıza grafiği |
+| Benchmark Analytics | Recharts ile score trend, capability radar, weakness map, expert usage |
+| PDF Report | `/benchmark` ekranından trust report export |
+| OCR-RAG | PyMuPDF + Tesseract/pdf2image fallback |
+| HoloDB | TF-IDF benzeri skor, graph traversal, citation-style context |
+| Persistence | Prisma + SQLite conversation, message, memory, audit, document, benchmark modelleri |
+| Docker | Node, Python, Tesseract, Poppler, Prisma generation, Xenova model cache |
+| Security | SSRF private IP blocking, upload type/size guard, schema locks |
+
+---
+
+## Uzmanlar / Domain Experts
+
+| Expert | File | What It Does |
+|:--|:--|:--|
+| Legal | `src/python/legal_expert.py` | Legal-risk prompts, structured law references, safe drafting behavior |
+| Medical | `src/python/medical_expert.py` | Pre-analysis only, numeric reference checks, no diagnosis |
+| Finance | `src/python/finance_expert.py` | Debt/EBITDA, current ratio, equity ratio, Basel/BDDK-style rule table |
+| CyberSec | `src/python/cyber_expert.py` | Defensive MITRE/OWASP-style guidance, exploit/malware instruction refusal |
+| General | `src/python/composer.py` | Non-regulated synthesis with RAG/HoloDB/memory context |
+
+---
+
+## Karşılaştırmalı Konumlandırma / Comparative Positioning
+
+Bu tablo model zekası benchmarkı değildir. Amaç OmniEngine’in ürün mimarisini bulut tabanlı LLM platformlarıyla konumlandırmaktır.
+
+| Kriter / Criterion | OmniEngine | OpenAI API / ChatGPT Enterprise | Anthropic Claude API / Enterprise | Google Gemini / Vertex AI |
+|:--|:--:|:--:|:--:|:--:|
+| Local / air-gapped deployment | Native target | Cloud service | Cloud service | Cloud service / Google Cloud |
+| Default base-model training on business/API data | Local only | Not used by default | Not used for commercial/API by default | Vertex AI: not used without permission |
+| Abuse / service retention outside customer infra | None by design | May retain API inputs/outputs for limited abuse monitoring windows | Standard commercial/API retention documented; zero-retention options exist | Vertex/Gemini retention depends on feature and service configuration |
+| Deterministic domain experts | Built-in Python modules | Requires custom app layer | Requires custom app layer | Requires custom app layer |
+| Local HoloDB / symbolic graph | Built-in | External/custom | External/custom | External/custom |
+| Interactive memory graph | Built-in | Custom implementation | Custom implementation | Custom implementation |
+| OCR + local RAG ingestion | Built-in target | Custom implementation | Custom implementation | Custom implementation |
+| PDF trust report | Built-in target | Custom implementation | Custom implementation | Custom implementation |
+| Best fit | Regulated local AI, private demos, offline enterprise workflows | General cloud AI, high capability, broad ecosystem | Long-context and enterprise assistant workflows | Google Cloud / Vertex AI ecosystem |
+
+Sources for vendor data-control positioning:
+
+- OpenAI data controls and enterprise privacy: [platform docs](https://platform.openai.com/docs/guides/your-data), [enterprise privacy](https://openai.com/policies/api-data-usage-policies/), [security and privacy](https://openai.com/security-and-privacy/)
+- Anthropic commercial/API data usage and retention: [Claude data usage docs](https://docs.anthropic.com/es/docs/claude-code/data-usage), [security docs](https://docs.anthropic.com/en/docs/claude-code/security)
+- Google Gemini / Vertex AI data governance: [Vertex AI data governance](https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance), [Gemini API terms](https://ai.google.dev/gemini-api/terms_preview), [Gemini API logs policy](https://ai.google.dev/gemini-api/docs/logs-policy)
+
+---
+
+## Holographic DB
+
+HoloDB, OmniEngine’in yerel sembolik bilgi katmanıdır. Aktif okuyucu: `src/lib/HoloDB.ts`.
+
+Mevcut akış:
+
+```mermaid
+flowchart LR
+  Q["Query"] --> T["Tokenization"]
+  T --> I["Index Lookup"]
+  I --> S["TF-IDF-like Score"]
+  S --> B["Title Boost"]
+  B --> G["Graph Traversal"]
+  G --> C["Citation Context"]
+```
+
+Geliştirme hedefleri:
+
+- Domain `.holo` dosyalarını ana HoloDB’ye merge etmek veya federated loader yazmak.
+- Edge yoğunluğunu artırmak: hedef node başına 3-8 anlamlı edge.
+- Node metadata alanlarını genişletmek: `language`, `jurisdiction`, `source_type`, `license`, `valid_from`, `valid_to`, `risk_class`, `confidence`.
+- Edge ontology eklemek: `supports`, `contradicts`, `requires`, `has_exception`, `mitigates`, `maps_to_mitre`, `has_threshold`.
+- HoloDB eval seti kurmak: beklenen node id top-3 içinde mi, yanlış domain geldi mi, citation doğru mu?
+
+---
+
+## Veri Seti Yol Haritası / Dataset Roadmap
+
+Minimum metadata standardı:
+
+```json
+{
+  "id": "finance_tr_0001",
+  "domain": "finance",
+  "subdomain": "credit_risk",
+  "language": "tr",
+  "source": "manual_rule_table",
+  "license": "internal",
+  "split": "train",
+  "risk_level": "regulated",
+  "expert": "finance",
+  "citation_required": true,
+  "requires_abstain": false
+}
+```
+
+Öncelikli veri işleri:
+
+| Öncelik | Veri işi |
+|:--:|:--|
+| P0 | Train/validation/hidden split sızıntısını engelle |
+| P0 | Abstain veri seti oluştur: eksik veri, zararlı talimat, belirsiz hukuk, okunamayan OCR |
+| P1 | Finance ve Cyber domainlerini büyüt |
+| P1 | Citation-grounded legal/medical/finance/cyber örnekleri ekle |
+| P1 | Numeric consistency testleri ekle |
+| P2 | OCR-noisy PDF örnekleri üret |
+| P2 | RAG prompt-injection dokümanları ekle |
+
+---
+
+## Kurulum / Installation
+
+```bash
 npm install
-
-# 3. Web arayüzünü başlat (webpack modu — Turbopack yok)
+npm run db:generate
+npm run db:push
+pip install -r src/python/requirements.txt
+npm run python:diagnose
 npm run dev
 ```
 
----
+`.env.local` örneği:
 
-## Safety Architecture / Güvenlik Mimarisi
+```env
+OMNI_PYTHON_PATH=C:\Users\YourName\AppData\Local\Programs\Python\Python310\python.exe
+```
 
-OmniEngine, halüsinasyonu yazılım katmanında teknik olarak engelleyen **üç katmanlı bir güvenlik kalesi** üzerine inşa edilmiştir:
+OCR için ayrıca sistem seviyesinde:
 
-1. **İki Yönlü Schema Lock (`schema_lock.py`):** Hem `inference.py`'dan gelen niyet verisi (Input), hem de `composer.py`'dan gelen yanıt (Output) katı JSON şemalarına zorlanır. Şemaya uymayan her mesaj anında reddedilir.
-2. **Verifier Loop (`composer.py`):** Çıktı önce bir doğrulama döngüsüne girer. Hata tespit edilirse sistem yanıtı tamamen atmak yerine Holo DB ile bir **Düzeltme (Self-Correction)** döngüsüne sokar. Düzeltilemezse reddeder (ABSTAIN).
-3. **Versiyonlama (`RAG.ts`):** Holo DB, Hukuk ve Tıp veritabanlarının her kaydı bir versiyon numarası taşır (`v1.0.0`). Böylece her yanıtın tam olarak hangi bilgi tabanına dayandığı sonradan izlenebilir ve denetlenebilir.
-
----
-
-## Market & Legal / Piyasa & Hukuk
-
-- **Market Classification / Piyasa Sınıfı:** Decentralized Sovereign Enterprise AGI  
-- **Total Addressable Market / Toplam Pazar:** ~$81.5B (Healthcare + Legal + Defense + Banking AI)
-- **Valuation Range / Değerleme:** $4M–$12M (Seed) → $150M–$400M (Exit)
-- **Key IP / Temel Fikri Mülkiyet:** Holographic Quantization, MoE Hard-Router, Bidirectional Schema Lock, Verifier Loop
-
-📄 **[WHITEPAPER.md](./WHITEPAPER.md)** — Full technical algorithms / Tam teknik algoritmalar  
+- Tesseract OCR
+- Turkish language pack
+- Poppler
 
 ---
 
-*Non-Commercial Academic & Enterprise Evaluation License — OmniEngine v7.1 "Titan Protocol" © 2025–2026*
+## Docker
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+Docker hedefi:
+
+- Next.js production runtime
+- Python runtime
+- Python requirements
+- Tesseract OCR + Turkish language pack
+- Poppler
+- Prisma client generation
+- Xenova embedding model cache
+
+---
+
+## Bilinen Kalan İşler / Known Remaining Work
+
+- Eski Python yorumlarındaki mojibake/encoding kalıntılarını temizle.
+- Benchmark sonuçlarını Prisma `BenchmarkRun` tablosuna yaz.
+- RAG document metadata ve chunk kayıtlarını Prisma’ya geçir.
+- HoloDB merge/federated loader geliştir.
+- Finance/Cyber veri tabanlarını kaynak ve citation id ile büyüt.
+- Offline Docker smoke test yap.
+- `npm audit` çıktısını triage et.
+- API E2E testlerini CI benzeri bir akışa bağla.
+
+---
+
+## Pitch Cümlesi / One-Liner
+
+**TR:** OmniEngine, hassas kurumsal veriyi buluta çıkarmadan, uzman modüller ve doğrulayıcı katmanlarla denetlenebilir AI cevabı üretir.  
+**EN:** OmniEngine produces auditable AI responses for sensitive enterprise workflows without sending private data to a cloud model.
+
+---
+
+## License
+
+Non-Commercial Academic & Enterprise Evaluation License.
+
