@@ -1,6 +1,6 @@
 <div align="center">
 
-# OmniEngine Cognitive Core — v9.0
+# OmniEngine Cognitive Core — v9.1
 
 **Buluta tek byte göndermeden çalışan yerel yapay zeka altyapısı**  
 Tıp · Hukuk · Finans · Siber Güvenlik
@@ -9,9 +9,10 @@ Tıp · Hukuk · Finans · Siber Güvenlik
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square)](.)
 [![Tests](https://img.shields.io/badge/E2E_Tests-6%2F6_PASS-16a34a?style=flat-square)](.)
-[![Medical QA](https://img.shields.io/badge/Medical_QA-100%25-16a34a?style=flat-square)](.)
+[![Medical QA](https://img.shields.io/badge/Medical_QA-90_Soru-16a34a?style=flat-square)](.)
 [![HoloPack](https://img.shields.io/badge/HoloPack_v4.0-355_QPS-f59e0b?style=flat-square)](.)
 [![Latency](https://img.shields.io/badge/Latency-27ms_median-7c3aed?style=flat-square)](.)
+[![LoRA](https://img.shields.io/badge/LoRA+AMP-SFT_Active-06b6d4?style=flat-square)](.)
 [![Compliance](https://img.shields.io/badge/KVKK%20%7C%20HIPAA%20%7C%20Basel_III-Compliant-0f766e?style=flat-square)](.)
 
 </div>
@@ -30,9 +31,11 @@ Tıp · Hukuk · Finans · Siber Güvenlik
 8. [Sektörel Uzmanlık Kapsamı](#8-sektörel-uzmanlık-kapsamı)
 9. [Karar Senaryoları](#9-karar-senaryoları)
 10. [Performans Karşılaştırması](#10-performans-karşılaştırması)
-11. [Kurulum](#11-kurulum)
-12. [Proje Yapısı](#12-proje-yapısı)
-13. [Yol Haritası](#13-yol-haritası)
+11. [🧠 SFT Eğitim Altyapısı — LoRA + AMP + HoloPack](#11-sft-eğitim-altyapısı--lora--amp--holopack)
+12. [🩺 Doktor QA Test Süiti — 90 Soru](#12-doktor-qa-test-süiti--90-soru)
+13. [Kurulum](#13-kurulum)
+14. [Proje Yapısı](#14-proje-yapısı)
+15. [Yol Haritası](#15-yol-haritası)
 
 ---
 
@@ -68,6 +71,7 @@ v1.0 → Ham RAG          |  0.5 QPS  |  ~2000ms  |  Her sorgu yeni model yükl�
 v2.0 → Prisma RAG       |  2.0 QPS  |   ~950ms  |  SQLite entegrasyonu, ontoloji zayıf
 v3.0 → HoloDB JSONL     | 11.2 QPS  |   ~699ms  |  1.76 GB disk → 15 sn başlangıç
 v9.0 → HoloPack Binary  |  355 QPS  |    27ms   |  286 MB mmap → <100ms başlangıç
+v9.1 → LoRA+AMP+HoloPack|  355 QPS  |    27ms   |  +Yerleşik Dil Modeli SFT Katmanı
 ```
 
 ### v3.0'dan v9.0'a Geçişin Gerekçesi
@@ -733,9 +737,228 @@ OmniGPT/
 
 ---
 
-## 13. Yol Haritası
+## 11. SFT Eğitim Altyapısı — LoRA + AMP + HoloPack
+
+> v9.1'in en kritik teknik yeniliği: model ağırlıkları, doğrudan HoloPack binary grafiğinden üretilen Holo-to-Text veri kümesiyle eğitiliyor.
+
+### 11.1 Mimari
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  SFT Eğitim Pipeline — sft_train_holo.py                       │
+└─────────────────────────────────────────────────────────────────┘
+
+  Veri Kaynakları:
+  ├── B2B SFT Dataset (53 klinik/hukuki vaka örneği)
+  │     └── RAG Zenginleştirme: query_holopack_context() ile
+  │         her prompt'a dinamik Holo DB bağlamı enjekte edilir
+  ├── CoT Dataset (2.000 muhakeme zinciri örneği)
+  └── Holo-to-Text Corpus (499.144 grafik düğümü → metin)
+        └── scan_binpack_to_text() → Her düğüm soru-cevap çiftine
+            dönüştürülür: "'{başlık}' kavramını açıkla" → düğüm içeriği
+
+  Toplam Eğitim Token'ı: ~297 Milyon (×2 epoch)
+
+  Model Katmanları:
+  ├── Base: omni_gpt_wiki_pretrained.pth (1.17 GB, 12L × 768D)
+  ├── LoRA Adaptörler: r=8, α=16, dropout=0.05
+  │     Hedef: c_attn, c_proj, w_gate, w_value, w_out
+  │     Eğitilebilir parametre: ~2.36M / 303M toplam (%0.78)
+  ├── AMP: torch.amp.autocast (bfloat16 / float16)
+  └── Optimizer: AdamW lr=3e-4, weight_decay=0.01, cosine decay
+
+  Çıktılar:
+  ├── Checkpoint (her 1000 adım): LoRA ağırlıkları ~2.5 MB
+  └── Final model: omni_engine_HOLO_AGI_FINAL.pth (tam birleşik)
+```
+
+### 11.2 LoRA Adaptör Geometrisi
+
+```
+Mevcut nn.Linear:
+  W ∈ ℝ^{d_out × d_in}   [Dondurulmuş]
+
+LoRA Eklentisi:
+  A ∈ ℝ^{r × d_in}       [Eğitilebilir — Kaiming init]
+  B ∈ ℝ^{d_out × r}      [Eğitilebilir — Sıfır init]
+
+İleri geçiş:
+  h = Wx + (α/r) × B(Ax)
+
+Parametre tasarrufu: (d_out × d_in) → (r × d_in + d_out × r)
+Örnek 768×768: 589.824 → 12.288 parametre (%97.9 azalma)
+```
+
+### 11.3 Eğitim Performans Tahmini
+
+| Parametre | Değer |
+|:---|:---|
+| GPU | NVIDIA RTX 4060 Laptop (8 GB VRAM) |
+| Eğitilebilir Parametre | ~2.36 Milyon |
+| Toplam Adım | 3.000 |
+| Batch × Accumulation | 4 × 2 = Efektif 8 |
+| AMP Tasarrufu | ~%40 bellek, ~%30 hız artışı |
+| Tahmini Süre | 45–75 dakika (GPU'ya göre) |
+| Checkpoint Boyutu | ~2.5 MB (sadece LoRA ağırlıkları) |
+
+---
+
+## 12. Doktor QA Test Süiti — 90 Soru
+
+> `doctor_qa_deep_test.py` — Gerçek klinik pratikte doktorun sorabileceği 90 spesifik, kılavuz-tabanlı soru.
+
+### Test Kategorileri
+
+| Kategori | Soru | İçerik |
+|:---|:---:|:---|
+| 🫀 Kardiyoloji | 10 | STEMI, AF, Tamponad, QTc, Kardiyak Arrest |
+| 🦠 Enfeksiyon Hastalıkları | 10 | Sepsis, VAP, HIV, Menenjit, TB |
+| 🚑 Acil Tıp & YBÜ | 10 | Anafilaksi, RSI, Tromboliz, Status Epileptikus |
+| 💊 Farmakoloji & Eczacılık | 10 | CYP450, Böbrek Dozu, Gebelik, Opioid |
+| 🔪 Cerrahi & Perioperatif | 5 | Perioperatif Risk, Akut Karın, Beslenme |
+| 🎗️ Onkoloji & Hematoloji | 5 | TLS, Febril Nötropeni, immünoterapi, DIC |
+| 🎭 Halüsinasyon Tuzakları | 15 | Sahte ilaç, uydurma kılavuz, yanlış doz |
+| ⚖️ Hukuk Emsal | 10 | İş kazası, malpraktis, KVKK, infaz |
+| 💹 Finans Derinlemesine | 5 | Basel III, CDS, MASAK, DCF |
+| **TOPLAM** | **90** | |
+
+### Değerlendirme Kriterleri
+
+Her soru için:
+- **must_contain:** Kılavuz-uyumlu anahtar kelime listesi (klinik terimler, ilaç adları, protokol adımları)
+- **must_not_contain:** Halüsinasyon belirteçleri ve tehlikeli yanlış yanıtlar
+- **Puan:** 0–10 arası, halüsinasyon ihlalinde otomatik −4 ceza
+
+```bash
+# QA testini çalıştırmak için (sunucu açık olmalı):
+python src/python/server.py           # Terminal 1
+python src/python/tests/doctor_qa_deep_test.py  # Terminal 2
+
+# Çıktılar:
+#   doctor_qa_deep_report.md   ← Detaylı Markdown raporu
+#   doctor_qa_deep_report.json ← Ham JSON sonuçlar
+```
+
+---
+
+## 13. Kurulum
+
+```bash
+# 1. Bağımlılıklar
+npm install
+pip install -r src/python/requirements.txt
+
+# 2. Veritabanı başlatma
+npm run db:generate
+npm run db:push
+
+# 3. HoloPack v4.0 derleme
+python src/python/tools/holopack_builder.py
+# Beklenen çıktı:
+#   [HoloPack] Building 499,213 nodes...
+#   [HoloPack] Build complete!
+#   [HoloPack]   binpack  = 187.7 MB
+#   [HoloPack]   binindex = 98.9 MB
+
+# 4. Sağlık kontrolü
+npm run python:diagnose
+
+# 5. Servisleri başlat (iki ayrı terminal)
+python src/python/server.py   # FastAPI → Port 8765
+npm run dev                   # Next.js → Port 3000
+
+# 6. [OPSİYONEL] LoRA SFT Eğitimi
+python src/python/training/sft_train_holo.py
+# Gerekli: CUDA GPU + omni_gpt_wiki_pretrained.pth
+```
+
+### Sistem Gereksinimleri
+
+| Bileşen | Minimum | Önerilen |
+|:---|:---|:---|
+| CPU | 4 çekirdek | 8+ çekirdek |
+| RAM | 4 GB | 16 GB |
+| Disk | 8 GB | SSD 32 GB |
+| GPU | Opsiyonel | NVIDIA RTX (CUDA 12+) |
+| Python | 3.10+ | 3.11 |
+| Node.js | 18 LTS | 20 LTS |
+
+---
+
+## 14. Proje Yapısı
+
+```
+OmniGPT/
+│
+├── README.md                        ← Bu doküman
+├── WHITEPAPER.md                    ← Teknik ve bilimsel detaylar
+├── CERTIFICATION.md                 ← Güvenlik sertifikaları
+│
+├── src/
+│   ├── app/                         ← Next.js 16 App Router
+│   │   ├── page.tsx                 ← Ana Chat UI
+│   │   ├── globals.css              ← Stil tanımları
+│   │   ├── components/
+│   │   │   ├── MemoryGraph.tsx      ← D3 force-directed canlı grafik
+│   │   │   └── BenchmarkDashboard.tsx ← Recharts radar + trend
+│   │   └── api/                     ← 22 API rotası
+│   │
+│   ├── lib/                         ← TypeScript modüller
+│   │   ├── PIIScrubber.ts           ← PII maskeleme
+│   │   ├── Memory.ts                ← Prisma + EMA Liquid State
+│   │   ├── RAG.ts                   ← Xenova MiniLM vektör arama
+│   │   ├── GraphRAG.ts              ← Co-occurrence grafiği
+│   │   └── pythonRuntime.ts         ← Node ↔ FastAPI köprüsü
+│   │
+│   └── python/                      ← FastAPI Bilişsel Çekirdek
+│       ├── server.py                ← Lifespan yöneticisi
+│       ├── inference.py             ← PyTorch intent sınıflandırıcısı
+│       ├── medical_expert.py        ← Tıp uzman modülü
+│       ├── legal_expert.py          ← Hukuk uzman modülü
+│       ├── finance_expert.py        ← Finans uzman modülü
+│       ├── cyber_expert.py          ← Siber güvenlik modülü
+│       ├── quality_gate.py          ← 7 kural filtresi
+│       ├── schema_lock.py           ← JSON Schema kilidi
+│       ├── lora_layer.py            ← LoRA adaptör katmanı
+│       ├── training/
+│       │   └── sft_train_holo.py    ← LoRA+AMP+HoloPack SFT eğitimi
+│       ├── tests/
+│       │   ├── real_world_qa_test.py    ← 38 gerçek dünya sorusu
+│       │   └── doctor_qa_deep_test.py  ← 90 doktor QA sorusu
+│       └── tools/
+│           ├── holopack_builder.py  ← İkili veritabanı derleyici
+│           ├── holopack_query.py    ← mmap binary arama motoru
+│           └── differential_diagnosis.py ← Bayesian motor
+│
+└── data/
+    ├── drug_database.json           ← 500+ ilaç
+    ├── disease_icd10_db.json        ← 500+ ICD-10 tanı
+    ├── b2b_sft_dataset.jsonl        ← 53 klinik+hukuki vaka QA çifti
+    └── holographic_db/
+        ├── omni_knowledge.binpack   ← 187.7 MB düğüm havuzu
+        └── omni_knowledge.binindex  ← 98.9 MB FNV-1a indeks
+```
+
+---
+
+## 15. Yol Haritası
 
 Takvim değil ilkeler yönlendiriyor. Her faz, bir öncekinin eksiğini kapatır.
+
+### ✅ Faz 0 — Temel (Tamamlandı)
+
+- HoloPack v4.0 binary veritabanı (499K düğüm, 355 QPS, 27ms medyan)
+- PIIScrubber, Quality Gate, Bayesian Tanı Motoru
+- 4 sektör uzman modülü (Tıp, Hukuk, Finans, Siber)
+- Next.js Chat UI + D3 Memory Graph
+
+### ✅ Faz 0.5 — LoRA SFT (Tamamlandı — v9.1)
+
+- `lora_layer.py` — Tam LoRA adaptör implementasyonu
+- `sft_train_holo.py` — HoloPack binary'den doğrudan Holo-to-Text öğrenim
+- AMP (Automatic Mixed Precision) bfloat16 desteği
+- torch.compile eager backend (Windows uyumlu)
+- 90 soruluk `doctor_qa_deep_test.py` klinik QA test süiti
 
 ### Faz I — Kanıt Zinciri (Evidence Drawer)
 
@@ -769,9 +992,11 @@ Takvim değil ilkeler yönlendiriyor. Her faz, bir öncekinin eksiğini kapatır
 |:---|:---:|
 | FastAPI Port 8765 | 🟢 Aktif |
 | HoloPack v4.0 | 🟢 286 MB mmap eşlendi |
+| LoRA SFT Pipeline | 🟢 v9.1 — 499K düğüm Holo-to-Text |
 | Bayesian Motor | 🟢 499K düğüm · %100 doğruluk |
 | PIIScrubber | 🟢 TC + Luhn + Domain koruması |
 | Quality Gate | 🟢 7 kural aktif |
+| Doctor QA Suite | 🟢 90 Soru — 9 Kategori |
 | Air-Gap | 🟢 Sıfır dışa veri iletimi |
 
 ---
