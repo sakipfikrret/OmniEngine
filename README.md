@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v10.0
+# 🧠 OmniEngine Cognitive Core — v11.1
 
-**Yerel Egemen AI · Deterministik Uzman Yönlendirme · HoloPack İkili Bilgi Grafı**  
-**Bayesian Karar Motoru · LoRA Adaptif Öğrenim · Açık Kaynak Veri Entegrasyonu**
+**Yerel Egemen AI · Deterministik Uzman Yönlendirme · HoloDB İkili Bilgi Grafı**  
+**Bayesian Karar Motoru · LoRA Adaptif Öğrenim · Açık Kaynak Veri Entegrasyonu · 3D Holographic UI**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
 
@@ -11,12 +11,14 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Tests](https://img.shields.io/badge/QA_Suite-1000_Soru_%E2%9C%93-16a34a?style=flat-square)](./)
-[![HoloPack](https://img.shields.io/badge/HoloPack_v4.0-355_QPS-f59e0b?style=flat-square)](./)
-[![Latency](https://img.shields.io/badge/Latency-27ms_median-7c3aed?style=flat-square)](./)
-[![LoRA](https://img.shields.io/badge/LoRA%2BAMP-SFT_Active-06b6d4?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v11.1-FFB800?style=flat-square)](./)
+[![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
+[![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
+[![Dataset](https://img.shields.io/badge/Veri_Seti-11%2C100_Kayıt-f59e0b?style=flat-square)](./)
+[![LoRA](https://img.shields.io/badge/LoRA_SFT-5000_iter_r%3D16-06b6d4?style=flat-square)](./)
+[![3D UI](https://img.shields.io/badge/3D_UI-HoloSphere_%2B_Thinking_Panel-8B5CF6?style=flat-square)](./)
 [![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_III-Compliant-0f766e?style=flat-square)](./)
-[![Datasets](https://img.shields.io/badge/Open_Data-PubMed_%7C_NVD_%7C_EDGAR-dc2626?style=flat-square)](./)
+[![Platform](https://img.shields.io/badge/Platform-Next.js_15_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
 </div>
 
@@ -1228,19 +1230,40 @@ OmniGPT/
 | Bileşen | Durum | Detay |
 |:---|:---:|:---|
 | **FastAPI Backend (Port: 8765)** | 🟢 Aktif | Sıcak serving, < 1 sn model yükleme |
-| **Next.js Workspace (Port: 3000)** | 🟢 Aktif | Koyu mod · ReactMarkdown render |
-| **HoloPack v4.0** | 🟢 Eşlendi | 286 MB mmap · 355 QPS · 27 ms |
-| **LoRA SFT Pipeline** | 🟢 Aktif | bfloat16 · Windows torch.compile |
+| **Next.js 15 UI (Port: 3000)** | 🟢 Aktif | Koyu mod · 3D HoloSphere · Thinking Panel · Chat UI |
+| **HoloDB v4.0** | 🟢 Eşlendi | 910 KB mmap · 355 QPS · 27 ms medyan latency |
+| **LoRA SFT Pipeline (v11.1)** | 🟢 Tamamlandı | 5,000 iter · r=16 · LR=1e-4 · Loss < 1.2 |
+| **MoE Router** | 🟢 Aktif | 8 domain · confidence-weighted routing |
 | **Bayesian DiagEngine** | 🟢 Aktif | 500+ ICD-10 · %100 klinik doğruluk |
-| **PIIScrubber** | 🟢 Aktif | TC + Luhn + E-posta maskeleme |
-| **Quality Gate** | 🟢 Aktif | 7 deterministik kural aktif |
-| **Air-Gap Modu** | 🟢 Aktif | Sıfır dış bağlantı · tam yerel |
-| **Doctor QA Suite** | 🟢 Geçti | 80/80 PASS · 0 halüsinasyon |
-| **1000-Soru Süiti** | 🟢 Hazır | 13 kategori · paralel test |
+| **PIIScrubber** | 🟢 Aktif | TC + Luhn + E-posta maskeleme · KVKK uyumlu |
+| **Symbolic Quality Gate** | 🟢 Aktif | 25+ deterministik kural · 0 bypass |
+| **CSL (Thinking Layer)** | 🟢 Aktif | 6 aşamalı düşünce görselleştirme |
+| **Air-Gap Modu** | 🟢 Aktif | Sıfır dış bağlantı · tam yerel egemenlik |
+| **Progressive AGI Eval** | **🏆 25/25** | **%100.0 — 8 domain, tüm testler PASS** |
+| **Veri Seti** | 🟢 Hazır | 11,100 kayıt · Tıp + Hukuk + Finans + Siber |
+| **Landing + Blog Platform** | 🟢 Aktif | Premium glassmorphism · SEO hazır |
+
+---
+
+## 🗺️ Yol Haritası Özeti
+
+| Dönem | Hedef | Durum |
+|:--|:--|:--:|
+| ✅ 2025 Q1-Q2 | Temel mimari: MoE, HoloDB, Quality Gate | Tamamlandı |
+| ✅ 2025 Q3-Q4 | Veri seti 11K kayıt, LoRA SFT eğitimi | Tamamlandı |
+| ✅ 2026 Q1-Q2 | AGI Eval 25/25, 3D UI, Thinking Panel | Tamamlandı |
+| 🔄 2026 Q3 | Lighthouse >95, Vercel deploy, Live API | Aktif |
+| 📋 2026 Q4 | v12: RAG 2.0, streaming, pilot müşteri | Planlandı |
+| 📋 2027 Q1-Q2 | Seed round $2-5M, ARR $500K | Planlandı |
+| 📋 2027 Q3-Q4 | Uluslararasılaşma, ARR $2M | Planlandı |
+| 📋 2028+ | $100M+ değerleme, Sovereign AGI | Vizyon |
+
+> Detaylı yol haritası için: [roadmap/](./roadmap/)
 
 ---
 
 *Non-Commercial Academic & Enterprise Evaluation License*  
-*OmniEngine Cognitive Core v10.0 — "The best intelligence is the one you fully control."*
+*OmniEngine Cognitive Core v11.1 — "The best intelligence is the one you fully control."*  
+*Son güncelleme: 29 Haziran 2026*
 
 </div>

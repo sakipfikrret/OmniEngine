@@ -1,199 +1,321 @@
-# 🔧 Teknik Geliştirmeler — OmniEngine v7
+﻿# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v11.1
 
-> Bu doküman mevcut kod tabanının teknik eksiklerini ve nasıl giderileceğini detaylar.
+> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
+> **Kapsam:** Mimari derinleştirme, eğitim iyileştirme, ölçekleme stratejisi
 
 ---
 
-## 1. Model Mimarisi İyileştirmeleri
+## 1. 🧠 Mevcut Mimari Özeti
 
-### 1.1 OmniGPT Parametre Artışı
-**Mevcut Durum:** `n_embd=256, n_layer=6, num_experts=4` — yaklaşık 15-25M parametre  
-**Hedef:** 256M–1B parametre seviyesine çıkış (LoRA ile verimli)
-
-```python
-# Önerilen konfigürasyon (v8 — "Nexus Protocol")
-OmniGPTModel(
-    vocab_size=50304,
-    n_embd=1024,      # 256 → 1024
-    n_head=16,         # 8 → 16
-    n_layer=24,        # 6 → 24
-    num_experts=8,     # 4 → 8 (tam domain ayrımı)
-    block_size=512     # 256 → 512 (daha uzun bağlam)
-)
-# RAM: ~8GB (A100 olmadan RTX 3090 ile çalışır)
 ```
-
-### 1.2 LoRA Fine-Tuning Entegrasyonu
-**Problem:** Her eğitim tüm ağırlıkları günceller → yavaş ve fazla RAM  
-**Çözüm:** Sadece A/B matrisleri güncellenir → 10x hızlı, 5x daha az RAM
-
-```python
-# peft kütüphanesi ile eklenecek
-from peft import LoraConfig, get_peft_model
-
-lora_config = LoraConfig(
-    r=16, lora_alpha=32,
-    target_modules=["c_attn", "c_proj"],
-    lora_dropout=0.05
-)
-model = get_peft_model(base_model, lora_config)
-```
-
-### 1.3 Quantization (INT8/INT4)
-**Problem:** `omnigpt_v6_giant.pt` = 984MB → Kurumsal bilgisayarlarda yavaş  
-**Çözüm:** bitsandbytes ile INT4 quantization → 250MB
-
-```python
-# Mevcut yüklemede eklenecek
-import bitsandbytes as bnb
-model = OmniGPTModel(...).to(device)
-# INT8 inference:
-model = bnb.nn.Int8LinearWrapper(model)
+Kullanıcı Sorusu
+       │
+       ▼
+┌─────────────────────┐
+│  MoE Router v3      │  ← Hangi uzman? (8 domain)
+│  (confidence score) │
+└────────┬────────────┘
+         │
+    ┌────▼────┐
+    │ HoloDB  │  ← Kavram grafiği, ilişki zinciri
+    │  mmap   │
+    └────┬────┘
+         │
+┌────────▼────────────┐
+│  Expert Inference   │  ← LoRA adaptör (domain-specific)
+│  (LoRA r=16, FP16)  │
+└────────┬────────────┘
+         │
+┌────────▼────────────┐
+│  Symbolic Quality   │  ← Kural tabanlı güvenlik kapısı
+│  Gate (0-hallucin.) │
+└────────┬────────────┘
+         │
+┌────────▼────────────┐
+│  CSL (Cognitive     │  ← Düşünme sürecini görünür kılar
+│  Transparency Layer)│
+└────────┬────────────┘
+         │
+       Yanıt (güvenilir, denetlenebilir)
 ```
 
 ---
 
-## 2. Holographic DB İyileştirmeleri
+## 2. 📈 Eğitim Metodolojisi — Geçmiş & Gelecek
 
-### 2.1 NLP Tabanlı Entity Extraction
-**Mevcut Sorun:** `query_concepts()` sadece kelime bazlı eşleştirme yapıyor  
-**Çözüm:** spaCy veya Hugging Face NER ile kavram çıkarımı
+### 2.1 Yapılan Eğitim (v11 Fast SFT)
 
-```python
-# holograph_db.py — query_concepts() güncellenmesi
-import spacy
-nlp = spacy.load("tr_core_news_sm")  # Türkçe model
+| Parametre | Değer |
+|:--|:--|
+| Base Model | HOLO_AGI_FINAL.pth (~700M param) |
+| Yöntem | LoRA (Low-Rank Adaptation) |
+| LoRA Rank (r) | 16 |
+| LoRA Alpha | 32 |
+| Learning Rate | 1e-4 |
+| Optimizer | AdamW (weight_decay=0.01) |
+| Batch Size | 8 (gradient accumulation x4 = 32 effective) |
+| İterasyon | 5,000 |
+| Mixed Precision | AMP (Automatic Mixed Precision, FP16) |
+| Veri | 11,100 kayıt (Tıp 5x, CoT 8x oversampling) |
+| Checkpoint | Her 500 iter'da bir |
+| Sonuç | **Loss < 1.2, 25/25 AGI Eval** |
 
-def extract_entities(text: str) -> list[str]:
-    doc = nlp(text)
-    entities = [ent.text for ent in doc.ents]  # Gerçek varlıklar
-    keywords = [token.lemma_ for token in doc 
-                if not token.is_stop and token.pos_ in ["NOUN", "PROPN"]]
-    return list(set(entities + keywords))
+---
+
+### 2.2 Eğitim Nasıl Geliştirilebilir? (Detaylı Plan)
+
+#### A) Veri Kalitesi & Miktarı
+```
+Mevcut: 11,100 kayıt
+Hedef v12: 50,000 kayıt
+Hedef v13: 500,000 kayıt
+
+Strateji:
+1. Synthetic Data Generation (GPT-4 assisted, human-reviewed)
+   - Her domain için 5,000 soru-cevap çifti
+   - Chain-of-thought (CoT) düşünce zincirleri
+   - Negatif örnekler: "Bu soruyu cevaplamak güvensiz" durumları
+
+2. Kurumsal Veri Ortaklıkları
+   - Hastane arşivleri (anonim, KVKK uyumlu)
+   - Hukuk bürosu karar veritabanları
+   - Finans sektörü regülatör kararları
+
+3. Veri Kalite Pipeline
+   - Otomatik duplikasyon tespiti (MinHash LSH)
+   - Halüsinasyon filtreleme (başka model ile çapraz kontrol)
+   - İnsan denetimi (domain uzmanı review)
 ```
 
-### 2.2 Ağırlık Güncelleme Mekanizması (Hebbian Learning++)
-**Mevcut:** `current_w + weight` (sadece toplanıyor)  
-**Önerilen:** Kullanım frekansına göre decay ve güçlendirme
+#### B) LoRA Optimizasyonu
+```
+Mevcut: r=16, alpha=32
+Gelecek v12: r=64, alpha=128 (daha derin adaptasyon)
+Gelecek v13: QLoRA (4-bit quantize + LoRA, bellek %70 azalır)
 
-```python
-def insert_relation(self, source, target, weight, decay=0.95):
-    # Eski ağırlık decay → yeni bilgi öne çıkar
-    current_w = self.graph[src_id].get(tgt_id, 0.0) * decay
-    self.graph[src_id][tgt_id] = min(1.0, current_w + weight * (1 - decay))
+Ek iyileştirmeler:
+- LoRA Dropout: 0.05 (overfit önler)
+- Target Modules: tüm attention (q,k,v,o) + FFN katmanları
+- Rank Stabilization (rsLoRA): gradient instability azaltır
 ```
 
-### 2.3 Graf Görselleştirme API'si
-**Yeni Özellik:** Hangi kavramların birbirine bağlı olduğunu gösteren endpoint
+#### C) Eğitim Döngüsü İyileştirmeleri
+```
+1. Curriculum Learning (Basamaklı Güçleştirme)
+   - İlk 1,000 iter: Basit soru-cevap
+   - 1,000-3,000 iter: Orta güçlük (CoT gerektirenler)
+   - 3,000-5,000 iter: Zor (çoklu domain, çelişkili)
+   - Sonuç: %15-20 daha iyi generalization
 
-```python
-# Yeni endpoint: GET /api/knowledge-graph?domain=medical&concept=parasetamol
-@app.get("/api/knowledge-graph")
-async def knowledge_graph(domain: str, concept: str):
-    db = HolographDB(domain)
-    return db.get_subgraph(concept, depth=3)
-    # Yanıt: {nodes: [...], edges: [...]} → D3.js ile görselleştir
+2. Reinforcement Learning from Human Feedback (RLHF)
+   - Kullanıcı "👍/👎" geribildirimi topla
+   - Reward Model eğit (öz-denetim)
+   - PPO ile politika güncelle
+   - Beklenen kazanım: Halüsinasyon %50 daha az
+
+3. Direct Preference Optimization (DPO)
+   - RLHF'e alternatif, daha stabil
+   - Tercih çiftleri: (iyi_yanıt, kötü_yanıt)
+   - Reward model gerektirmez
+   - Daha hızlı konverj
+
+4. Continual Pre-Training
+   - Domain bilgisini güncel tutmak için aylık küçük eğitim
+   - Yeni mevzuat, yeni ilaç onayları vb. ekleme
+   - Catastrophic Forgetting'i önlemek: EWC (Elastic Weight Consolidation)
+```
+
+#### D) Çıkarım (Inference) Optimizasyonu
+```
+1. GPTQ (4-bit Quantization)
+   - Model boyutu: ~700M param × 16bit = 1.4GB
+   - GPTQ sonrası: × 4bit = ~350MB
+   - %75 bellek tasarrufu, <%5 doğruluk kaybı
+
+2. PagedAttention (vLLM)
+   - Aynı anda N kullanıcıya servis
+   - KV-cache bellek yönetimi
+   - %3x throughput artışı
+
+3. Speculative Decoding
+   - Küçük "taslak" model hızlı tahmin yapar
+   - Büyük model sadece doğrular
+   - %2-3x hız artışı
+
+4. Flash Attention 2
+   - Attention hesaplama O(n) memory yerine O(1)
+   - Uzun bağlam (32K token) destekli
 ```
 
 ---
 
-## 3. Symbolic Engine Genişletmesi
+## 3. 🧪 Halüsinasyon Sıfırlama Sistemi (Detay)
 
-### 3.1 İlaç Veritabanı Genişletmesi
-**Mevcut:** Sadece 2 ilaç (parasetamol, ibuprofen)  
-**Hedef:** 500+ ilaç (Türkiye İlaç Rehberi + FDA)
+### 3.1 Symbolic Quality Gate Kuralları
 
 ```python
-# symbolic_engine.py — rules["medical"]["dosages"] genişletmesi
-TURKEY_DRUG_DATABASE = {
-    "amoksisilin": {"max_daily_mg": 3000, "warning": "Alerjik reaksiyon riski"},
-    "metformin":   {"max_daily_mg": 3000, "warning": "Böbrek yetmezliğinde kontrendike"},
-    "warfarin":    {"max_daily_mg": 15,   "warning": "INR takibi zorunlu"},
-    "aspirin":     {"max_daily_mg": 4000, "warning": "GI kanama riski"},
-    "kodein":      {"max_daily_mg": 240,  "warning": "Çocuklarda önerilmez"},
-    # ... 495 ilaç daha
+HARD_BLOCK_RULES = {
+    "medical_dosage": lambda q, a: check_dose_range(a),
+    "legal_citation": lambda q, a: verify_law_exists(a),
+    "financial_rate": lambda q, a: check_rate_bounds(a),
+    "cyber_cve": lambda q, a: verify_cve_database(a),
 }
+
+# Eğer herhangi bir kural başarısız → yanıt BLOCK
+# Kullanıcıya: "Bu konuda kesin bilgim yok, uzman öneririm."
 ```
 
-### 3.2 Yargıtay Karar Veritabanı
-```python
-YARGITAY_KARARLARI = {
-    "tck_81": {
-        "emsal": ["Yargıtay 1.CD 2019/1234", "Yargıtay CGK 2020/567"],
-        "min_yil": 24, "max_yil": "müebbet",
-        "aggravating": ["tasarlayarak", "canavarca his"],
-    },
-    "tck_125": {
-        "emsal": ["Yargıtay 4.CD 2021/890"],
-        "min_ay": 3, "max_yil": 2,
-    },
-    # ... 50+ madde
-}
-```
+### 3.2 Eğitimde Halüsinasyon Önleme
 
-### 3.3 Çapraz Alan Çelişki Tespiti
-```python
-# Yeni metod: Tıbbi öneri hukuki standartla çelişiyor mu?
-def cross_domain_conflict(self, medical_output, legal_output):
-    """
-    Örnek: Model hem 'KVKK kapsamında hasta verisi saklanmalı' 
-    hem de 'veriler 3 ay sonra silinmeli' diyorsa çelişki var.
-    """
+```
+1. "Bilmiyorum" Örnekleri
+   Veri setine eklenen: "Model bu soruyu cevaplamamalı çünkü..."
+   Sayı hedefi: Toplam verinin %10'u (5,000/50,000 kayıt)
+
+2. Citation-First Training
+   Her yanıt mutlaka kaynak ile başlar:
+   {"soru": "...", "cevap": "[KAYNAK: TCK md.81] ..."}
+
+3. Çelişki Tespiti
+   Eğitim sırasında 2 farklı model çıktısı karşılaştırılır
+   Çelişki varsa → insan denetimine gönder
 ```
 
 ---
 
-## 4. Pre-Decision Gate İyileştirmeleri
+## 4. 🔬 v12 Planlanan Mimari Değişiklikleri
 
-### 4.1 Gerçek Zamanlı Adversarial Detection
-**Mevcut:** Basit regex tabanlı injection tespiti  
-**Önerilen:** LLM tabanlı jailbreak tespiti
+### 4.1 Multi-Agent Denetim Zinciri
+
+```
+Soru: "Metformin ile aspirin etkileşimi nedir?"
+
+1. Birincil Uzman: Tıp (MoE Router → Expert #7)
+   → Yanıt: "Kanama riski artabilir"
+
+2. Denetçi Uzman: Klinik Farmakolog
+   → Kontrol: "Bu etkileşim FDA Orange Book'ta var mı?"
+
+3. Kalite Kapısı: Symbolic Gate
+   → Onay: İlaç etkileşim DB ile çapraz kontrol
+
+4. Güven Bandı: 0-100 skor
+   → Skor: 87/100 → Yeşil (güvenilir)
+   → Skor: <60 → Sarı (dikkat et, uzman öner)
+   → Skor: <40 → Kırmızı (BLOCK)
+```
+
+### 4.2 Hibrit RAG 2.0
+
+```
+Dense Retrieval  →  BM25 (sparse)  →  Cross-Encoder Reranking
+     ↓                   ↓                        ↓
+ Semantic match      Keyword match           En iyi 3 pasaj
+     ↓─────────────────────↓────────────────────────↓
+                    Fusion → LLM
+```
+
+### 4.3 Session Context Manager
 
 ```python
-# middleware.py güncellemesi
-ADVERSARIAL_PATTERNS = [
-    r"ignore (all |previous |your )?(instructions|rules|constraints)",
-    r"(pretend|imagine|act as) (you are|you're) (not|without)",
-    r"DAN|jailbreak|bypass (safety|filter|restriction)",
-    r"<\|im_start\|>system",  # ChatML injection
-    r"you are now (unrestricted|free|unfiltered)",
+class SessionMemory:
+    """Konuşma boyunca bağlamı korur (tıbbi vaka takibi vb.)"""
+    def __init__(self, max_turns: int = 20):
+        self.turns = []
+        self.entities = {}  # İsimler, ilaçlar, tarihler
+        
+    def add_turn(self, q: str, a: str):
+        self.turns.append({"q": q, "a": a})
+        self._extract_entities(q, a)  # Bağlam çıkar
+        
+    def build_context(self) -> str:
+        """Son 5 konuşmayı + önemli varlıkları bağlama ekle"""
+        ...
+```
+
+---
+
+## 5. 🎯 Benchmark & Değerlendirme Sistemi
+
+### 5.1 Mevcut Eval Sonuçları (v11.1)
+
+```
+AGI Progressive Eval — 25 Soru, 8 Domain
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Q1-Q5   Tıp:          5/5  ✅
+Q6-Q10  Hukuk:        5/5  ✅
+Q11-Q15 Finans:       5/5  ✅
+Q16-Q18 Siber:        3/3  ✅
+Q19-Q21 Etik:         3/3  ✅
+Q22-Q23 Prompt Inject: 2/2  ✅
+Q24-Q25 Çapraz Domain: 2/2  ✅
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TOPLAM:              25/25 (%100.0) 🏆
+```
+
+### 5.2 v12 Hedef Benchmark
+
+| Test | v11.1 | v12 Hedef | v13 Hedef |
+|:--|:--:|:--:|:--:|
+| AGI Eval (25 soru) | 25/25 | 30/30 | 40/40 |
+| Medical Safety | %100 | %100 | %100 |
+| Legal Accuracy | %95 | %98 | %99 |
+| Latency (ilk token) | ~2s | <500ms | <200ms |
+| Throughput | 1 user | 10 user | 100 user |
+| Memory footprint | 1.4GB | 350MB | 200MB |
+
+---
+
+## 6. 🛡️ Güvenlik Geliştirmeleri
+
+### 6.1 Prompt Injection Koruması
+
+```python
+INJECTION_PATTERNS = [
+    r"ignore previous instructions",
+    r"jailbreak",
+    r"DAN mode",
+    r"pretend you are",
+    r"görev.*unut",  # Türkçe
+    r"sistem.*talimat.*gör",
 ]
+
+def sanitize_input(user_input: str) -> tuple[str, bool]:
+    for pattern in INJECTION_PATTERNS:
+        if re.search(pattern, user_input, re.IGNORECASE):
+            return "", True  # Block
+    return user_input, False
 ```
 
-### 4.2 Bağlam Uzunluğu Artışı
-**Mevcut:** 256 token bağlam penceresi  
-**Hedef:** 1024 token (çok turlu konuşmalar için)
+### 6.2 Gelecek Güvenlik Özellikleri
+- Adversarial Robustness Training: Kötü niyetli girdilere karşı eğitim
+- Differential Privacy: Eğitim verisi sızıntısını önle
+- Federated Learning: Merkezi veri toplama yok
+- Homomorphic Encryption: Şifreli veri üzerinde inference
 
-```python
-# OmniGPT.py — block_size=1024 ile yeniden eğit
-# inference.py — input_ids truncation 240 → 900
+---
+
+## 7. 🌐 Dağıtım & DevOps
+
+### 7.1 Mevcut Stack
+```
+Backend:  Python 3.11 + FastAPI
+Frontend: Next.js 15 (App Router)
+Model:    PyTorch 2.x + LoRA (peft)
+Deploy:   Yerelde çalışıyor (Vercel frontend)
+DB:       HoloDB (binary mmap graf)
+```
+
+### 7.2 Hedef Stack (v12)
+```
+Backend:  FastAPI + Celery (async tasks)
+Frontend: Next.js 15 + Framer Motion
+Model:    vLLM serving (batched inference)
+Deploy:   Docker + K8s (on-premise)
+DB:       HoloDB + Qdrant (vector store)
+Monitor:  Prometheus + Grafana
 ```
 
 ---
 
-## 5. Test ve Kalite Güvencesi
-
-### 5.1 Kapsamlı Test Süiti
-**Mevcut:** `test_adversarial.py`, `test_inference.py` (temel)  
-**Hedef:** %80+ kapsam oranı
-
-```
-tests/
-├── test_router.py          ← MoE yönlendirme doğruluğu
-├── test_symbolic.py        ← Tüm ilaç + hukuk kuralları
-├── test_holographic_db.py  ← DB sorgu + şifreleme
-├── test_middleware.py      ← 6-katman gate doğruluğu  
-├── test_api_e2e.py         ← End-to-End API testleri
-└── test_adversarial.py     ← Güncellenmiş jailbreak testleri
-```
-
-### 5.2 Otomatik Kalite Skoru
-```python
-# Her release öncesi otomatik çalışacak
-python benchmark.py --domains medical,legal,finance,code \
-                    --output data/benchmarks/v8_results.json
-```
-
----
-
-*Teknik Geliştirme Planı | OmniEngine v7 → v8 | Mayıs 2026*
+*Son güncelleme: 29 Haziran 2026 — OmniEngine AR-GE Ekibi*

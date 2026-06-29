@@ -1,56 +1,22 @@
-# 🎨 UX/UI & Arayüz Geliştirmeleri — OmniEngine v7
+# 🎨 UX/UI & Arayüz Geliştirmeleri — OmniEngine v11.1
 
-> Bir kurumsal AI platformunun "alıcıya hazır" görünmesi için arayüz kritik önem taşır.
-> Mevcut arayüz işlevsel ama yatırımcı/alıcı için yeterince etkileyici değil.
+> Bir kurumsal AI platformunun "alıcıya hazır" görünmesi ve $100K algısını yaratması için arayüz ve 3D görselleştirme kritik rol oynar.
 
 ---
 
-## 1. "Titan Command Center" — Yeni Ana Arayüz
+## 1. "OmniEngine Cognitive Space" — Premium Arayüz [UYGULANDI]
 
-### 1.1 Tasarım Dili
-```
-Renk Paleti:
-  Arkaplan:    #050814 (Derin Uzay Siyahı)
-  Ana Vurgu:   #7C3AED (Titan Moru)
-  İkincil:     #06B6D4 (Siyan - Neon)
-  Başarı:      #10B981 (Safir Yeşili)
-  Tehlike:     #EF4444 (Alarm Kırmızısı)
-  Metin:       #E2E8F0 (Glacier Beyazı)
-  
-Tipografi:
-  Başlık:      "Space Grotesk" (Google Fonts)
-  Gövde:       "Inter" (Google Fonts)
-  Kod/Data:    "JetBrains Mono" (monospace)
-  
-Efektler:
-  - Glassmorphism paneller (backdrop-filter: blur(20px))
-  - Neon glow efektleri (box-shadow: 0 0 30px rgba(124,58,237,0.4))
-  - Smooth micro-animations (Framer Motion / CSS transitions)
-  - Particle background (Three.js veya tsparticles)
-```
+### 1.1 Tasarım Dili & Glassmorphism Paleti
+- **Arkaplan:** `#070810` (Derin Kozmik Siyah) ve orbital neon parlamaları (orbs).
+- **Ana Vurgular:** Elektrik Mavi `#4D9EFF` (Medical & Siber), Mor `#8B5CF6` (Legal), Altın `#FFB800` (Finance & AGI Test).
+- **Glassmorphism:** `backdrop-filter: blur(20px)` ve ince saydam sınır çizgileri (`border-white/5`).
+- **3D Render:** Pure-CSS 3D Holographic Sphere (HoloSphere) ile performans kaybı olmadan dönen, parlayan interaktif düğümler ve veri akışları.
+- **Thinking Panel:** AI'nın karar aşamalarını (NLP Classification → HoloDB Search → MoE Dispatch → LoRA Generation → CSL Validation → Output) anlık simüle eden ve süre (ms) ölçen floating modül.
 
-### 1.2 Ana Layout
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  🔷 OMNIENGINE v7  │  Status: OPERATIONAL  │  [Expert: Medical] │
-├─────────────┬───────────────────────────────┬───────────────────┤
-│             │                               │                   │
-│  DOMAIN     │     CHAT / QUERY AREA         │  DECISION TRACE   │
-│  PANEL      │                               │  PANEL            │
-│             │  ┌─────────────────────────┐  │                   │
-│  🧠 Logic   │  │ User: Hasta için...      │  │  [Expert 7 ✓]    │
-│  ✍️ Lang    │  │                         │  │  [Routing: 2ms]  │
-│  💻 Code   │  │ OmniEngine: [GENERATE]  │  │  [Gate: PASS ✓]  │
-│  💰 Finance │  │ Güven: 94.7%           │  │  [Verified: ✓]   │
-│  🔬 Science │  │ Expert: Medical #7      │  │                   │
-│  🛡️ Cyber  │  └─────────────────────────┘  │  EVIDENCE CHAIN   │
-│  ⚖️ Legal  │                               │  [Paracetamol]   │
-│  🏥 Medical │  [ Sorunuzu yazın... ] [▶]  │  [Max: 4000mg]   │
-│             │                               │  [Verified ✓]    │
-├─────────────┴───────────────────────────────┴───────────────────┤
-│  Audit: SHA-256 ✓  │  Latency: 459ms  │  RAM: 187MB / 200MB   │
-└─────────────────────────────────────────────────────────────────┘
-```
+### 1.2 Güncel Layout Yapısı
+- **`/landing`:** Yatırımcı ve kurumsal müşteriyi karşılayan, interaktif 3D Küre ve canlı demo widget'ını içeren showcase sayfası.
+- **`/chat`:** Sol tarafta MoE Routing ve Deep Research kontrolleri, sağ tarafta HoloDB node graflarını gösteren interaktif kanıt çekmecesi ve ortada ana sohbet akışı.
+- **`/` (Kök Rota):** Doğrudan `/landing` adresine yönlendirilerek premium marka algısını en üst düzeye çıkarır.
 
 ---
 

@@ -1,327 +1,329 @@
-# 🆕 Yeni Özellikler — OmniEngine v7 İçin Yapılabilecekler
+﻿# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v11.1+
 
-> Bu doküman mevcut mimarinin ötesine geçen, projeyi bir üst seviyeye taşıyacak
-> **tamamen yeni** özellikleri listeler.
+> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
+> **Kapsam:** Kısa vadeli (v12), orta vadeli (v13), uzun vadeli (v14+) yeni özellikler
 
 ---
 
-## 1. 🤝 Multi-Agent Sorgulama ("Uzman Konsültasyon Modu")
+## 📋 Öncelik Matrisi
 
-### Ne?
-Birden fazla uzmanın bir soruya sırayla katkı verdiği, birbirlerini denetlediği yapı.
+| Özellik | Değer | Efor | Öncelik |
+|:--|:--:|:--:|:--:|
+| Multi-Agent Konsültasyon | Yüksek | Orta | 🔴 Kritik |
+| Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik |
+| Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik |
+| RAG 2.0 (hibrit arama) | Yüksek | Orta | 🟠 Yüksek |
+| Session Memory | Yüksek | Orta | 🟠 Yüksek |
+| API Gateway | Orta | Yüksek | 🟠 Yüksek |
+| Legal Brief Generator | Orta | Yüksek | 🟡 Orta |
+| Voice-to-Expert | Orta | Yüksek | 🟡 Orta |
+| Multimodal (PDF/Excel) | Yüksek | Çok Yüksek | 🟡 Orta |
+| Mobile SDK | Orta | Çok Yüksek | 🟢 Düşük |
+| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma |
 
-### Neden?
-Gerçek hayatta doktor ile avukat veya doktor ile eczacı beraber karar alır.
-Mevcut sistem tek uzman aktif ederken bunu simüle etmiyoruz.
+---
 
-### Nasıl?
+## 🔴 KRİTİK — v12 (Q3 2026)
+
+### 1. Multi-Agent Konsültasyon Modu
+
+**Ne?** Birden fazla uzman aynı anda çalışır, birbirini denetler.
+
+**Neden?** Gerçek hayatta doktor + avukat + mali müşavir birlikte karar alır.
+
+**Nasıl?**
 ```python
-# Yeni dosya: src/python/agent_orchestrator.py
-
 class AgentOrchestrator:
-    def consult(self, prompt: str) -> dict:
-        # 1. Ana uzmanı belirle
-        primary_expert_id, _ = router.route(prompt)
-        
-        # 2. Birincil yanıt al
-        primary_response = expert_inference(prompt, expert_id=primary_expert_id)
-        
-        # 3. İkincil uzman denetimi
-        if primary_expert_id == 7:  # Medical
-            # Hukuk uzmanı: "Bu reçete KVKK'ya uygun mu?"
-            legal_check = expert_inference(primary_response, expert_id=6)
-            # Finans uzmanı: "Bu ilaç SGK kapsamında mı?"
-            finance_check = expert_inference(primary_response, expert_id=3)
-            
-        # 4. Çelişki varsa belirt, yoksa birleştir
-        return merge_responses([primary_response, legal_check, finance_check])
-```
-
-### Değeri?
-Hastanelere satarken: "Doktor soruyor, sistem hem tıbbi hem hukuki hem mali boyutu kontrol ediyor."
-
----
-
-## 2. 📄 "Legal Brief Generator" — Otomatik Dilekçe/Sözleşme Üretimi
-
-### Ne?
-Kullanıcı dava bilgilerini girer → Sistem TCK/HMK formatında dilekçe taslağı üretir.
-
-### Neden?
-Avukatlık büroları en büyük hedef müşteri. Dilekçe hazırlamak saatler alıyor.
-OmniEngine bunu 30 saniyede yapabilir — Symbolic Gate da formatı denetliyor.
-
-### Nasıl?
-```python
-# src/app/api/draft-legal/route.ts — genişletilecek
-POST /api/draft-legal
-{
-  "case_type": "ceza",        # ceza | medeni | idare
-  "statute": "TCK 81",
-  "parties": {"davaci": "...", "davali": "..."},
-  "facts": "Sanık 12.03.2024 tarihinde...",
-  "jurisdiction": "TR"         # TR | EU | US
-}
-
-# Yanıt:
-{
-  "draft": "...[Profesyonel dilekçe metni]...",
-  "format_check": {"passed": true, "missing_fields": []},
-  "statute_refs": ["TCK 81", "HMK 119"],
-  "yargitay_emsal": ["2019/1234", "2020/5678"]
-}
-```
-
-### Yeni API Endpoint:
-`POST /api/legal-draft` → Mevcut `/api/draft-legal` güçlendirilecek
-
----
-
-## 3. 🧬 Differential Diagnosis Engine (Ayırıcı Tanı Motoru)
-
-### Ne?
-Semptom listesi verilir → Olası hastalıklar olasılık sırasıyla listelenir + aciliyet değerlendirmesi.
-
-### Neden?
-`/api/diagnosis` endpoint'i var ama gerçek bir differential diagnosis algoritması yok.
-Bu özellik hastane satışlarında "demo katilin" olur.
-
-### Nasıl?
-```python
-# src/python/diagnose.py — tamamen yeniden yazılacak
-
-SYMPTOM_DISEASE_MATRIX = {
-    # Olasılıksal hastalık ağacı
-    ("göğüs ağrısı", "nefes darlığı", "terleme"): {
-        "Miyokard Enfarktüsü": 0.65,    # Acil!
-        "Angina Pektoris": 0.20,
-        "Panik Atak": 0.10,
-        "Diğer": 0.05
-    },
-    # ... 200+ semptom kombinasyonu
-}
-
-def differential_diagnosis(symptoms: list[str]) -> dict:
-    matches = find_best_match(symptoms, SYMPTOM_DISEASE_MATRIX)
-    return {
-        "diagnoses": sorted(matches, key=lambda x: x["probability"], reverse=True),
-        "urgency": "ACİL" if matches[0]["probability"] > 0.5 and matches[0]["is_emergency"] else "NORMAL",
-        "recommended_tests": [...],
-        "symbolic_verified": True,
-        "disclaimer": "Bu sistem tıbbi tavsiye değildir. Doktora başvurunuz."
-    }
-```
-
----
-
-## 4. 🔐 Zero-Knowledge Audit Trail
-
-### Ne?
-Mevcut audit trail düz JSON log. "Legal-grade" için SHA-256 chain of custody gerekli.
-Merkle tree tabanlı, manipüle edilemeyen denetim kayıtları.
-
-### Neden?
-Savunma sanayii ve kamu kurumları için zorunlu. "Bu AI ne zaman ne dedi?" sorusu kritik.
-
-### Nasıl?
-```python
-# src/python/audit_trail.py — güçlendirilecek
-
-import hashlib
-from datetime import datetime
-
-class ImmutableAuditTrail:
-    def append(self, event: dict) -> str:
-        """Her kayıt bir öncekinin hash'ini içerir → Değiştirilemez zincir."""
-        event["timestamp"] = datetime.utcnow().isoformat()
-        event["prev_hash"] = self.last_hash
-        event_json = json.dumps(event, sort_keys=True)
-        event_hash = hashlib.sha256(event_json.encode()).hexdigest()
-        event["hash"] = event_hash
-        self.last_hash = event_hash
-        # ... kaydet
-        return event_hash
+    """3 uzmanı paralel çalıştırır, sonuçları birleştirir."""
     
-    def verify_chain(self) -> bool:
-        """Zincirin bütünlüğünü doğrula — Hiçbir kayıt değiştirilemez."""
-```
-
----
-
-## 5. 🌐 Çok Dil Desteği Genişletme (AR + DE)
-
-### Mevcut: TR + EN
-### Hedef: TR + EN + DE + AR (4 dil)
-
-**Almanca (DE):** Alman hastaneleri ve hukuk büroları için. GDPR'ın anavatanı.  
-**Arapça (AR):** Körfez ülkeleri için muazzam pazar. Sağlık + hukuk + bankacılık.
-
-```python
-# expert_router.py — Arapça anahtar kelimeler
-ARABIC_MEDICAL = ["مريض", "جرعة", "دواء", "تشخيص", "مستشفى"]
-ARABIC_LEGAL   = ["محكمة", "قانون", "عقد", "دعوى", "حكم"]
-
-# sft_train.py — Çok dilli veri seti
-MULTILINGUAL_SFT = {
-    "tr": [...],  # Mevcut
-    "en": [...],  # Mevcut
-    "de": [...],  # Yeni
-    "ar": [...],  # Yeni
-}
-```
-
----
-
-## 6. 📡 REM Scraper 2.0 — Akıllı Veri Toplama
-
-### Mevcut rem_scraper.py Sorunu:
-Çok temel — hangi verilerin toplandığı belirsiz, kalite kontrolü yok.
-
-### Önerilen Yenilikler:
-```python
-# src/python/rem_scraper.py — tamamen yeniden yazılacak
-
-class REMScraperV2:
-    SOURCES = {
-        "medical": [
-            "https://pubmed.ncbi.nlm.nih.gov/",          # Akademik makaleler
-            "https://www.ema.europa.eu/en/medicines",     # Avrupa ilaç ajansı
-            "https://www.titck.gov.tr/",                  # Türkiye İlaç Kurumu
-        ],
-        "legal": [
-            "https://www.lexpera.com.tr/",                # Türk hukuk DB
-            "https://eur-lex.europa.eu/",                 # AB mevzuatı
-        ],
-        "finance": [
-            "https://www.bddk.org.tr/",                   # BDDK kararları
-            "https://www.spk.gov.tr/",                    # SPK mevzuatı
-        ],
-        "cyber": [
-            "https://cve.mitre.org/",                     # CVE güvenlik açıkları
-            "https://attack.mitre.org/",                  # MITRE ATT&CK
-        ]
-    }
+    def consult(self, prompt: str, domains: list[str] = None) -> ConsultResult:
+        # 1. Ana uzmana yönlendir
+        primary_id = self.router.route(prompt)
+        primary_resp = self.experts[primary_id].infer(prompt)
+        
+        # 2. Otomatik çapraz denetim
+        if primary_id == "medical":
+            legal = self.experts["legal"].check_compliance(primary_resp)
+            finance = self.experts["finance"].check_reimbursement(primary_resp)
+            return self.merge([primary_resp, legal, finance])
+        
+        return primary_resp
     
-    def scrape_with_quality_check(self, source, min_credibility=0.8):
-        """Kalite eşiğinin altındaki veriyi ingestion'a alma."""
+    def merge(self, responses: list[ExpertResponse]) -> ConsultResult:
+        """Çelişkileri belirt, uzlaşıyı öne çıkar."""
+        conflicts = self._find_conflicts(responses)
+        return ConsultResult(
+            primary=responses[0],
+            cross_checks=responses[1:],
+            conflicts=conflicts,
+            confidence=self._calc_confidence(responses),
+        )
 ```
+
+**Değeri:** "3 uzman tek fiyata" — premium satış argümanı.
 
 ---
 
-## 7. 🏆 Competitive Intelligence Module
+### 2. Streaming Token Üretimi
 
-### Ne?
-OmniEngine'i gerçek zamanlı olarak GPT-4o ve Claude ile karşılaştıran bir modül.
-Demo sırasında yan yana gösterilebilir.
+**Ne?** Yanıt kelime kelime gelir (ChatGPT tarzı).
 
-### Nasıl?
-```javascript
-// src/app/api/compare/route.ts — Yeni endpoint
-POST /api/compare
-{
-  "question": "Hasta için ibuprofen 5000mg uygun mu?",
-  "compare_with": ["mock-gpt4", "mock-claude"]
+**Neden?** 2-3 saniyelik bekleme kullanıcıyı kaçırır.
+
+**Nasıl?**
+```python
+# Backend: FastAPI + SSE
+@app.get("/api/stream")
+async def stream_response(query: str):
+    async def event_generator():
+        async for token in model.generate_stream(query):
+            yield f"data: {token}\n\n"
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+# Frontend: React hook
+function useStream(query: string) {
+  const [tokens, setTokens] = useState<string[]>([]);
+  useEffect(() => {
+    const source = new EventSource(`/api/stream?query=${query}`);
+    source.onmessage = (e) => setTokens(prev => [...prev, e.data]);
+    return () => source.close();
+  }, [query]);
+  return tokens.join('');
 }
-
-// Yanıt:
-{
-  "omniengine": {
-    "answer": "BLOCKED: 5000mg ibuprofen max dozu aşıyor (max: 3200mg)",
-    "symbolic_verified": true,
-    "decision": "BLOCKED_POST"
-  },
-  "mock_gpt4": {
-    "answer": "5000mg ibuprofen kullanabilirsiniz...",  // Tehlikeli!
-    "hallucination_detected": true
-  }
-}
-```
-
-> **NOT:** Mock verilerle göster, gerçek API key'e ihtiyaç yok. Demo için yeterli.
-
----
-
-## 8. 📊 Executive Reporting — C-Suite İçin Raporlama
-
-### Ne?
-Hastane CEO'su veya CFO için aylık özet raporu: "Bu ay AI kaç hata engelledi?"
-
-```
-OmniEngine Aylık Yönetici Raporu — Nisan 2026
-─────────────────────────────────────────────
-Toplam Sorgu:          2,847
-  ├── Tıbbi:           1,203  (42%)
-  ├── Hukuki:            891  (31%)
-  └── Finansal:          753  (26%)
-
-Symbolic Gate Müdahalesi:
-  Engellenen Tehlikeli Yanıt:   47  ← "47 potansiyel hata önlendi"
-  Düzeltilen Hukuki Yanıt:      23
-  Düzeltilen Tıbbi Yanıt:       24
-
-Tahmini Risk Önleme Değeri: $2,350,000
-  (47 hata × ortalama $50K malpraktis riski)
-
-Sistem Uptime:         99.7%
-Ortalama Yanıt Süresi: 461ms
 ```
 
 ---
 
-## 9. 🎓 "OmniEngine Academy" — Eğitim Modülü
+### 3. Confidence Score Bandı (Güven Göstergesi)
 
-### Ne?
-Ürünü satın alan kurumun çalışanlarına sistem eğitimi veren interaktif modül.
+**Ne?** Her yanıt 0-100 güven skoru + renk bandı ile gelir.
 
-### Neden?
-Kurumsal satışlarda onboarding süreci çok önemli. "Nasıl kullanacağız?" sorusu satışları engelliyor.
+**Neden?** Doktor/avukat "bu cevaba ne kadar güvenebilirim?" sorusu sorar.
 
+**Görsel:**
 ```
-academy/
-├── Modül 1: Sistem Tanıtımı (Video + Quiz)
-├── Modül 2: Tıbbi Sorgu Nasıl Yapılır?
-├── Modül 3: Hukuki Belge Analizi
-├── Modül 4: Alarm Sinyallerini Anlama
-└── Modül 5: Yönetici Rapor Okuma
-```
+[Yanıt metni...]
 
----
+Güven Skoru:  ████████████████░░░░  87/100
+              Yeşil: Yüksek güven (>80)
+              Sarı:  Orta güven (50-80)
+              Kırmızı: Düşük güven (<50) → Uzman öneririm
 
-## 10. 🔮 Gelecek Vizyon — v9 "Genesis Protocol"
-
-```
-Uzun Vadeli (1-2 yıl sonra):
-
-├── Federated Learning: Farklı hastaneler modellerini birleştirerek öğrenir,
-│   ama veriler asla merkezi sunucuya gitmez.
-│
-├── Quantum-Safe Encryption: Post-quantum kriptografi ile AES-256'nın ötesi.
-│
-├── Real-time Drug Interaction API: Hasta birden fazla ilaç kullanıyorsa
-│   anlık etkileşim kontrolü (Sağlık Bakanlığı API entegrasyonu).
-│
-├── Court Filing Automation: Mahkeme sistemlerine doğrudan dilekçe gönderimi
-│   (UYAP entegrasyonu).
-│
-└── Medical Imaging Pre-Analysis: X-Ray / MRI görüntülerinde anomali işaretleme
-    (Radyoloji departmanları için).
+Kaynaklar: TCK md.81 • Yargıtay 2023/4567 • KVKK md.12
 ```
 
 ---
 
-## 🎯 Hangi Özellik Hangi Müşteri İçin?
+## 🟠 YÜKSEK ÖNCELİK — v12 (Q4 2026)
 
-| Özellik | Hastane | Hukuk Bürosu | Banka | Savunma |
-|:--|:--:|:--:|:--:|:--:|
-| Multi-Agent Konsültasyon | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ |
-| Legal Brief Generator | ⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| Differential Diagnosis | ⭐⭐⭐⭐⭐ | ⭐ | ⭐ | ⭐⭐ |
-| Immutable Audit Trail | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| AR Dil Desteği | ⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Executive Reporting | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Competitive Intel Module | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| OmniEngine Academy | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+### 4. RAG 2.0 — Hibrit Arama
+
+**Mevcut:** BM25 keyword search → LLM yanıt  
+**Yeni:** Dense (semantic) + Sparse (keyword) + Cross-Encoder Reranking
+
+```
+Kullanıcı Sorusu
+       │
+       ├── Dense Retrieval (E5-multilingual embedding)
+       │       └── Top-20 semantik benzer pasaj
+       │
+       ├── BM25 Sparse Retrieval
+       │       └── Top-20 keyword eşleşmesi
+       │
+       └── Cross-Encoder Reranking (tüm 40 adayı yeniden sıralar)
+               └── Top-3 en alakalı pasaj → LLM
+```
+
+**Fayda:** Retrieval accuracy %30-40 artış, daha az halüsinasyon.
 
 ---
 
-*Yeni Özellik Kataloğu | OmniEngine v7 | Mayıs 2026*
+### 5. Session Context Manager (Konuşma Hafızası)
+
+**Ne?** Konuşma boyunca bağlamı korur.
+
+**Kullanım Senaryosu:**
+```
+Kullanıcı: "Hasta 78 yaşında, diyabetik."
+AI: [bağlamı hafızaya kaydeder]
+Kullanıcı: "Metformin verebilir miyiz?"
+AI: [önceki bağlamı bilir] → "78 yaşlı diyabetik hasta için Metformin...
+     GFR kontrolü önerilir (yaş faktörü: Beers kriterleri)"
+```
+
+---
+
+### 6. REST API Gateway
+
+**Endpoint'ler:**
+```
+POST /api/v1/query          → Soru sor
+POST /api/v1/query/stream   → Streaming yanıt
+GET  /api/v1/domains        → Kullanılabilir domainler
+GET  /api/v1/health         → Sistem durumu
+GET  /api/v1/usage          → Kullanım istatistikleri
+POST /api/v1/feedback       → 👍/👎 geri bildirim
+```
+
+**Auth:** JWT Bearer token + API key  
+**Rate Limit:** 60 istek/dakika (Starter), 500 (Enterprise)  
+**SDK:** Python, Node.js, cURL örnekleri
+
+---
+
+## 🟡 ORTA ÖNCELİK — v13 (2027 Q1-Q2)
+
+### 7. Legal Brief Generator (Hukuki Dilekçe Üreticisi)
+
+**Ne?** Kullanıcı dava bilgilerini girer → Sistem TCK/HMK formatında dilekçe taslağı üretir.
+
+**Akış:**
+```
+Kullanıcı Girdisi:
+- Dava türü: İş hukuku — haksız fesih
+- Müvekkil: Çalışan (5 yıl kıdemi var)
+- İşveren: Bildirim yapmadan işten çıkardı
+- Tarih: 15 Haziran 2026
+
+OmniEngine Çıktısı:
+┌──────────────────────────────────────────────┐
+│ [MAHKEME ADI] SAYIN HAKİMLİĞİ'NE            │
+│                                              │
+│ DAVACILAR: ...                               │
+│ DAVALILAR: ...                               │
+│ KONU: İş Akdinin Feshi ve Tazminat Talebi   │
+│                                              │
+│ AÇIKLAMALAR:                                 │
+│ 1. İş K. md. 17 gereğince ihbar süresi...  │
+│ 2. İş K. md. 18 kapsamında işe iade...     │
+│                                              │
+│ TALEP VE SONUÇ: ...                          │
+└──────────────────────────────────────────────┘
+```
+
+---
+
+### 8. Multimodal Girdi (PDF / Excel / Görüntü)
+
+**Ne?** Kullanıcı dosya yükler → AI analiz eder.
+
+**Desteklenecek Formatlar:**
+| Format | Kullanım Senaryosu |
+|:--|:--|
+| PDF | Sözleşme analizi, mahkeme kararı özeti |
+| Excel | Finansal veri analizi, ilaç stok raporu |
+| Görüntü (PNG/JPG) | Reçete OCR, röntgen açıklaması (beta) |
+| Word (DOCX) | Hukuki metin düzenleme, madde analizi |
+
+**Pipeline:**
+```
+Dosya Yükleme → OCR/Parser → Chunk → Embed → RAG → LLM Yanıt
+```
+
+---
+
+### 9. Voice-to-Expert (Sesli Sorgulama)
+
+**Ne?** Kullanıcı sesli soru sorar → AI sesli yanıt verir.
+
+**Özellikle:** Ameliyathanede eldiven giyen cerrahın soru sorması, sahada hukuk danışmanlığı.
+
+**Stack:**
+```
+Whisper (STT, Türkçe optimize) → OmniEngine → TTS (Türkçe ses)
+Latency hedefi: < 3 saniye uçtan uca
+```
+
+---
+
+## 🟢 ARAŞTIRMA — v14+ (2027 Q3+)
+
+### 10. Federated Learning
+
+**Ne?** Hastane/banka kendi verisini dışarı göndermeden modeli eğitir.
+
+**Nasıl:**
+```
+Hastane A → Yerel model güncelleme (gradient)
+Hastane B → Yerel model güncelleme (gradient)
+Banka C   → Yerel model güncelleme (gradient)
+         ↓
+     Merkez: Sadece gradientleri toplar, veriyi görmez
+         ↓
+     Güncellenmiş global model → herkese gönder
+```
+
+**Yasal Avantaj:** KVKK ve GDPR açısından en güvenli seçenek.
+
+---
+
+### 11. Recursive Self-Improvement
+
+**Ne?** Model kendi eğitim verilerini üretir ve kendini eğitir.
+
+```
+1. Model → Soru üretir
+2. Model → O soruyu yanıtlar
+3. Symbolic Gate → Yanıtı doğrular
+4. Geçen yanıtlar → Yeni SFT verisi olur
+5. Model → Bu veriyle yeniden eğitilir
+6. Döngü devam eder
+```
+
+**Risk:** Önyargı birikmesi (bias amplification)  
+**Önlem:** İnsan denetimi ve çeşitlilik metrikleri
+
+---
+
+### 12. Explainability Dashboard
+
+**Ne?** Her kararın neden verildiğini görsel olarak açıklar.
+
+```
+┌────────────────────────────────────────────────┐
+│ Karar Analizi: "Metformin güvenli mi?"         │
+│                                                │
+│ Adım 1: Domain Tespiti                         │
+│   → Medical router: %97 güven                 │
+│                                                │
+│ Adım 2: HoloDB Araması                         │
+│   → 3 kavram bulundu: metformin, renal, GFR   │
+│   → Beers kriterleri: "dikkat" seviyesi        │
+│                                                │
+│ Adım 3: Kalite Kapısı                          │
+│   → Doz aralığı: ONAYLANMIŞ                   │
+│   → Yan etki uyarısı: EKLENDİ                 │
+│                                                │
+│ Adım 4: Güven Hesabı                           │
+│   → Evidence: 3 kaynak • Confidence: 94/100   │
+└────────────────────────────────────────────────┘
+```
+
+---
+
+## 🌍 Platform Genişlemesi
+
+### Çok Dilli Destek Yol Haritası
+
+| Dil | v11.1 | v12 | v13 |
+|:--|:--:|:--:|:--:|
+| Türkçe | ✅ %100 | ✅ %100 | ✅ %100 |
+| İngilizce | %70 | %90 | %99 |
+| Arapça | ❌ | %50 | %80 |
+| Almanca | ❌ | ❌ | %60 |
+| Fransızca | ❌ | ❌ | %60 |
+
+### Sektörel Genişleme
+
+| Yeni Domain | v12 | v13 | Öncelik |
+|:--|:--:|:--:|:--|
+| Eğitim (pedagoji AI) | 📋 | ✅ | Orta |
+| Mühendislik (inşaat/makine) | 📋 | ✅ | Orta |
+| Tarım (bitki hastalıkları) | ❌ | 📋 | Düşük |
+| Psikoloji / Ruh Sağlığı | 📋 | ✅ | Yüksek |
+| Gümrük & Ticaret Hukuku | 📋 | ✅ | Yüksek |
+| Patent & Fikri Mülkiyet | ❌ | 📋 | Orta |
+
+---
+
+*Son güncelleme: 29 Haziran 2026 — OmniEngine Ürün Ekibi*
