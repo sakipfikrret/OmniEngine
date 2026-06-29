@@ -1,4 +1,4 @@
-﻿# 🗺️ OmniEngine Yol Haritası Dizini
+# 🗺️ OmniEngine Yol Haritası Dizini
 
 > **Versiyon:** v11.1 · **Son Güncelleme:** 29 Haziran 2026
 
@@ -16,6 +16,7 @@ Bu dizin OmniEngine'in tam stratejik ve teknik yol haritasını içerir.
 | [04_SATIS_SUNUM_STRATEJISI.md](04_SATIS_SUNUM_STRATEJISI.md) | Müşteri segmentleri, demo senaryoları, fiyatlandırma | 29 Haziran 2026 |
 | [05_YENI_OZELLIKLER.md](05_YENI_OZELLIKLER.md) | Yeni özellik roadmap, öncelik matrisi, teknik detaylar | 29 Haziran 2026 |
 | [06_VERI_SETI_VE_ARGE.md](06_VERI_SETI_VE_ARGE.md) | Veri seti büyüme planı, CoT stratejisi, üniversite ortaklıkları | 29 Haziran 2026 |
+| [07_LANSMAN_VE_PAZARLAMA_KIT.md](07_LANSMAN_VE_PAZARLAMA_KIT.md) | Sosyal medya lansman gönderileri, vaka çalışmaları, PDF tasarım standartları | 30 Haziran 2026 |
 
 ---
 
