@@ -1,0 +1,72 @@
+{
+  "timestamp": "2026-06-30T21:41:55.335100Z",
+  "total_questions": 10000,
+  "total_elapsed_sec": 529.76,
+  "avg_qps": 18.88,
+  "success_count": 9650,
+  "guard_blocked_count": 312,
+  "skip_empty_count": 38,
+  "error_count": 0,
+  "success_rate_pct": 99.62,
+  "error_rate_pct": 0.0,
+  "latency_avg_ms": 288.838,
+  "latency_p50_ms": 219.754,
+  "latency_p90_ms": 533.948,
+  "latency_p95_ms": 758.209,
+  "latency_p99_ms": 1419.436,
+  "latency_min_ms": 0,
+  "latency_max_ms": 2829.841,
+  "holo_hits_total": 229,
+  "holo_hits_per_query": 0.023,
+  "domain_stats": {
+    "adversarial": {
+      "success": 400,
+      "error": 0,
+      "avg_latency_ms": 299.01
+    },
+    "finance": {
+      "success": 1500,
+      "error": 0,
+      "avg_latency_ms": 299.572
+    },
+    "medical": {
+      "success": 2500,
+      "error": 0,
+      "avg_latency_ms": 296.009
+    },
+    "legal": {
+      "success": 2000,
+      "error": 0,
+      "avg_latency_ms": 285.248
+    },
+    "edge_cases": {
+      "success": 162,
+      "error": 0,
+      "avg_latency_ms": 124.491
+    },
+    "general": {
+      "success": 1500,
+      "error": 0,
+      "avg_latency_ms": 287.125
+    },
+    "cybersec": {
+      "success": 1500,
+      "error": 0,
+      "avg_latency_ms": 293.783
+    },
+    "ethics": {
+      "success": 400,
+      "error": 0,
+      "avg_latency_ms": 281.591
+    }
+  },
+  "latency_distribution": {
+    "100-500ms": 7782,
+    "50-100ms": 906,
+    ">500ms": 1131,
+    "5-10ms": 10,
+    "<1ms": 55,
+    "1-5ms": 31,
+    "10-50ms": 85
+  }
+}
