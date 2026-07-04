@@ -1,6 +1,6 @@
-﻿# 💼 Satış, Sunum & Müşteri Kazanma Stratejisi — OmniEngine v11.1
+# 💼 Satış, Sunum & Müşteri Kazanma Stratejisi — OmniEngine v12.2
 
-> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
+> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
 > **Hedef:** $100K ARR (2026 sonu) → $2M ARR (2027 sonu)
 
 ---
@@ -13,7 +13,7 @@ Müşteri model satın almıyor. **3 şey** satın alıyor:
 2. **Risk Azaltma** — "Verilerim dışarı çıkmıyor, düzenleyici beni cezalandırmaz."
 3. **Rekabet Avantajı** — "Rakiplerim bu sistemi kullanamaz (Air-Gapped)."
 
-> OmniEngine v11.1 bu 3 şeyi de sunuyor. Şimdi bunu **kanıtlamak** gerek.
+> OmniEngine v12.2 bu 3 şeyi de sunuyor. Şimdi bunu **kanıtlamak** gerek.
 
 ---
 
@@ -115,11 +115,16 @@ Mesaj: "Yanlış hesap = BDDK cezası. OmniEngine regülatör uyumunu garanti ed
 ### ✅ Tamamlanan
 - [x] 25/25 AGI Benchmark raporu
 - [x] 0 halüsinasyon kanıtı (118/118 soru testi)
+- [x] 10K şeffaf benchmark arşivi (99.620% başarı, 18.9 QPS)
+- [x] SSE streaming + dinamik confidence band demo akışı
 - [x] Teknik whitepaper (WHITEPAPER.md)
 - [x] Premium web sitesi (omnigpt.vercel.app)
 
 ### 📋 Yapılacak (Satış İçin Kritik)
 - [ ] **Bağımsız test raporu** (3. taraf firma, 50 soru)
+- [ ] **Evidence Drawer demo paketi** (her cevap için kaynak zinciri)
+- [ ] **Docker air-gap smoke raporu** (internet kapalı kurulum kanıtı)
+- [ ] **Whitepaper iddia-doğrulama matrisi** (metrik → test komutu → rapor)
 - [ ] **Müşteri referans vakası** (1 pilot firma, yazılı tanıklık)
 - [ ] **ISO 27001 ön denetim raporu**
 - [ ] **One-pager'lar** (her sektör için 1 sayfa)
@@ -193,4 +198,4 @@ Mesaj: "Yanlış hesap = BDDK cezası. OmniEngine regülatör uyumunu garanti ed
 
 ---
 
-*Son güncelleme: 29 Haziran 2026 — OmniEngine Satış Ekibi*
+*Son güncelleme: 4 Temmuz 2026 — OmniEngine Satış Ekibi*

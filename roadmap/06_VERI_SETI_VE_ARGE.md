@@ -1,7 +1,7 @@
-﻿# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v11.1
+# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v12.2
 
-> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
-> **Durum:** 11,100 kayıt tamamlandı → 50,000 kayıt hedefi (v12)
+> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
+> **Durum:** 11,100+ kayıt + 10K QA arşivi tamamlandı → 50,000 kayıt hedefi (v12 hardening)
 
 ---
 
@@ -16,6 +16,7 @@
 | `cognitive_memory.json` | 646 MB ham | Temizlendi | Structured | Graph DB |
 | SeedData | 2 txt dosya | 11,100 kayıt | 50,000 kayıt | 500,000 kayıt |
 | MITRE ATT&CK | ❌ | 858 kayıt | 2,000 kayıt | 5,000 kayıt |
+| `data/benchmark/10k_qa_archive/` | ❌ | 10,000 QA | 100,000 QA | 1M QA |
 
 ---
 
@@ -302,6 +303,26 @@ def check_diversity(dataset: list[dict]) -> DiversityReport:
 
 ---
 
+## 7.3 Doğrulama ve Benchmark Veri Setleri
+
+v12.2 ile veri stratejisi yalnızca eğitim verisini büyütmekten, ölçülebilir ve arşivlenebilir doğrulama setleri üretmeye genişledi.
+
+| Veri seti | Durum | Kullanım amacı |
+|:--|:--:|:--|
+| 10K QA Markdown arşivi | ✅ | Domain bazlı manuel inceleme, satış kanıtı, regresyon karşılaştırması |
+| 100K transparent benchmark harness | ✅ | Büyük ölçekli QPS, latency, guard block ve domain dağılımı testi |
+| Adversarial QA seti | ✅ | Prompt injection, zararlı talep ve policy bypass ölçümü |
+| Evidence trace seti | 🔄 | Her cevabı kaynak chunk/node ile eşleştirme |
+| Golden eval registry | 📋 | Whitepaper iddialarını test komutu ve rapor dosyasıyla bağlama |
+
+Kabul kriterleri:
+- Her yeni domain veri paketi için en az 500 altın standart QA.
+- Her benchmark raporu için JSONL ham çıktı + Markdown özet.
+- Her yüksek riskli cevap için `must_contain`, `must_not_contain`, risk sınıfı ve kaynak metadata'sı.
+- Veri lisansı belirsiz olan kayıtlar production setine alınmaz; ayrı karantina havuzunda tutulur.
+
+---
+
 ## 8. 🤝 AR-GE Ortaklık Stratejisi
 
 ### 8.1 Üniversite Ortaklıkları (Öncelikli)
@@ -340,4 +361,4 @@ def check_diversity(dataset: list[dict]) -> DiversityReport:
 
 ---
 
-*Son güncelleme: 29 Haziran 2026 — OmniEngine AR-GE Ekibi*
+*Son güncelleme: 4 Temmuz 2026 — OmniEngine AR-GE Ekibi*

@@ -1,6 +1,6 @@
-﻿# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v11.1+
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v12.2+
 
-> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
+> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
 > **Kapsam:** Kısa vadeli (v12), orta vadeli (v13), uzun vadeli (v14+) yeni özellikler
 
 ---
@@ -64,7 +64,7 @@ class AgentOrchestrator:
 
 ---
 
-### 2. Streaming Token Üretimi
+### 2. Streaming Token Üretimi ✅ v12.2 SSE MVP tamamlandı
 
 **Ne?** Yanıt kelime kelime gelir (ChatGPT tarzı).
 
@@ -94,7 +94,7 @@ function useStream(query: string) {
 
 ---
 
-### 3. Confidence Score Bandı (Güven Göstergesi)
+### 3. Confidence Score Bandı (Güven Göstergesi) ✅ v12.2 MVP tamamlandı
 
 **Ne?** Her yanıt 0-100 güven skoru + renk bandı ile gelir.
 
@@ -168,6 +168,28 @@ POST /api/v1/feedback       → 👍/👎 geri bildirim
 **Auth:** JWT Bearer token + API key  
 **Rate Limit:** 60 istek/dakika (Starter), 500 (Enterprise)  
 **SDK:** Python, Node.js, cURL örnekleri
+
+---
+
+### 6.5 Evidence Drawer ve Üretim Güven Paneli
+
+**Neden kritik?** Kurumsal alıcı yalnızca cevabı değil, cevabın hangi kanıttan geldiğini ve hangi güvenlik filtresinden geçtiğini görmek ister.
+
+| Alt özellik | Durum | Kabul kriteri |
+|:--|:--:|:--|
+| Evidence Drawer MVP | 🔄 | Yanıttaki iddia → RAG chunk → HoloDB node → confidence zinciri görünür |
+| Citation Graph | 📋 | Kaynak düğümleri ilişkisel graf olarak gezilebilir |
+| Audit Hash Chain | 📋 | Girdi, karar adımı ve çıktı hash'i birlikte saklanır |
+| Benchmark Evidence Link | 📋 | İlgili domain benchmark sonucu yanıt metadata'sına bağlanır |
+
+### 6.6 Auth, Tenant İzolasyonu ve Observability
+
+| Alt özellik | Öncelik | Kabul kriteri |
+|:--|:--:|:--|
+| NextAuth/RBAC | P1 | Admin, operator, viewer rolleri ayrılır |
+| Tenant namespace | P1 | Conversation, Memory, DocumentChunk ve AuditEvent tenant bazlı ayrılır |
+| Rate limiting | P1 | API route başına kullanıcı/tenant limiti uygulanır |
+| Observability dashboard | P1 | Latency, QPS, guard block, abstain ve confidence dağılımı izlenir |
 
 ---
 
@@ -326,4 +348,4 @@ Banka C   → Yerel model güncelleme (gradient)
 
 ---
 
-*Son güncelleme: 29 Haziran 2026 — OmniEngine Ürün Ekibi*
+*Son güncelleme: 4 Temmuz 2026 — OmniEngine Ürün Ekibi*

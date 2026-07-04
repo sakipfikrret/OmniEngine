@@ -1,6 +1,6 @@
-﻿# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v11.1
+# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v12.2
 
-> **Versiyon:** v11.1 · **Güncelleme:** 29 Haziran 2026  
+> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
 > **Kapsam:** Mimari derinleştirme, eğitim iyileştirme, ölçekleme stratejisi
 
 ---
@@ -237,7 +237,7 @@ class SessionMemory:
 
 ## 5. 🎯 Benchmark & Değerlendirme Sistemi
 
-### 5.1 Mevcut Eval Sonuçları (v11.1)
+### 5.1 Mevcut Eval Sonuçları (v12.2)
 
 ```
 AGI Progressive Eval — 25 Soru, 8 Domain
@@ -253,6 +253,16 @@ Q24-Q25 Çapraz Domain: 2/2  ✅
 TOPLAM:              25/25 (%100.0) 🏆
 ```
 
+Ek şeffaf benchmark hattı:
+
+| Test | Sonuç |
+|:--|:--|
+| 10K QA arşivi | 99.620% başarı |
+| Ortalama throughput | 18.9 QPS |
+| P50 / P95 / P99 | 219.8 ms / 758.2 ms / 1,419.4 ms |
+| Adversarial guard | 312 blok, %100 güvenlik |
+| 100K test harness | `transparent_100k_test.py`, örneklemli ön test destekli |
+
 ### 5.2 v12 Hedef Benchmark
 
 | Test | v11.1 | v12 Hedef | v13 Hedef |
@@ -263,6 +273,7 @@ TOPLAM:              25/25 (%100.0) 🏆
 | Latency (ilk token) | ~2s | <500ms | <200ms |
 | Throughput | 1 user | 10 user | 100 user |
 | Memory footprint | 1.4GB | 350MB | 200MB |
+| Evidence trace coverage | Kısmi | %80 iddia-kaynak eşleşmesi | %95+ |
 
 ---
 
@@ -300,22 +311,34 @@ def sanitize_input(user_input: str) -> tuple[str, bool]:
 ### 7.1 Mevcut Stack
 ```
 Backend:  Python 3.11 + FastAPI
-Frontend: Next.js 15 (App Router)
+Frontend: Next.js 16.2.6 (App Router)
 Model:    PyTorch 2.x + LoRA (peft)
 Deploy:   Yerelde çalışıyor (Vercel frontend)
 DB:       HoloDB (binary mmap graf)
+UX:       SSE streaming + dynamic confidence band
 ```
 
 ### 7.2 Hedef Stack (v12)
 ```
 Backend:  FastAPI + Celery (async tasks)
-Frontend: Next.js 15 + Framer Motion
+Frontend: Next.js 16.2.6 + streaming observability
 Model:    vLLM serving (batched inference)
 Deploy:   Docker + K8s (on-premise)
 DB:       HoloDB + Qdrant (vector store)
 Monitor:  Prometheus + Grafana
 ```
 
+### 7.3 Eksik Üretimleşme Kalemleri (P0/P1)
+
+| Öncelik | Kalem | Kabul Kriteri |
+|:--:|:--|:--|
+| P0 | Docker air-gap smoke test | İnternetsiz ortamda `npm run build`, Python diagnose, HoloDB load ve chat smoke geçer |
+| P0 | CI/CD temel hattı | lint + build + Python diagnose + e2e smoke tek komutla çalışır |
+| P0 | Whitepaper iddia-doğrulama matrisi | Her performans/güvenlik iddiası rapor dosyası ve test komutuyla eşleşir |
+| P1 | Evidence Drawer MVP | Yanıttaki iddia, RAG chunk, HoloDB node ve confidence skoru aynı panelde görünür |
+| P1 | Auth/tenant izolasyonu | Conversation, Memory, DocumentChunk, AuditEvent tenant namespace taşır |
+| P1 | Observability | Latency, QPS, abstain, guard block ve confidence dağılımı dashboard'a yazılır |
+
 ---
 
-*Son güncelleme: 29 Haziran 2026 — OmniEngine AR-GE Ekibi*
+*Son güncelleme: 4 Temmuz 2026 — OmniEngine AR-GE Ekibi*

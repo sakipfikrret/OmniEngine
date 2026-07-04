@@ -1,4 +1,4 @@
-# 🎨 UX/UI & Arayüz Geliştirmeleri — OmniEngine v11.1
+# 🎨 UX/UI & Arayüz Geliştirmeleri — OmniEngine v12.2
 
 > Bir kurumsal AI platformunun "alıcıya hazır" görünmesi ve $100K algısını yaratması için arayüz ve 3D görselleştirme kritik rol oynar.
 
@@ -143,13 +143,13 @@ React Native veya Flutter ile:
 
 | Öncelik | İş | Tahmini Süre |
 |:--|:--|:--:|
-| 🔴 Kritik | Dark mode glassmorphism yeniden tasarım | 2 gün |
-| 🔴 Kritik | Karar Trace animasyonlu timeline | 1 gün |
-| 🟡 Önemli | Analytics Dashboard temel halinde | 2 gün |
-| 🟡 Önemli | Document Analyzer (PDF upload) | 3 gün |
-| 🟢 İyi olur | Knowledge Graph Viewer (D3.js) | 3 gün |
-| 🟢 İyi olur | Benchmark karşılaştırma sayfası | 2 gün |
+| 🔴 Kritik | Evidence Drawer MVP: iddia → kaynak chunk → HoloDB node | 3 gün |
+| 🔴 Kritik | Streaming mode ve confidence band mobil kırılım testi | 1 gün |
+| 🟡 Önemli | Karar Trace animasyonlu timeline'ı gerçek event log'a bağla | 2 gün |
+| 🟡 Önemli | Benchmark Dashboard'u 10K/100K raporlarıyla besle | 2 gün |
+| 🟡 Önemli | Document Analyzer'da kaynak satır/başlık vurgusu | 2 gün |
+| 🟢 İyi olur | Knowledge Graph Viewer'da citation graph modu | 3 gün |
 
 ---
 
-*UX/UI Geliştirme Planı | OmniEngine "Titan Command Center" | Mayıs 2026*
+*Son güncelleme: 4 Temmuz 2026 — OmniEngine UX Ekibi*
