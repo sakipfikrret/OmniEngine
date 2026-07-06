@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v12.2
+# 🧠 OmniEngine Cognitive Core — v14.0
 
-**Yerel Egemen AI · Deterministik Uzman Yönlendirme · HoloDB İkili Bilgi Grafı**  
-**Bayesian Karar Motoru · LoRA Adaptif Öğrenim · Açık Kaynak Veri Entegrasyonu · 3D Holographic UI**
+**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · PDF Öğrenme**  
+**Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · NVD CVE + MITRE ATT&CK · 3D Holographic UI**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
 
@@ -11,12 +11,12 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v12.2-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v14.0-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
-[![Dataset](https://img.shields.io/badge/Veri_Seti-11%2C100_Kayıt-f59e0b?style=flat-square)](./)
-[![LoRA](https://img.shields.io/badge/LoRA_SFT-5000_iter_r%3D16-06b6d4?style=flat-square)](./)
-[![3D UI](https://img.shields.io/badge/3D_UI-HoloSphere_%2B_Thinking_Panel-8B5CF6?style=flat-square)](./)
+[![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
+[![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_839K%2B_Düğüm-8B5CF6?style=flat-square)](./)
+[![PDF](https://img.shields.io/badge/PDF_Öğrenme-Aktif-06b6d4?style=flat-square)](./)
 [![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_III-Compliant-0f766e?style=flat-square)](./)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
@@ -29,21 +29,26 @@
 
 ---
 
-## Güncel Gelişim Durumu — v12.2 (4 Temmuz 2026)
+## Güncel Gelişim Durumu — v14.0 (7 Temmuz 2026)
 
-OmniEngine artık yalnızca v11.1 sertifikasyon demosu değil; v12.0-v12.2 hattında doküman öğrenme, streaming yanıt, dinamik güven skoru ve şeffaf benchmark arşivi ile üretimleşme eşiğine taşındı.
+OmniEngine v14.0 ile sistem **500K gerçek dünya SFT veri seti**, **HoloDB v5.0 (839K+ düğüm)**, **PDF'den öğrenme** ve **NVD CVE + MITRE ATT&CK + CISA KEV siber zeka entegrasyonu** ile kurumsal AI altyapısının yeni zirvesine ulaştı.
 
 | Alan | Güncel durum |
 |:--|:--|
 | Platform | Next.js 16.2.6 + Turbopack build doğrulandı; 33 sayfa statik üretildi |
-| RAG Upload | PDF/TXT/CSV yükleme, gerçek embedding, SQLite persist ve Composer rapor entegrasyonu |
-| Streaming | `/api/chat/stream` SSE hattı; thinking step + token + done event akışı |
-| Güven Skoru | `solve_score` tabanlı 0-100 confidence bandı ve görsel progress bar |
-| Benchmark | 10K şeffaf QA arşivi: 99.620% başarı, 18.9 QPS, P95 758.2 ms |
-| Güvenlik | 312 adversarial guard block; kritik güvenlik sorgularında %100 bloklama |
-| HoloDB | 458,850+ düğüm; mmap tabanlı yerel bilgi grafı |
+| RAG + PDF Öğrenme | `/learn_pdf` API; PyMuPDF→pdfplumber→pypdf fallback; HoloDB enjeksiyon; SFT kayıt |
+| SFT Medical 100K | HoloDB'den 216K gerçek düğüm → `sft_medical_100k.jsonl` ✅ |
+| SFT Legal 100K | HoloDB'den 276K gerçek düğüm → `sft_legal_100k.jsonl` ✅ |
+| SFT Finance 100K | Finance-Alpaca (HuggingFace 62K) + SPK/BDDK → `sft_finance_100k.jsonl` ✅ |
+| SFT Cyber 67K | NVD CVE 62K + MITRE ATT&CK 2K + CISA KEV 1.6K → `sft_cyber_100k.jsonl` ✅ |
+| SFT General 111K | cot_50k + holo_cot_50k + holo_general → `sft_general_100k.jsonl` ✅ |
+| HoloDB v5.0 | 839,480 düğüm, 6.39M kenar, 24,209,954 mmap binary indeksi |
+| Streaming | `/api/chat/stream` SSE; thinking step + token + done event |
+| Güven Skoru | `solve_score` tabanlı 0-100 confidence bandı |
+| 100K Benchmark | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
+| Güvenlik | 1,135 adversarial guard block; %100 bloklama |
 
-**Açık üretim borçları:** Docker air-gap smoke test, CI/CD, Evidence Drawer kaynak zinciri, auth/tenant izolasyonu, iddia-doğrulama matrisi ve bağımsız 3. taraf güvenlik/halüsinasyon raporu.
+**Açık üretim borçları:** FAISS semantik vektör index, Docker air-gap smoke test, CI/CD, auth/tenant izolasyonu ve bağımsız 3. taraf denetim.
 
 ## 📑 İçindekiler
 

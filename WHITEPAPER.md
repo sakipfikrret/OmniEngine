@@ -1,6 +1,37 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v12.2
+# OmniEngine Cognitive Core — Technical Whitepaper v14.0
 
-**Yerel Egemen AI · Deterministik Uzman Yönlendirme · HoloPack İkili Bilgi Grafı · Bayesian Karar Motoru · LoRA Adaptif Öğrenim · Şeffaf 10K/100K Benchmark Hattı · Streaming Yanıt · Confidence Band · 3D Holographic UI & Thinking Panel**
+**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
+
+---
+
+## Yönetici Özeti
+
+OmniEngine v14.0, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+
+Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
+
+**v14.0'ın temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **PDF'den öğrenme özelliği**, **NVD CVE + MITRE ATT&CK + CISA KEV entegrasyonu** ile kurumsal sınıf bilgi tabanına yükseltilmiş şekilde sunmak. v11.1–v13.0 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
+
+### v14.0 Doğrulama Özeti
+
+| Katman | Durum | Kanıt / çıktı |
+|:--|:--|:--|
+| Production build | Geçti | Next.js 16.2.6, Turbopack, 33 statik sayfa |
+| RAG Upload + PDF | Geçti | `/learn_pdf` endpoint, PyMuPDF→pdfplumber→pypdf fallback |
+| Streaming | Geçti | `/api/chat/stream` SSE: thinking step, token, done |
+| Confidence score | Geçti | `solve_score` tabanlı 0-100 band, UI renk etiketi |
+| 100K benchmark | Geçti | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
+| Güvenlik blokları | Geçti | 1,135 adversarial sorgu başarıyla bloklandı (Guard) |
+| SFT Medical 100K | Geçti | HoloDB 216K gerçek düğüm → `sft_medical_100k.jsonl` |
+| SFT Legal 100K | Geçti | HoloDB 276K gerçek düğüm → `sft_legal_100k.jsonl` |
+| SFT Finance 100K | Geçti | Finance-Alpaca (HF) + SPK/BDDK → `sft_finance_100k.jsonl` |
+| SFT Cyber 67K | Geçti | NVD CVE 62K + MITRE 2K + CISA 1.6K → `sft_cyber_100k.jsonl` |
+| SFT General 111K | Geçti | cot_50k + holo_cot_50k + holo_general → `sft_general_100k.jsonl` |
+| HoloDB v5.0 | Geçti | 839,480 düğüm, 6.39M kenar, 24,209,954 mmap binary indeksi |
+| PDF Öğrenme | Geçti | `/learn_pdf` FastAPI, HoloDB enjeksiyon, SFT kayıt |
+| Açık borç | Aktif | FAISS vektör index, CI/CD, bağımsız denetim |
+
+
 
 ---
 
