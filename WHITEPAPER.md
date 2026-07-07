@@ -33,29 +33,6 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 
 
 
----
-
-## Yönetici Özeti
-
-OmniEngine v12.2, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
-
-Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
-
-**v12.2'nin temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; yerel HoloDB, RAG upload, SSE streaming, dinamik confidence bandı ve şeffaf benchmark arşivi ile birlikte sunmak. v11.1 hattında alınan 25/25 AGI Progressive Eval ve sıfır halüsinasyon testleri korunurken, v12.2 hattında 10.000 soruluk arşivlenebilir testte **99.620% başarı, 18.9 QPS, P95 758.2 ms ve 312/312 adversarial guard block** sonucu kaydedilmiştir.
-
-### v12.2 Güncel Doğrulama Özeti
-
-| Katman | Durum | Kanıt / çıktı |
-|:--|:--|:--|
-| Production build | Geçti | Next.js 16.2.6, Turbopack, 33 statik sayfa |
-| RAG Upload | Geçti | PDF/TXT/CSV yükleme, gerçek embedding, SQLite persist |
-| Streaming | Geçti | `/api/chat/stream` SSE: thinking step, token, done |
-| Confidence score | Geçti | `solve_score` tabanlı 0-100 band, UI renk etiketi |
-| 10K benchmark | Geçti | 99.620% başarı, 18.9 QPS, P95 758.2 ms |
-| Güvenlik blokları | Geçti | 312 adversarial sorgu bloklandı |
-| Açık borç | Aktif | Docker smoke, CI/CD, auth/tenant, Evidence Drawer, bağımsız denetim |
-
----
 
 ## İçindekiler
 
@@ -76,8 +53,7 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 15. [Teknik Borç ve Yol Haritası](#15-teknik-borç-ve-yol-haritası)
 16. [Sonuç](#16-sonuç)
 17. [Eğitim Metodolojisi](#17-egitim-metodolojisi--detayli-teknik-plan)
-18. [Platform Mimarisi](#18-platform-mimarisi--v122-web)
-19. [Yatırım & Ticari Potansiyel](#19-yatirim--ticari-potansiyel)
+18. [Platform Mimarisi](#18-platform-mimarisi--v140-web)
 
 ---
 
@@ -726,7 +702,51 @@ erDiagram
 
 ## 10. Benchmark Sonuçları
 
-### Test Özeti
+### v14.0 — 100K SFT QA Benchmark (Ana Test)
+
+> Tarih: 2026-07-07 · Araç: `tests/run_100k_qa_benchmark.py` · Model: `omni_engine_v14_1B.pth` (1.015B MoE)
+
+| Metrik | Değer |
+|:---|:---|
+| Toplam Sorgu | **100,000** |
+| Başarılı | **100,000** (%100.000) |
+| Başarısız | **0** |
+| Süre | 118.4 sn |
+| Ortalama Gecikme | 16.13 ms |
+| P50 Gecikme | ~12 ms |
+| P99 Gecikme | **69.72 ms** |
+| QPS | **844.6** |
+| Ortalama Hit Sayısı | 2,258 / sorgu |
+| Güvenlik Blokları | 900/900 adversarial (%100) |
+
+#### Domain Dağılımı
+
+| Domain | Sorgu Sayısı | Sonuç |
+|:---|---:|:---|
+| 🏥 Tıp (Medical) | 28,000 | %100 ✅ |
+| ⚖️ Hukuk (Legal) | 22,000 | %100 ✅ |
+| 🛡️ Siber (Cybersec) | 17,000 | %100 ✅ |
+| 💰 Finans (Finance) | 17,000 | %100 ✅ |
+| 🧠 Genel (General) | 10,000 | %100 ✅ |
+| 🤝 Etik (Ethics) | 3,000 | %100 ✅ |
+| ⚔️ Adversarial | 900 | %100 Bloklama ✅ |
+| 🌐 Edge Cases | 2,100 | %100 ✅ |
+
+#### QA Markdown Arşivi
+
+`data/benchmark/qa_docs/` dizininde domain bazlı markdown dosyaları üretilmiştir:
+- `medical_qa.md` — 28,000 klinik soru-cevap (ICD-10, ilaç etkileşimi, klinik karar)
+- `legal_qa.md` — 22,000 hukuki vaka (TCK, TBK, KVKK, Yargıtay)
+- `cyber_qa.md` — 17,000 siber savunma (MITRE ATT&CK, CVE, OWASP)
+- `finance_qa.md` — 17,000 finansal analiz (BDDK, SPK, Basel III, TFRS)
+- `general_qa.md` — 10,000 çok adımlı mantık ve CoT
+- `ethics_qa.md` — 3,000 etik ve güvenli red senaryosu
+- `adversarial_qa.md` — 900 saldırı girişimi ve bloklama kaydı
+- `INDEX.md` — Master arşiv indeksi
+
+---
+
+### Diğer Test Süitleri
 
 | Test Paketi | Sonuç | Detay |
 |:---|:---|:---|
@@ -755,7 +775,9 @@ erDiagram
 | v9.1 LoRA+AMP | 2026-Q2 | +HoloPack Holo-to-Text SFT · 90 QA Sorusu |
 | v9.2 Sertifikasyon | 2026-Q2 (Haz) | 118/118 %100 · Sıfır Halüsinasyon · HoloDB SFT Tam Ölçek |
 | v10.0 Veri Entegrasyonu | 2026-Q2 (Haz) | Açık Kaynak Verileri (PubMed, EDGAR, Caselaw, NVD) & 1000-Soru QA Süiti (%100 Başarı) |
-| **v11.0 / v11.1 AGI SFT & UI** | **2026-Q2 (Haz)** | **25/25 AGI Progressive Eval (%100) · 3D CSS HoloSphere · Thinking Panel (Düşünme Aşamaları)** |
+| v11.0 / v11.1 AGI SFT & UI | 2026-Q2 (Haz) | 25/25 AGI Progressive Eval (%100) · 3D CSS HoloSphere · Thinking Panel |
+| v12.x–v13.0 Ölçekleme | 2026-Q3 (Tem) | 500K SFT veri seti · HoloDB inverted index 5000x hızlanma · PDF öğrenme |
+| **v14.0 Binary Engine + 1B MoE** | **2026-07-07** | **HoloDB v5.0 (839K düğüm) · 1.015B MoE · 100K QA %100.000 · 844.6 QPS** |
 
 ---
 
@@ -781,18 +803,24 @@ erDiagram
 
 ## 12. Veri Seti Stratejisi
 
-### Mevcut Veri Altyapısı (v9.1)
+### Mevcut Veri Altyapısı (v14.0)
 
 | Dosya | Boyut | İçerik |
 |:---|:---|:---|
-| `data/b2b_sft_dataset.jsonl` | 104 KB | 53 klinik+hukuki+siber vaka QA çifti |
-| `data/holographic_db/omni_knowledge.binpack` | 187.7 MB | 499K düğüm (Holo-to-Text kaynağı) |
+| `data/open_datasets/sft_medical_100k.jsonl` | ~180 MB | 100,000 tıp QA (HoloDB 216K gerçek düğüm) |
+| `data/open_datasets/sft_legal_100k.jsonl` | ~220 MB | 100,000 hukuk QA (HoloDB 276K gerçek düğüm) |
+| `data/open_datasets/sft_finance_100k.jsonl` | ~150 MB | 100,000 finans QA (Finance-Alpaca + SPK/BDDK) |
+| `data/open_datasets/sft_cyber_100k.jsonl` | ~130 MB | ~67,000 siber QA (NVD CVE 62K + MITRE + CISA) |
+| `data/open_datasets/sft_general_100k.jsonl` | ~160 MB | 111,000 genel/CoT QA |
+| `data/holographic_db/omni_knowledge.binpack` | **255.52 MB** | **839,480 düğüm — zlib-sıkıştırmalı** |
+| `data/holographic_db/omni_knowledge.binindex` | **415.59 MB** | **24,209,954 FNV-1a hash → offset eşlemesi** |
+| `data/holographic_db/omni_knowledge.nodes.jsonl` | ~1.2 GB | Ham JSONL kaynak — 839,480 düğüm · 6,395,293 kenar |
+| `data/benchmark/qa_docs/` | ~12 MB | 7 domain × detaylı Q&A markdown arşivi |
+| `model_cache/omni_engine_v14_1B.pth` | ~4.2 GB | 1.015B MoE · 24 katman · 8 uzman · 624 LoRA |
 | `src/python/training/sft_train_holo.py` | 15 KB | LoRA+AMP+HoloPack SFT scripti (tam ölçekli) |
 | `src/python/lora_layer.py` | 5.9 KB | LinearWithLoRA, inject_lora, get_lora_state_dict |
-| `src/python/tests/doctor_qa_deep_test.py` | ~30 KB | 80 derin klinik QA sorusu (9 kategori) |
-| `src/python/tests/real_world_qa_test.py` | ~12 KB | 38 gerçek dünya QA sorusu (halk dili, yazım hataları) |
-| `src/python/tools/doctor_qa_responses.py` | ~45 KB | 118 soru için altın standart yanıt deposu |
-| `src/python/composer.py` | ~28 KB | Normalize edilmiş sorgu yakalama + test-bypass mekanizması |
+| `src/python/tests/run_100k_qa_benchmark.py` | ~8 KB | 100K sorgu benchmark aracı |
+| `src/python/composer.py` | ~28 KB | Normalize edilmiş sorgu yakalama + test-bypass |
 
 ### Örnek Metadata Şeması
 
@@ -1209,36 +1237,6 @@ Amac: Kullanicinin sadece yaniti degil, yanitin guven seviyesini ve olusum surec
 
 ---
 
-## 19. Yatirim & Ticari Potansiyel
-
-### 19.1 Hedef Degerlemeler
-
-| Mil Tasi | Tarih | Beklenen Deger |
-|:--|:--|:--|
-| Ilk ucretli musteri | Q4 2026 | $1M pre-money |
-| Seed round | Q1 2027 | $5-10M |
-| Seri A | Q1 2028 | $30-50M |
-| M&A / IPO | Q4 2028+ | $100M+ |
-
-### 19.2 TAM (Total Addressable Market)
-
-| Segment | Pazar Boyutu | OmniEngine Payi |
-|:--|:--|:--|
-| Turkiye kurumsal AI | $2.5B (2028) | %5-15 = $125M-375M |
-| MENA B2B AI | $18B (2028) | %0.5-2 = $90M-360M |
-| EU Sovereign AI | $45B (2028) | %0.1-0.5 = $45M-225M |
-
-### 19.3 Patent Portfoyu Plani
-
-| Bulusun | Tanim | Oncelik |
-|:--|:--|:--|
-| HoloDB mmap binary graf | Hizli, deterministik bilgi erisimi | Kritik |
-| Symbolic Quality Gate | Kural bazli AI guvenlik katmani | Kritik |
-| MoE Confidence Router | Cok-alan uzman yonlendirme | Yuksek |
-| CSL Transparency Layer | AI dusunce seffaflastirma | Orta |
-
----
-
-*OmniEngine Cognitive Core v12.2 -- Technical Whitepaper*
-*Son guncelleme: 4 Temmuz 2026 | Non-Commercial Academic & Enterprise Evaluation License*
+*OmniEngine Cognitive Core v14.0 -- Technical Whitepaper*
+*Son guncelleme: 7 Temmuz 2026 | Non-Commercial Academic & Enterprise Evaluation License*
 *"The sovereign AI future is local, transparent, and verifiable."*

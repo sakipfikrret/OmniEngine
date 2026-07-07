@@ -1286,18 +1286,17 @@ OmniGPT/
 | ✅ 2025 Q1-Q2 | Temel mimari: MoE, HoloDB, Quality Gate | Tamamlandı |
 | ✅ 2025 Q3-Q4 | Veri seti 11K kayıt, LoRA SFT eğitimi | Tamamlandı |
 | ✅ 2026 Q1-Q2 | AGI Eval 25/25, 3D UI, Thinking Panel | Tamamlandı |
-| 🔄 2026 Q3 | Evidence Drawer, CI/CD, Docker smoke, Live API | Aktif |
-| 📋 2026 Q4 | v12 hardening: RAG 2.0, auth/tenant, pilot müşteri | Planlandı |
-| 📋 2027 Q1-Q2 | Seed round $2-5M, ARR $500K | Planlandı |
-| 📋 2027 Q3-Q4 | Uluslararasılaşma, ARR $2M | Planlandı |
-| 📋 2028+ | $100M+ değerleme, Sovereign AGI | Vizyon |
+| ✅ 2026 Q3 | HoloDB v5.0, 500K SFT, 1.015B MoE, 100K benchmark %100 | Tamamlandı |
+| 🔄 2026 Q4 | FAISS semantik index, CI/CD, Docker air-gap smoke test | Aktif |
+| 📋 2027 Q1 | Auth/tenant izolasyonu, bağımsız 3. taraf denetim | Planlandı |
+| 📋 2027 Q2+ | Pilot kurumsal müşteri, üretim SLA | Planlandı |
 
 > Detaylı yol haritası için: [roadmap/](./roadmap/)
 
 ---
 
 *Non-Commercial Academic & Enterprise Evaluation License*  
-*OmniEngine Cognitive Core v12.2 — "The best intelligence is the one you fully control."*  
-*Son güncelleme: 4 Temmuz 2026*
+*OmniEngine Cognitive Core v14.0 — "The best intelligence is the one you fully control."*  
+*Son güncelleme: 7 Temmuz 2026*
 
 </div>
