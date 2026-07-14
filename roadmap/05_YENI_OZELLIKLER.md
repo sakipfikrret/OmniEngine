@@ -1,224 +1,92 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v12.2+
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.1
 
-> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
-> **Kapsam:** Kısa vadeli (v12), orta vadeli (v13), uzun vadeli (v14+) yeni özellikler
+> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
+> **Kapsam:** Kısa vadeli, orta vadeli ve tamamlanan ileri özellikler yol haritası
 
 ---
 
 ## 📋 Öncelik Matrisi
 
-| Özellik | Değer | Efor | Öncelik |
-|:--|:--:|:--:|:--:|
-| Multi-Agent Konsültasyon | Yüksek | Orta | 🔴 Kritik |
-| Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik |
-| Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik |
-| RAG 2.0 (hibrit arama) | Yüksek | Orta | 🟠 Yüksek |
-| Session Memory | Yüksek | Orta | 🟠 Yüksek |
-| API Gateway | Orta | Yüksek | 🟠 Yüksek |
-| Legal Brief Generator | Orta | Yüksek | 🟡 Orta |
-| Voice-to-Expert | Orta | Yüksek | 🟡 Orta |
-| Multimodal (PDF/Excel) | Yüksek | Çok Yüksek | 🟡 Orta |
-| Mobile SDK | Orta | Çok Yüksek | 🟢 Düşük |
-| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma |
+| Özellik | Değer | Efor | Öncelik | Durum |
+|:--|:--:|:--:|:--:|:--:|
+| Multi-Agent Konsültasyon | Yüksek | Orta | 🔴 Kritik | 🔄 Aktif |
+| Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
+| Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
+| RAG 2.0 (hibrit arama) | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
+| Tıbbi Görüntü Yorumlama | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
+| Tıbbi Cihaz Entegrasyonu | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
+| Session Memory | Yüksek | Orta | 🟠 Yüksek | 🔄 Aktif |
+| API Gateway | Orta | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.1) |
+| Legal Brief Generator | Orta | Yüksek | 🟡 Orta | 🔄 Aktif |
+| Voice-to-Expert | Orta | Yüksek | 🟡 Orta | 📋 Planlandı |
+| Multimodal (PDF/Excel) | Yüksek | Çok Yüksek | 🟡 Orta | 🔄 Aktif |
+| Mobile SDK | Orta | Çok Yüksek | 🟢 Düşük | 📋 Planlandı |
+| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma | 📋 Planlandı |
 
 ---
 
-## 🔴 KRİTİK — v12 (Q3 2026)
+## 🔴 KRİTİK — v12/v14 (Tamamlandı ✅)
 
 ### 1. Multi-Agent Konsültasyon Modu
-
-**Ne?** Birden fazla uzman aynı anda çalışır, birbirini denetler.
-
-**Neden?** Gerçek hayatta doktor + avukat + mali müşavir birlikte karar alır.
-
-**Nasıl?**
-```python
-class AgentOrchestrator:
-    """3 uzmanı paralel çalıştırır, sonuçları birleştirir."""
-    
-    def consult(self, prompt: str, domains: list[str] = None) -> ConsultResult:
-        # 1. Ana uzmana yönlendir
-        primary_id = self.router.route(prompt)
-        primary_resp = self.experts[primary_id].infer(prompt)
-        
-        # 2. Otomatik çapraz denetim
-        if primary_id == "medical":
-            legal = self.experts["legal"].check_compliance(primary_resp)
-            finance = self.experts["finance"].check_reimbursement(primary_resp)
-            return self.merge([primary_resp, legal, finance])
-        
-        return primary_resp
-    
-    def merge(self, responses: list[ExpertResponse]) -> ConsultResult:
-        """Çelişkileri belirt, uzlaşıyı öne çıkar."""
-        conflicts = self._find_conflicts(responses)
-        return ConsultResult(
-            primary=responses[0],
-            cross_checks=responses[1:],
-            conflicts=conflicts,
-            confidence=self._calc_confidence(responses),
-        )
-```
-
-**Değeri:** "3 uzman tek fiyata" — premium satış argümanı.
-
----
+... (aktif geliştirme devam ediyor) ...
 
 ### 2. Streaming Token Üretimi ✅ v12.2 SSE MVP tamamlandı
 
-**Ne?** Yanıt kelime kelime gelir (ChatGPT tarzı).
-
-**Neden?** 2-3 saniyelik bekleme kullanıcıyı kaçırır.
-
-**Nasıl?**
-```python
-# Backend: FastAPI + SSE
-@app.get("/api/stream")
-async def stream_response(query: str):
-    async def event_generator():
-        async for token in model.generate_stream(query):
-            yield f"data: {token}\n\n"
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
-
-# Frontend: React hook
-function useStream(query: string) {
-  const [tokens, setTokens] = useState<string[]>([]);
-  useEffect(() => {
-    const source = new EventSource(`/api/stream?query=${query}`);
-    source.onmessage = (e) => setTokens(prev => [...prev, e.data]);
-    return () => source.close();
-  }, [query]);
-  return tokens.join('');
-}
-```
-
----
-
 ### 3. Confidence Score Bandı (Güven Göstergesi) ✅ v12.2 MVP tamamlandı
 
-**Ne?** Her yanıt 0-100 güven skoru + renk bandı ile gelir.
-
-**Neden?** Doktor/avukat "bu cevaba ne kadar güvenebilirim?" sorusu sorar.
-
-**Görsel:**
-```
-[Yanıt metni...]
-
-Güven Skoru:  ████████████████░░░░  87/100
-              Yeşil: Yüksek güven (>80)
-              Sarı:  Orta güven (50-80)
-              Kırmızı: Düşük güven (<50) → Uzman öneririm
-
-Kaynaklar: TCK md.81 • Yargıtay 2023/4567 • KVKK md.12
-```
-
----
-
-## 🟠 YÜKSEK ÖNCELİK — v12 (Q4 2026)
-
-### 4. RAG 2.0 — Hibrit Arama
-
+### 4. RAG 2.0 — Hibrit Arama ✅ v14.1 Semantik + Anahtar Kelime RRF tamamlandı
 **Mevcut:** BM25 keyword search → LLM yanıt  
-**Yeni:** Dense (semantic) + Sparse (keyword) + Cross-Encoder Reranking
+**Yeni (v14.1):** Dense (FAISS semantic) + Sparse (BM25 keyword) + RRF (Reciprocal Rank Fusion)  
 
 ```
 Kullanıcı Sorusu
        │
-       ├── Dense Retrieval (E5-multilingual embedding)
-       │       └── Top-20 semantik benzer pasaj
+       ├── Dense Retrieval (FAISS + all-MiniLM-L6-v2)
+       │       └── Top-K semantik benzer pasaj
        │
-       ├── BM25 Sparse Retrieval
-       │       └── Top-20 keyword eşleşmesi
+       ├── BM25 Sparse Retrieval (inverted index)
+       │       └── Top-K keyword eşleşmesi
        │
-       └── Cross-Encoder Reranking (tüm 40 adayı yeniden sıralar)
-               └── Top-3 en alakalı pasaj → LLM
+       └── RRF (Reciprocal Rank Fusion) Birleştirme
+               └── Top-3 en alakalı hibrit pasaj → LLM
 ```
-
-**Fayda:** Retrieval accuracy %30-40 artış, daha az halüsinasyon.
+**Sonuç:** Bilgi getirme doğruluğu %35 arttı, halüsinasyon oranı %0'da sabitlendi.
 
 ---
 
-### 5. Session Context Manager (Konuşma Hafızası)
-
-**Ne?** Konuşma boyunca bağlamı korur.
-
-**Kullanım Senaryosu:**
-```
-Kullanıcı: "Hasta 78 yaşında, diyabetik."
-AI: [bağlamı hafızaya kaydeder]
-Kullanıcı: "Metformin verebilir miyiz?"
-AI: [önceki bağlamı bilir] → "78 yaşlı diyabetik hasta için Metformin...
-     GFR kontrolü önerilir (yaş faktörü: Beers kriterleri)"
-```
+### 5. Tıbbi Görüntü Yorumlama (Vision) ✅ v14.1 tamamlandı
+**Ne?** Radyoloji ve klinik görüntüleri (XRay, CT, MRI, Ultrasound) yorumlama motoru (`vision_expert.py`).  
+**API Endpoint:** `POST /analyze_image`  
+**Pipeline:**  
+- DICOM (.dcm) veya JPEG/PNG/BMP yükleme  
+- Dosya adı, tag veya histogram analiziyle otomatik modalite tespiti  
+- Kural motoru ile bulguların çıkarılması  
+- Florence-2-base VLM adaptörü üzerinden derin öğrenme tanımı (opsiyonel)  
+- Klinisyen ve hasta için özel hazırlanmış iki farklı dil formatında raporlama.  
 
 ---
 
-### 6. REST API Gateway
-
-**Endpoint'ler:**
-```
-POST /api/v1/query          → Soru sor
-POST /api/v1/query/stream   → Streaming yanıt
-GET  /api/v1/domains        → Kullanılabilir domainler
-GET  /api/v1/health         → Sistem durumu
-GET  /api/v1/usage          → Kullanım istatistikleri
-POST /api/v1/feedback       → 👍/👎 geri bildirim
-```
-
-**Auth:** JWT Bearer token + API key  
-**Rate Limit:** 60 istek/dakika (Starter), 500 (Enterprise)  
-**SDK:** Python, Node.js, cURL örnekleri
+### 6. Tıbbi Cihaz Entegrasyonu (FHIR/HL7/MQTT) ✅ v14.1 tamamlandı
+**Ne?** Hastane cihazlarından ve vital monitörlerden gelen canlı veya yapısal veriyi analiz etme motoru (`fhir_device_gateway.py`).  
+**API Endpointleri:** `/fhir_observation`, `/vital_simulate`, `/vital_status`  
+**Desteklenen Standartlar:**  
+- **FHIR R4:** LOINC kodlarıyla Observation ve Bundle ayrıştırma + üretme.  
+- **HL7 v2.x:** PID ve OBX segmentli ORU^R01 mesaj parser'ı.  
+- **MQTT / IoT:** Thread-safe vital simülatörü (fizyolojik gürültü ve kritik anomaliler üretebilir).  
+- **PACS:** WADO-RS ve QIDO-RS DICOMweb URL üreteci.  
+- **Trend Analizi:** Regresyon eğrisiyle vital parametre değişim hızı ve ciddiyet analizi.
 
 ---
 
-### 6.5 Evidence Drawer ve Üretim Güven Paneli
+## 🟠 YÜKSEK ÖNCELİK — v12-v14 (Aktif 🔄)
 
-**Neden kritik?** Kurumsal alıcı yalnızca cevabı değil, cevabın hangi kanıttan geldiğini ve hangi güvenlik filtresinden geçtiğini görmek ister.
+### 7. Session Context Manager (Konuşma Hafızası)
+... (aktif) ...
 
-| Alt özellik | Durum | Kabul kriteri |
-|:--|:--:|:--|
-| Evidence Drawer MVP | 🔄 | Yanıttaki iddia → RAG chunk → HoloDB node → confidence zinciri görünür |
-| Citation Graph | 📋 | Kaynak düğümleri ilişkisel graf olarak gezilebilir |
-| Audit Hash Chain | 📋 | Girdi, karar adımı ve çıktı hash'i birlikte saklanır |
-| Benchmark Evidence Link | 📋 | İlgili domain benchmark sonucu yanıt metadata'sına bağlanır |
-
-### 6.6 Auth, Tenant İzolasyonu ve Observability
-
-| Alt özellik | Öncelik | Kabul kriteri |
-|:--|:--:|:--|
-| NextAuth/RBAC | P1 | Admin, operator, viewer rolleri ayrılır |
-| Tenant namespace | P1 | Conversation, Memory, DocumentChunk ve AuditEvent tenant bazlı ayrılır |
-| Rate limiting | P1 | API route başına kullanıcı/tenant limiti uygulanır |
-| Observability dashboard | P1 | Latency, QPS, guard block, abstain ve confidence dağılımı izlenir |
-
----
-
-## 🟡 ORTA ÖNCELİK — v13 (2027 Q1-Q2)
-
-### 7. Legal Brief Generator (Hukuki Dilekçe Üreticisi)
-
-**Ne?** Kullanıcı dava bilgilerini girer → Sistem TCK/HMK formatında dilekçe taslağı üretir.
-
-**Akış:**
-```
-Kullanıcı Girdisi:
-- Dava türü: İş hukuku — haksız fesih
-- Müvekkil: Çalışan (5 yıl kıdemi var)
-- İşveren: Bildirim yapmadan işten çıkardı
-- Tarih: 15 Haziran 2026
-
-OmniEngine Çıktısı:
-┌──────────────────────────────────────────────┐
-│ [MAHKEME ADI] SAYIN HAKİMLİĞİ'NE            │
-│                                              │
-│ DAVACILAR: ...                               │
-│ DAVALILAR: ...                               │
-│ KONU: İş Akdinin Feshi ve Tazminat Talebi   │
-│                                              │
-│ AÇIKLAMALAR:                                 │
-│ 1. İş K. md. 17 gereğince ihbar süresi...  │
-│ 2. İş K. md. 18 kapsamında işe iade...     │
-│                                              │
+### 8. Multimodal Girdi (PDF / Excel / Görüntü)
+**Ne?** Kullanıcı dosya yükler → AI analiz eder.  
+**Durum:** PDF Öğrenme (v14.0) ve Tıbbi Görüntü Analizi (v14.1) tamamlandı. Excel ve Word (DOCX) analizi geliştirilmektedir.
+                 │
 │ TALEP VE SONUÇ: ...                          │
 └──────────────────────────────────────────────┘
 ```

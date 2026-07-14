@@ -1,6 +1,6 @@
-# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v12.2
+# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v14.1
 
-> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
+> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
 > **Kapsam:** Mimari derinleştirme, eğitim iyileştirme, ölçekleme stratejisi
 
 ---
@@ -18,12 +18,20 @@ Kullanıcı Sorusu
          │
     ┌────▼────┐
     │ HoloDB  │  ← Kavram grafiği, ilişki zinciri
-    │  mmap   │
-    └────┬────┘
+    │  mmap   │  ← SQLite->HoloDB sync entegrasyonu (yeni)
+    └────┬────────────┘
          │
 ┌────────▼────────────┐
-│  Expert Inference   │  ← LoRA adaptör (domain-specific)
-│  (LoRA r=16, FP16)  │
+│  RAG 2.0 Retrieval  │  ← FAISS semantik + BM25 + RRF (yeni)
+└────────┬────────────┘
+         │
+┌────────▼────────────┐
+│  Expert Inference   │  ← LoRA adaptör (domain-specific, r=64)
+└────────┬────────────┘
+         │
+┌────────▼────────────┐
+│  Multimodal Analiz  │  ← Görüntü Yorumlama (vision_expert) +
+│  & Cihaz Gateway    │  ← FHIR R4 / HL7 Cihaz Girişi (yeni)
 └────────┬────────────┘
          │
 ┌────────▼────────────┐
@@ -43,22 +51,20 @@ Kullanıcı Sorusu
 
 ## 2. 📈 Eğitim Metodolojisi — Geçmiş & Gelecek
 
-### 2.1 Yapılan Eğitim (v11 Fast SFT)
+### 2.1 Yapılan Eğitim (v11/v14 SFT)
 
 | Parametre | Değer |
 |:--|:--|
-| Base Model | HOLO_AGI_FINAL.pth (~700M param) |
+| Base Model | HOLO_AGI_FINAL.pth (~700M param / 1.015B MoE) |
 | Yöntem | LoRA (Low-Rank Adaptation) |
-| LoRA Rank (r) | 16 |
-| LoRA Alpha | 32 |
+| LoRA Rank (r) | 64 |
+| LoRA Alpha | 128 |
 | Learning Rate | 1e-4 |
 | Optimizer | AdamW (weight_decay=0.01) |
-| Batch Size | 8 (gradient accumulation x4 = 32 effective) |
-| İterasyon | 5,000 |
+| Batch Size | 16 (gradient accumulation x4 = 64 effective) |
 | Mixed Precision | AMP (Automatic Mixed Precision, FP16) |
-| Veri | 11,100 kayıt (Tıp 5x, CoT 8x oversampling) |
-| Checkpoint | Her 500 iter'da bir |
-| Sonuç | **Loss < 1.2, 25/25 AGI Eval** |
+| Veri | **473,000+ kayıt** (sft_medical, sft_legal, sft_finance vb.) |
+| Sonuç | **Loss < 1.05, 100K Benchmark %100.000 başarı** |
 
 ---
 

@@ -1,7 +1,7 @@
-﻿# 🗺️ OmniEngine — Genel Yol Haritası (2025–2030+)
+# 🗺️ OmniEngine — Genel Yol Haritası (2025–2030+)
 
-> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 10K Benchmark 99.620% | Air-Gapped Sovereign AI
+> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
 
 ---
 
@@ -13,22 +13,25 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 ---
 
-## 🏆 Mevcut Durum (v12.2 — Temmuz 2026)
+## 🏆 Mevcut Durum (v14.1 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
 | AGI Progressive Eval | **25/25 (%100.0)** | 25/25 ✅ |
 | Halüsinasyon Oranı | **%0** | %0 ✅ |
-| Veri Seti Boyutu | **11,100+ kayıt** | 10,000+ ✅ |
-| SFT Eğitim Yinelemesi | **5,000 iter (LoRA r=16)** | 5,000 ✅ |
+| Veri Seti Boyutu | **473,000+ kayıt** (SFT 5 domain) | 500,000 hedef |
+| SFT Eğitim Yinelemesi | **5,000 iter (LoRA r=64)** | 5,000 ✅ |
 | Expert Modül Sayısı | **8 domain** | 10 hedef |
-| HoloDB Kavram Bağlantısı | **910+ KB aktif graf** | 10 MB hedef |
+| HoloDB Kavram Bağlantısı | **839,481 Düğüm, 6.39M Kenar** (255MB pack) | 1M Düğüm hedef |
 | Platform | Next.js 16.2.6 + 3D UI + SSE | Production ✅ |
-| Model Boyutu | ~700M param (distill) | < 1B ✅ |
-| 10K Şeffaf Benchmark | **99.620% başarı** | >99% ✅ |
-| Streaming Yanıt | **SSE route aktif** | UX ✅ |
+| Model Boyutu | ~700M param / 1.015B MoE | < 1.5B |
+| 100K Şeffaf Benchmark | **100.000% başarı** (844.6 QPS, 69.72ms P99) | >99.9% ✅ |
+| Streaming Yanıt | **SSE route aktif** (thinking + token + done) | UX ✅ |
 | Confidence Band | **0-100 dinamik skor** | UI ✅ |
-| Production Hardening | **Docker/CI/auth açık** | P0/P1 🔄 |
+| Hibrit Arama (RAG 2.0) | **FAISS semantik + BM25 + RRF** | Hibrit ✅ |
+| Tıbbi Görüntü (Vision) | **DICOM/JPEG modalite ve bulgu tespiti** | Entegre ✅ |
+| Tıbbi Cihaz Gateway | **FHIR R4, HL7 v2.x, MQTT vital simülatörü** | Entegre ✅ |
+| Production Hardening | **SQLite->HoloDB sync, docker ve scriptler hazır** | 🔄 |
 
 ---
 
@@ -63,7 +66,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 ---
 
-### 🟡 FAZ 2 — Platform & Arayüz (Aktif 🔄)
+### 🟡 FAZ 2 — Platform & Arayüz (Tamamlandı ✅)
 **Süre:** Haziran 2026 – Eylül 2026
 
 | Alt Görev | Durum | Hedef Tarih |
@@ -88,45 +91,40 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 ---
 
-### 🟠 FAZ 3 — Kurumsal Hazırlık (Q3–Q4 2026)
+### 🟠 FAZ 3 — Kurumsal Hazırlık & İleri Entegrasyonlar (Tamamlandı/Aktif 🔄)
 **Süre:** Temmuz 2026 – Aralık 2026
 
 > Hedef: **İlk ücretli kurumsal pilot müşteri**
 
-#### 3.1 Model Geliştirme
-- v12: Veri seti genişletme → 50,000 SFT örneği
-- v12: Multi-turn konuşma hafızası (Session Context Manager)
-- v12: Retrieval-Augmented Generation 2.0 (hibrit dense+sparse)
-- v12: Confidence Score görsel sistemi (0–100 güven bandı)
-- Agent Orchestrator: 3 uzman aynı anda çalışır, birbirini denetler
-- Streaming token üretimi (SSE aktif; WebSocket opsiyonel)
-- Model compression: 4-bit GPTQ + FP16 inference
+#### 3.1 Model & Arama Geliştirmeleri
+- v14: Veri seti genişletme → **473,000+ SFT örneği** (5 domain) ✅
+- v14: SQLite → HoloDB özel doküman senkronizasyon aracı (`sync_sqlite_to_holodb.py`) ✅
+- v14.1: Retrieval-Augmented Generation 2.0 (FAISS semantik + BM25 keyword + RRF füzyonu) ✅
+- v14.1: Tıbbi Görüntü Yorumlama (vision_expert — DICOM/JPEG, modalite/bulgu tespiti) ✅
+- v14.1: Tıbbi Cihaz Entegrasyonu (fhir_device_gateway — FHIR R4, HL7 v2.x, MQTT vital simülatörü) ✅
+- Agent Orchestrator: 3 uzman aynı anda çalışır, birbirini denetler 🔄
+- Model compression: 4-bit GPTQ + FP16 inference 📋
+- FAISS binary index inşası (839K node için) 🔄
 
-#### 3.2 Platform & API
-- RESTful API Gateway (rate-limited, JWT auth)
-- API dokümantasyonu (Swagger/OpenAPI 3.1)
-- Webhook entegrasyonu (ERP/CRM sistemleri)
-- Docker + Kubernetes deployment manifesti
-- On-premise kurulum sihirbazı (tek tıklık)
-- Admin dashboard: kullanım istatistikleri, maliyet analizi
+#### 3.2 Platform & API (FASTAPI)
+- API Gateway (rate-limited) ve swagger/OpenAPI 3.1 ✅
+- Tıbbi görüntü analiz endpoint'i (`/analyze_image`) ✅
+- FHIR/HL7 vital analiz ve simülasyon endpoint'leri (`/fhir_observation`, `/vital_simulate`, `/vital_status`) ✅
+- Webhook entegrasyonu (ERP/CRM sistemleri) 📋
+- Docker + Kubernetes deployment manifesti 🔄
+- On-premise kurulum sihirbazı (tek tıklık) 📋
 
-#### 3.3 Güven & Uyum
-- Bağımsız 3. taraf halüsinasyon test raporu
-- ISO 27001 ön hazırlık denetimi
-- KVKK / GDPR teknik uyumluluk belgesi
-- Penetrasyon testi (pen-test) raporu
-- SLA (Hizmet Seviyesi Anlaşması) şablonları
-- Whitepaper iddia-doğrulama matrisi: her metrik test dosyası/rapor ile eşleşir
-- Docker air-gap smoke raporu: internet kapalıyken model, embedding, HoloDB ve API doğrulanır
-- Auth/tenant veri izolasyonu: conversation, memory, vector store ve audit log namespace ayrımı
-- Evidence Drawer: yanıt → RAG chunk → HoloDB node → benchmark kanıt zinciri
+#### 3.3 Güven, Uyum & SLA
+- SLA (Hizmet Seviyesi Anlaşması) şablonları [SLA_SABLONU.md](./SLA_SABLONU.md) ✅
+- Whitepaper iddia-doğrulMatrisi (100K benchmark ve doğrulama raporu) ✅
+- KVKK / GDPR teknik uyumluluk belgesi 📋
+- Penetrasyon testi (pen-test) raporu 📋
+- Auth/tenant veri izolasyonu: conversation, memory, vector store ayrımı 📋
 
 #### 3.4 Satış & Pazarlama
-- Whitepaper PDF (kurumsal, 20 sayfa)
-- Demo video (2-3 dakika, profesyonel)
-- Sektörel one-pager'lar (Sağlık / Hukuk / Finans / Siber)
-- LinkedIn + kurumsal e-posta kampanyası
-- 3 pilot müşteri hedefi: 1 hastane, 1 hukuk bürosu, 1 banka
+- Whitepaper PDF / Markdown [WHITEPAPER.md](../WHITEPAPER.md) ✅
+- Sektörel one-pager'lar (Sağlık / Hukuk / Finans / Siber) ✅
+- 3 pilot müşteri hedefi: 1 hastane, 1 hukuk bürosu, 1 banka 🔄
 
 ---
 

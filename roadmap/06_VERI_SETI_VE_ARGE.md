@@ -1,22 +1,23 @@
-# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v12.2
+# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v14.1
 
-> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
-> **Durum:** 11,100+ kayıt + 10K QA arşivi tamamlandı → 50,000 kayıt hedefi (v12 hardening)
+> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
+> **Durum:** 473,000+ SFT kaydı + HoloDB v5.0 (839K Düğüm) + 100K Benchmark tamamlandı
 
 ---
 
 ## 📈 Veri Seti Durumu
 
-| Dosya | v7 Başlangıç | v11.1 Mevcut | v12 Hedef | v13 Hedef |
-|:--|:--:|:--:|:--:|:--:|
-| `b2b_sft_dataset.jsonl` | 4 örnek | 5,000+ örnek | 20,000 örnek | 100,000 örnek |
-| `cot_dataset.json` | 10 örnek | 1,200+ örnek | 5,000 örnek | 20,000 örnek |
-| `holographic/` | Temel | 910 KB | 50 MB | 500 MB |
-| `data/vectors.json` | 910 KB | 5 MB | 100 MB | 1 GB |
-| `cognitive_memory.json` | 646 MB ham | Temizlendi | Structured | Graph DB |
-| SeedData | 2 txt dosya | 11,100 kayıt | 50,000 kayıt | 500,000 kayıt |
-| MITRE ATT&CK | ❌ | 858 kayıt | 2,000 kayıt | 5,000 kayıt |
-| `data/benchmark/10k_qa_archive/` | ❌ | 10,000 QA | 100,000 QA | 1M QA |
+| Bileşen | v11.1 Başlangıç | v14.1 Mevcut (v14 Hardening) | Uzun Vadeli Hedef (v15+) |
+|:--|:--:|:--:|:--:|
+| **SFT Veri Seti (Toplam)** | 11,100 kayıt | **473,000+ kayıt** (5 Domain SFT) | 1,000,000 kayıt |
+| -- *SFT Medical* | 1,620 kayıt | **100,000+ kayıt** (sft_medical_100k) | 250,000 kayıt |
+| -- *SFT Legal* | 770 kayıt | **100,000+ kayıt** (sft_legal_100k) | 250,000 kayıt |
+| -- *SFT Finance* | 360 kayıt | **100,000+ kayıt** (sft_finance_100k) | 200,000 kayıt |
+| -- *SFT Cyber* | 858 kayıt | **67,000+ kayıt** (sft_cyber_100k) | 150,000 kayıt |
+| -- *SFT General/CoT* | 7,500 kayıt | **111,000+ kayıt** (sft_general_100k) | 250,000 kayıt |
+| **HoloDB Bilgi Grafı** | 910 KB (statik) | **839,481 Düğüm / 6.39M Kenar** (255MB mmap) | 2,000,000 Düğüm |
+| **RAG Vektör Veri Tabanı** | 5 MB (vectors.json) | **1.45 GB** (sync_sqlite_to_holodb ile güncel) | 5 GB |
+| **Doğrulama Benchmark Arşivi**| 10,000 QA | **100,000 QA** (100K benchmark test raporu) | 1,000,000 QA |
 
 ---
 

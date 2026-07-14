@@ -1,8 +1,9 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v14.0
+# 🧠 OmniEngine Cognitive Core — v14.1
 
 **Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · PDF Öğrenme**  
+**Hibrit FAISS+RRF Retrieval · Tıbbi Görüntü Yorumlama · FHIR/HL7 Cihaz Entegrasyonu**  
 **Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · NVD CVE + MITRE ATT&CK · 3D Holographic UI**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
@@ -11,12 +12,13 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v14.0-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v14.1-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
 [![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_839K%2B_Düğüm-8B5CF6?style=flat-square)](./)
-[![PDF](https://img.shields.io/badge/PDF_Öğrenme-Aktif-06b6d4?style=flat-square)](./)
+[![FHIR](https://img.shields.io/badge/FHIR-R4_HL7-0f766e?style=flat-square)](./)
+[![Vision](https://img.shields.io/badge/Vision-XRay%2FCT%2FMRI-e11d48?style=flat-square)](./)
 [![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_III-Compliant-0f766e?style=flat-square)](./)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
@@ -29,26 +31,26 @@
 
 ---
 
-## Güncel Gelişim Durumu — v14.0 (7 Temmuz 2026)
+## Güncel Gelişim Durumu — v14.1 (15 Temmuz 2026)
 
-OmniEngine v14.0 ile sistem **500K gerçek dünya SFT veri seti**, **HoloDB v5.0 (839K+ düğüm)**, **PDF'den öğrenme** ve **NVD CVE + MITRE ATT&CK + CISA KEV siber zeka entegrasyonu** ile kurumsal AI altyapısının yeni zirvesine ulaştı.
+OmniEngine **v14.1** ile sistem hibrit semantik arama, tıbbi görüntü yorumlama ve FHIR/HL7 tıbbi cihaz entegrasyon katmanlarıyla yeni bir çığır açtı. v14.0'ın %100.000 benchmark başarısı ve 839K+ düğümlü HoloDB temeli üzerine üç kritik ileri katman inşa edildi.
 
 | Alan | Güncel durum |
 |:--|:--|
 | Platform | Next.js 16.2.6 + Turbopack build doğrulandı; 33 sayfa statik üretildi |
-| RAG + PDF Öğrenme | `/learn_pdf` API; PyMuPDF→pdfplumber→pypdf fallback; HoloDB enjeksiyon; SFT kayıt |
+| **Hibrit Retrieval (YENİ)** | `retriever.py` BM25 + FAISS IVFFlat + RRF füzyon; FAISS yoksa keyword-only |
+| **Tıbbi Görüntü (YENİ)** | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
+| **FHIR/HL7 Gateway (YENİ)** | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
+| RAG + PDF Öğrenme | `/learn_pdf` API; PyMuPDF→pdfplumber→pypdf fallback; HoloDB enjeksiyon |
+| SQLite → HoloDB Sync | `sync_sqlite_to_holodb.py` — SQLite DocumentChunk → HoloDB 839.481 düğüm |
+| Klinik Karar Desteği | Composer dual-mode: hasta modu / doktor modu (Bayesian DDx, ADA 2024, ESC 2023) |
 | SFT Medical 100K | HoloDB'den 216K gerçek düğüm → `sft_medical_100k.jsonl` ✅ |
 | SFT Legal 100K | HoloDB'den 276K gerçek düğüm → `sft_legal_100k.jsonl` ✅ |
-| SFT Finance 100K | Finance-Alpaca (HuggingFace 62K) + SPK/BDDK → `sft_finance_100k.jsonl` ✅ |
-| SFT Cyber 67K | NVD CVE 62K + MITRE ATT&CK 2K + CISA KEV 1.6K → `sft_cyber_100k.jsonl` ✅ |
-| SFT General 111K | cot_50k + holo_cot_50k + holo_general → `sft_general_100k.jsonl` ✅ |
-| HoloDB v5.0 | 839,480 düğüm, 6.39M kenar, 24,209,954 mmap binary indeksi |
-| Streaming | `/api/chat/stream` SSE; thinking step + token + done event |
-| Güven Skoru | `solve_score` tabanlı 0-100 confidence bandı |
+| HoloDB v5.0 | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
 | 100K Benchmark | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
 | Güvenlik | 1,135 adversarial guard block; %100 bloklama |
 
-**Açık üretim borçları:** FAISS semantik vektör index, Docker air-gap smoke test, CI/CD, auth/tenant izolasyonu ve bağımsız 3. taraf denetim.
+**Açık üretim borçları:** FAISS binary indeks oluşturma (839K node, ~2-4h CPU), SFT/DPO eğitimi, Docker air-gap smoke test, CI/CD.
 
 ## 📑 İçindekiler
 
@@ -1272,10 +1274,13 @@ OmniGPT/
 | **CSL (Thinking Layer)** | 🟢 Aktif | 6 aşamalı düşünce görselleştirme |
 | **Air-Gap Modu** | 🟢 Aktif | Sıfır dış bağlantı · tam yerel egemenlik |
 | **Progressive AGI Eval** | **🏆 25/25** | **%100.0 — 8 domain, tüm testler PASS** |
+| **Hibrit FAISS+RRF Retriever** | 🟢 Aktif | BM25 + FAISS IVFFlat + Reciprocal Rank Fusion |
+| **Tıbbi Görüntü Yorumlama** | 🟢 Aktif | DICOM/JPEG/PNG, XRay/CT/MRI/US tespiti, 57ms |
+| **FHIR/HL7 Cihaz Gateway** | 🟢 Aktif | FHIR R4, HL7 v2.x, MQTT simülatör, PACS URL |
 | **Veri Seti** | 🟢 Hazır | 11,100 kayıt · Tıp + Hukuk + Finans + Siber |
 | **Landing + Blog Platform** | 🟢 Aktif | Premium glassmorphism · SEO hazır |
 | **10K Şeffaf Benchmark** | 🟢 Tamamlandı | 99.620% başarı · 18.9 QPS · P95 758.2 ms |
-| **Production Borçları** | 🟡 Açık | Docker smoke · CI/CD · auth/tenant · Evidence Drawer |
+| **Production Borçları** | 🟡 Açık | FAISS build · SFT/DPO · Docker smoke · CI/CD |
 
 ---
 
@@ -1287,7 +1292,8 @@ OmniGPT/
 | ✅ 2025 Q3-Q4 | Veri seti 11K kayıt, LoRA SFT eğitimi | Tamamlandı |
 | ✅ 2026 Q1-Q2 | AGI Eval 25/25, 3D UI, Thinking Panel | Tamamlandı |
 | ✅ 2026 Q3 | HoloDB v5.0, 500K SFT, 1.015B MoE, 100K benchmark %100 | Tamamlandı |
-| 🔄 2026 Q4 | FAISS semantik index, CI/CD, Docker air-gap smoke test | Aktif |
+| ✅ 2026 Q3 | Hibrit FAISS+RRF retriever, vision_expert, FHIR gateway | Tamamlandı |
+| 🔄 2026 Q4 | FAISS binary index (839K), SFT/DPO eğitimi, Docker air-gap, CI/CD | Aktif |
 | 📋 2027 Q1 | Auth/tenant izolasyonu, bağımsız 3. taraf denetim | Planlandı |
 | 📋 2027 Q2+ | Pilot kurumsal müşteri, üretim SLA | Planlandı |
 
@@ -1296,7 +1302,7 @@ OmniGPT/
 ---
 
 *Non-Commercial Academic & Enterprise Evaluation License*  
-*OmniEngine Cognitive Core v14.0 — "The best intelligence is the one you fully control."*  
-*Son güncelleme: 7 Temmuz 2026*
+*OmniEngine Cognitive Core v14.1 — "The best intelligence is the one you fully control."*  
+*Son güncelleme: 15 Temmuz 2026*
 
 </div>

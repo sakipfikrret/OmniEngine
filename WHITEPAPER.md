@@ -1,38 +1,35 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v14.0
+# OmniEngine Cognitive Core — Technical Whitepaper v14.1
 
-**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
+**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
 
 ---
 
 ## Yönetici Özeti
 
-OmniEngine v14.0, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v14.1, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
 Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v14.0'ın temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **PDF'den öğrenme özelliği**, **NVD CVE + MITRE ATT&CK + CISA KEV entegrasyonu** ile kurumsal sınıf bilgi tabanına yükseltilmiş şekilde sunmak. v11.1–v13.0 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
+**v14.1'ın temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)**, **FHIR R4 / HL7 v2.x Tıbbi Cihaz Entegrasyonu** ve **PDF'den öğrenme** özellikleriyle kurumsal sınıf bilgi tabana yükseltilmiş şekilde sunmak. v11.1–v14.1 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
 
-### v14.0 Doğrulama Özeti
+### v14.1 Doğrulama Özeti
 
 | Katman | Durum | Kanıt / çıktı |
 |:--|:--|:--|
 | Production build | Geçti | Next.js 16.2.6, Turbopack, 33 statik sayfa |
 | RAG Upload + PDF | Geçti | `/learn_pdf` endpoint, PyMuPDF→pdfplumber→pypdf fallback |
+| SQLite → HoloDB Sync | Geçti | `sync_sqlite_to_holodb.py`, 839.481 düğüm derlendi |
+| **Hibrit FAISS+RRF Retrieval** | **Geçti** | `retriever.py` BM25+FAISS IVFFlat+RRF; graceful degradation |
+| **Tıbbi Görüntü Yorumlama** | **Geçti** | `vision_expert.py`; XRay/CT/MRI/US; 57ms; `/analyze_image` |
+| **FHIR R4 Gateway** | **Geçti** | FHIR Observation, LOINC kodlama, risk sınıflandırma |
+| **HL7 v2.x Parser** | **Geçti** | ORU^R01 segment ayrıştırma, OBX→LOINC eşleştirme |
+| **MQTT Vital Simülatörü** | **Geçti** | Thread-safe, kritik uyarı, SpO2/HR/BP/Temp/RR |
+| **Klinik Dual-Mode Composer** | **Geçti** | Hasta modu vs doktor modu (Bayesian DDx, ADA 2024) |
 | Streaming | Geçti | `/api/chat/stream` SSE: thinking step, token, done |
-| Confidence score | Geçti | `solve_score` tabanlı 0-100 band, UI renk etiketi |
 | 100K benchmark | Geçti | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
 | Güvenlik blokları | Geçti | 1,135 adversarial sorgu başarıyla bloklandı (Guard) |
-| SFT Medical 100K | Geçti | HoloDB 216K gerçek düğüm → `sft_medical_100k.jsonl` |
-| SFT Legal 100K | Geçti | HoloDB 276K gerçek düğüm → `sft_legal_100k.jsonl` |
-| SFT Finance 100K | Geçti | Finance-Alpaca (HF) + SPK/BDDK → `sft_finance_100k.jsonl` |
-| SFT Cyber 67K | Geçti | NVD CVE 62K + MITRE 2K + CISA 1.6K → `sft_cyber_100k.jsonl` |
-| SFT General 111K | Geçti | cot_50k + holo_cot_50k + holo_general → `sft_general_100k.jsonl` |
-| HoloDB v5.0 | Geçti | 839,480 düğüm, 6.39M kenar, 24,209,954 mmap binary indeksi |
-| PDF Öğrenme | Geçti | `/learn_pdf` FastAPI, HoloDB enjeksiyon, SFT kayıt |
-| Açık borç | Aktif | FAISS vektör index, CI/CD, bağımsız denetim |
-
-
-
+| HoloDB v5.0 | Geçti | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
+| Açık borç | Aktif | FAISS binary build (839K), SFT/DPO eğitimi, Docker, CI/CD |
 
 ## İçindekiler
 
@@ -54,6 +51,7 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 16. [Sonuç](#16-sonuç)
 17. [Eğitim Metodolojisi](#17-egitim-metodolojisi--detayli-teknik-plan)
 18. [Platform Mimarisi](#18-platform-mimarisi--v140-web)
+19. [v14.1 İleri Entegrasyonlar: Hibrit Retrieval, Vision, FHIR](#19-v141-ileri-entegrasyonlar)
 
 ---
 
@@ -1237,6 +1235,102 @@ Amac: Kullanicinin sadece yaniti degil, yanitin guven seviyesini ve olusum surec
 
 ---
 
-*OmniEngine Cognitive Core v14.0 -- Technical Whitepaper*
-*Son guncelleme: 7 Temmuz 2026 | Non-Commercial Academic & Enterprise Evaluation License*
+*OmniEngine Cognitive Core v14.1 -- Technical Whitepaper*
+*Son guncelleme: 15 Temmuz 2026 | Non-Commercial Academic & Enterprise Evaluation License*
 *"The sovereign AI future is local, transparent, and verifiable."*
+
+---
+
+## 19. v14.1 Ileri Entegrasyonlar
+
+### 19.1 Hibrit FAISS + RRF Semantik Retrieval
+
+v14.0'da yalnizca BM25-style keyword aramasiyla çalişan `retriever.py`, v14.1 ile üç katmanli hibrit arama motoruna dönüştürüldü:
+
+```
+Katman 1 (BM25):    vectors.json + omni_knowledge.index.json
+                    Token overlap x TF-IDF skoru
+Katman 2 (FAISS):   all-MiniLM-L6-v2 (384 boyut)
+                    IVFFlat indeks (nlist=256, nprobe=32)
+                    Normalize cosine benzerlik
+Fuzyon (RRF):       score = sum(weight / (k=60 + rank))
+                    Cormack et al. 2009 -- SIGIR
+```
+
+**Graceful Degradation:** FAISS indeksi (`data/holographic_db/faiss/`) yoksa sistem keyword-only moda otomatik geri döner. Geri uyumluluk tam korunur.
+
+**FAISS Indeks İnşasi:** 839K+ node için yaklasik 2-4 saatlik CPU embedding sureci:
+```bash
+python src/python/tools/faiss_semantic_index.py --build
+```
+
+### 19.2 Tibbi Goruntu Yorumlama (Medical Image Interpretation)
+
+Yeni `vision_expert.py` modulu, klinik goruntu analiz boru hattini gerceklestirir:
+
+```
+Goruntu (DICOM/JPEG/PNG/BMP)
+         |
+         v
+[Metadata Extraction]  -- Boyut, parlaklik, kontrast, dark_ratio
+         |
+         v
+[Modalite Tespiti]     -- XRay / CT / MRI / Ultrasound
+         |              DICOM tag > dosya adi > goruntu metrik
+         v
+[Kural Motoru]         -- Modalite x histogram -> klinik bulgu
+         |
+         v (opsiyonel: OMNI_VLM_ENABLED=1)
+[Florence-2 VLM]       -- AutoModelForCausalLM caption
+         |
+         v
+[Klinik Rapor]         -- findings, impression, recommendations
+                          clinician markdown | patient summary
+```
+
+**API Endpoint:** `POST /analyze_image`
+- `file`: multipart goruntu
+- `clinical_hint`: Klinisyen notu
+- `patient_age`, `patient_sex`: Demografik bilgi
+- `mode`: `clinician` | `patient`
+
+**Dogrulama:** 57.6ms isle suresi, %80 AI guven skoru, XRay modalitesi dogru tespit.
+
+### 19.3 FHIR R4 / HL7 Tibbi Cihaz Entegrasyonu
+
+`fhir_device_gateway.py` modulu uc entegrasyon standardini destekler:
+
+**FHIR R4 Observation:**
+```json
+{
+  "resourceType": "Observation",
+  "status": "final",
+  "code": { "coding": [{ "system": "http://loinc.org",
+                          "code": "59408-5",
+                          "display": "Oxygen saturation by Pulse oximetry" }] },
+  "subject": { "reference": "Patient/P001" },
+  "valueQuantity": { "value": 84.0, "unit": "%" },
+  "interpretation": [{ "coding": [{ "code": "H", "display": "CRITICAL" }] }]
+}
+```
+
+**Risk Siniflandirma (dogrulandi):**
+```
+SpO2    = 84.0  -> CRITICAL  (esik: <90)
+HR      = 155   -> CRITICAL  (esik: >150)
+SBP     = 188   -> CRITICAL  (esik: >180)
+Temp    = 36.8  -> NORMAL
+```
+
+**MQTT Vital Simulatoru:** Thread-safe arka plan akisi, SpO2/HR/BP/Temp/RR/GlucoseCapillary parametreleri, kritik olay enjeksiyonu destekli.
+
+**PACS/DICOM Web:** WADO-RS ve QIDO-RS URL uretici.
+
+**API Endpointleri:**
+| Endpoint | Metot | Aciklama |
+|:--|:--|:--|
+| `/fhir_observation` | POST | FHIR Observation/Bundle veya HL7 v2.x ayristir |
+| `/vital_simulate` | POST | start/stop/status/inject_critical |
+| `/vital_status` | GET | Tum aktif simulatorleri listele |
+
+---
