@@ -1,22 +1,24 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v14.1
+# OmniEngine Cognitive Core — Technical Whitepaper v14.2
 
-**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
+**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
 
 ---
 
 ## Yönetici Özeti
 
-OmniEngine v14.1, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v14.2, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
 Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v14.1'ın temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)**, **FHIR R4 / HL7 v2.x Tıbbi Cihaz Entegrasyonu** ve **PDF'den öğrenme** özellikleriyle kurumsal sınıf bilgi tabana yükseltilmiş şekilde sunmak. v11.1–v14.1 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
+**v14.2'nin temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)**, **FHIR R4 / HL7 v2.x Tıbbi Cihaz Entegrasyonu**, **Oturum Geçmişi Belleği (Session Memory)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktır. v11.1–v14.2 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
 
-### v14.1 Doğrulama Özeti
+### v14.2 Doğrulama Özeti
 
 | Katman | Durum | Kanıt / çıktı |
 |:--|:--|:--|
 | Production build | Geçti | Next.js 16.2.6, Turbopack, 33 statik sayfa |
+| **İddia Doğrulama Matrisi** | **Geçti** | `verify_claims.py` ile 16 kritik whitepaper iddiasının tamamı doğrulandı (16/16 PASS) |
+| **Oturum Belleği (Session Memory)** | **Geçti** | `session_memory.py` ile Prisma entegre son 5 mesaj çiftinin bağlam olarak Composer'a aktarımı |
 | RAG Upload + PDF | Geçti | `/learn_pdf` endpoint, PyMuPDF→pdfplumber→pypdf fallback |
 | SQLite → HoloDB Sync | Geçti | `sync_sqlite_to_holodb.py`, 839.481 düğüm derlendi |
 | **Hibrit FAISS+RRF Retrieval** | **Geçti** | `retriever.py` BM25+FAISS IVFFlat+RRF; graceful degradation |

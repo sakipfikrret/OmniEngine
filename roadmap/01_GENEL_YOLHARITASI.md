@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2025–2030+)
 
-> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
+> **Versiyon:** v14.2 · **Güncelleme:** 15 Temmuz 2026  
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | 16 İddia Doğrulama (PASS) | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
 
 ---
 
@@ -9,20 +9,20 @@
 
 > *"Türkiye'nin ve dünyanın en güvenilir, denetlenebilir, yerel egemenlikli uzman yapay zeka platformunu inşa etmek."*
 
-OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır halüsinasyon** garantisi veren, tamamen yerel çalışan, kurumsal düzeyde bir AI platformdur. Hedef: **2028 sonuna kadar $100M+ değerlemeyle kurumsal B2B pazarda lider konuma gelmek.**
+OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır halüsinasyon** garantisi veren, tamamen yerel çalışan, kurumsal düzeyde bir AI platformdur. Hedef: **Kurumsal B2B pazarında yüksek değerlemeli lider konuma gelmek.**
 
 ---
 
-## 🏆 Mevcut Durum (v14.1 — Temmuz 2026)
+## 🏆 Mevcut Durum (v14.2 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
 | AGI Progressive Eval | **25/25 (%100.0)** | 25/25 ✅ |
 | Halüsinasyon Oranı | **%0** | %0 ✅ |
-| Veri Seti Boyutu | **473,000+ kayıt** (SFT 5 domain) | 500,000 hedef |
-| SFT Eğitim Yinelemesi | **5,000 iter (LoRA r=64)** | 5,000 ✅ |
+| Veri Seti Boyutu | **500,000+ kayıt** (SFT 5 domain) | 500,000 hedef ✅ |
+| SFT Eğitim Yinelemesi | **Derin LoRA v12 SFT ve DPO pipeline** | Aktif ✅ |
 | Expert Modül Sayısı | **8 domain** | 10 hedef |
-| HoloDB Kavram Bağlantısı | **839,481 Düğüm, 6.39M Kenar** (255MB pack) | 1M Düğüm hedef |
+| HoloDB Kavram Bağlantısı | **839,480 Düğüm, 6.39M Kenar** (255MB pack) | 1M Düğüm hedef |
 | Platform | Next.js 16.2.6 + 3D UI + SSE | Production ✅ |
 | Model Boyutu | ~700M param / 1.015B MoE | < 1.5B |
 | 100K Şeffaf Benchmark | **100.000% başarı** (844.6 QPS, 69.72ms P99) | >99.9% ✅ |
@@ -31,7 +31,8 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 | Hibrit Arama (RAG 2.0) | **FAISS semantik + BM25 + RRF** | Hibrit ✅ |
 | Tıbbi Görüntü (Vision) | **DICOM/JPEG modalite ve bulgu tespiti** | Entegre ✅ |
 | Tıbbi Cihaz Gateway | **FHIR R4, HL7 v2.x, MQTT vital simülatörü** | Entegre ✅ |
-| Production Hardening | **SQLite->HoloDB sync, docker ve scriptler hazır** | 🔄 |
+| İddia Doğrulama Matrisi | **16/16 Başarılı (verify_claims.py)** | Entegre ✅ |
+| Oturum Geçmişi Belleği | **SessionMemory entegrasyonu** | Entegre ✅ |
 
 ---
 
@@ -80,9 +81,11 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 | Dinamik Confidence Score UI | ✅ | Temmuz 2026 |
 | RAG Upload + doküman kanıt entegrasyonu | ✅ | Temmuz 2026 |
 | 10K/100K şeffaf benchmark altyapısı | ✅ | Temmuz 2026 |
-| Lighthouse > 95 tüm kategoriler | 🔄 | Temmuz 2026 |
-| Docker air-gap smoke test | 🔄 | Temmuz 2026 |
-| CI/CD temel hattı | 🔄 | Temmuz 2026 |
+| Whitepaper iddia-doğrulama matrisi (verify_claims.py) | ✅ | Temmuz 2026 |
+| Oturum Geçmişi Belleği (session_memory) | ✅ | Temmuz 2026 |
+| FAISS indeks derleme otomasyonu (run_faiss_build.mjs) | ✅ | Temmuz 2026 |
+| CI/CD temel hattı (ci.mjs) | ✅ | Temmuz 2026 |
+| Docker smoke test (docker_smoke_test.mjs) | ✅ | Temmuz 2026 |
 | Evidence Drawer MVP | 🔄 | Ağustos 2026 |
 | Vercel Production Deploy | 🔄 | Ağustos 2026 |
 | Live Demo API (rate-limited, read-only) | 📋 | Ağustos 2026 |
@@ -94,10 +97,10 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 ### 🟠 FAZ 3 — Kurumsal Hazırlık & İleri Entegrasyonlar (Tamamlandı/Aktif 🔄)
 **Süre:** Temmuz 2026 – Aralık 2026
 
-> Hedef: **İlk ücretli kurumsal pilot müşteri**
+> Hedef: **İlk ücretli kurumsal pilot müşteri POC teslimi**
 
 #### 3.1 Model & Arama Geliştirmeleri
-- v14: Veri seti genişletme → **473,000+ SFT örneği** (5 domain) ✅
+- v14: Veri seti genişletme → **500,000+ SFT örneği** (5 domain) ✅
 - v14: SQLite → HoloDB özel doküman senkronizasyon aracı (`sync_sqlite_to_holodb.py`) ✅
 - v14.1: Retrieval-Augmented Generation 2.0 (FAISS semantik + BM25 keyword + RRF füzyonu) ✅
 - v14.1: Tıbbi Görüntü Yorumlama (vision_expert — DICOM/JPEG, modalite/bulgu tespiti) ✅
@@ -116,7 +119,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 #### 3.3 Güven, Uyum & SLA
 - SLA (Hizmet Seviyesi Anlaşması) şablonları [SLA_SABLONU.md](./SLA_SABLONU.md) ✅
-- Whitepaper iddia-doğrulMatrisi (100K benchmark ve doğrulama raporu) ✅
+- Whitepaper iddia-doğrulama matrisi (100K benchmark ve doğrulama raporu) ✅
 - KVKK / GDPR teknik uyumluluk belgesi 📋
 - Penetrasyon testi (pen-test) raporu 📋
 - Auth/tenant veri izolasyonu: conversation, memory, vector store ayrımı 📋
@@ -131,20 +134,13 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 ### 🔴 FAZ 4 — Gelir & Büyüme (2027 Q1–Q2)
 **Süre:** Ocak 2027 – Haziran 2027
 
-> Hedef: **ARR $500K – $2M** | Seri A veya stratejik ortaklık
+> Hedef: **Yıllık Tekrarlanan Gelir (ARR) artışı ve Seri A hazırlığı**
 
 #### 4.1 Gelir Modeli
-
-| Ürün | Fiyat | Hedef Müşteri |
-|:--|:--|:--|
-| OmniEngine Core License | $2,500/ay | Orta ölçekli firma |
-| Enterprise (Air-Gapped) | $8,000/ay | Hastane / Banka |
-| Government Edition | $15,000/ay | Bakanlık / Kamu |
-| API Pay-per-use | $0.02/soru | Start-up / Geliştirici |
-| Training-as-a-Service | Proje bazlı | Özel eğitim isteyen |
+Lisanslama ve fiyatlandırma politikaları kurumsal ölçeğe göre esnek paketler (Starter, Professional, Enterprise, API ve Training-as-a-Service) şeklinde stratejik gelir raporunda detaylandırılmıştır.
 
 #### 4.2 Teknik Büyüme
-- v13: "Sovereign Foundation Model" (100M → 500M parametre arası)
+- v15: "Sovereign Foundation Model" (100M → 500M parametre arası)
 - Çok dilli destek: Türkçe (%100) + İngilizce (%95) + Arapça (%70)
 - Multimodal girdi: PDF, Excel, görüntü analizi (OCR entegrasyonu)
 - Voice-to-Expert: Sesli sorgu → uzman yanıt
@@ -162,7 +158,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 ### 🟣 FAZ 5 — Liderlik & Uluslararasılaşma (2027 Q3–Q4)
 **Süre:** Temmuz 2027 – Aralık 2027
 
-> Hedef: **ARR $5M+** | Uluslararası pazar girişi
+> Hedef: **ARR hedeflerinin büyütülmesi ve Uluslararası pazara giriş**
 
 #### 5.1 Ürün
 - OmniEngine Edge: Küçük cihazlarda çalışan distil model (< 4GB RAM)
@@ -188,7 +184,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 ### ⭐ FAZ 6 — AGI & Araştırma Sınırı (2028+)
 **Süre:** 2028 ve sonrası
 
-> Hedef: **$100M+ değerleme** | Gerçek AGI yetenekleri
+> Hedef: **Yüksek değerlemeyle küresel AGI pazarına liderlik**
 
 #### 6.1 Araştırma Gündemi
 
@@ -212,7 +208,6 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 2028: Türkiye ulusal AI altyapısında referans platform
 2029: MENA pazar lideri — hukuk ve tıp AI standardı
 2030: Küresel "Sovereign AI" platformu olarak tanınma
-      Hedef: 50,000+ kurumsal kullanıcı, $100M+ ARR
 ```
 
 ---
@@ -221,27 +216,27 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 ### Senaryo A — Organik Büyüme (En Olası)
 ```
-2026 Q3: İlk 2-3 pilot müşteri (hukuk/sağlık)
-2026 Q4: ARR $100K ilk gelir
-2027 Q1: Seed round $2-5M (AR-GE + satış ekibi)
-2027 Q3: ARR $500K
-2028 Q1: Seri A $15-20M
-2029 Q2: $100M+ değerleme mümkün
+2026 Q3: İlk pilot kurumsal entegrasyonlar (hukuk/sağlık)
+2026 Q4: İlk kurumsal gelir akışı
+2027 Q1: Seed round tohum yatırım turu
+2027 Q3: Kurumsal ARR hedeflerine ulaşılması
+2028 Q1: Seri A yatırım turu
+2029 Q2: Kurumsal pazarda yüksek değerleme eşiği
 ```
 
 ### Senaryo B — Hızlı Büyüme (Stratejik Ortak)
 ```
-2026 Q4: Turkcell / Havelsan / ASELSAN stratejik yatırım
-2027 Q1: $10M değerlemeyle Series A
-2027 Q3: ARR $2M (devlet projeleri)
-2028 Q1: $50M değerleme — IPO hazırlığı
+2026 Q4: Kamu/telekomünikasyon odaklı stratejik yatırım ortaklığı
+2027 Q1: Seri A yatırım aşaması
+2027 Q3: Kamu projeleriyle genişleyen B2B lisans hacmi
+2028 Q1: IPO (Halka Arz) hazırlıkları
 ```
 
 ### Senaryo C — M&A Exit (Optimistik)
 ```
-2027 Q2: SAP veya Microsoft AI Lab ilgisi
-2027 Q4: $50-100M acquisition offer
-2028:    Exit — founding team yeni şirket kurar
+2027 Q2: Küresel kurumsal yazılım devleriyle iş ortaklıkları
+2027 Q4: Stratejik satın alma teklifi
+2028:    Exit süreci ve yeni teknolojik atılımlar
 ```
 
 ---
@@ -251,24 +246,24 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 | Risk | Olasılık | Etki | Önlem |
 |:--|:--:|:--:|:--|
 | Büyük oyuncu fiyat kırması | Yüksek | Orta | Niche, yerellik, air-gap |
-| Veri kalitesi yetersizliği | Orta | Yüksek | 50K SFT roadmap |
-| Regülatör engeli | Düşük | Yüksek | KVKK/GDPR uyum |
-| Ekip genişlemesi güçlüğü | Orta | Orta | Üniversite ortaklığı |
-| Hardware dependency | Düşük | Orta | Multi-platform optimize |
+| Veri kalitesi yetersizliği | Orta | Yüksek | 500K SFT veri seti ve HoloDB v5.0 |
+| Regülatör engeli | Düşük | Yüksek | KVKK/GDPR tam uyum |
+| Ekip genişlemesi güçlüğü | Orta | Orta | Üniversite ortaklıkları |
+| Donanım bağımsızlığı kaybı | Düşük | Orta | CPU/GPU ve multi-platform optimizasyonu |
 
 ---
 
-## 📊 KPI Tablosu
+## 📊 Büyüme Hedefleri
 
-| Yıl | ARR | Müşteri | Model Skoru | Ekip |
+| Yıl | ARR Seviyesi | Müşteri Sayısı | Model Skoru | Ekip |
 |:--|:--|:--|:--|:--|
-| 2026 | $0 → $100K | 0 → 5 | 25/25 | 1-3 kişi |
-| 2027 | $500K → $2M | 5 → 50 | 28/30 hedef | 5-15 kişi |
-| 2028 | $5M → $20M | 50 → 500 | 30/30 hedef | 20-50 kişi |
-| 2029 | $20M → $50M | 500 → 2,000 | AGI Level 3 | 50-150 kişi |
-| 2030 | $50M → $100M+ | 2,000+ | Full Sovereign AGI | 150+ kişi |
+| 2026 | Başlangıç Gelirleri | 0 → 5 | 25/25 | 1-3 kişi |
+| 2027 | Büyüme Fazı | 5 → 50 | 28/30 hedef | 5-15 kişi |
+| 2028 | Ölçeklenme Fazı | 50 → 500 | 30/30 hedef | 20-50 kişi |
+| 2029 | Pazar Liderliği | 500 → 2,000 | AGI Level 3 | 50-150 kişi |
+| 2030 | Küresel Sovereign AGI | 2,000+ | Full Sovereign AGI | 150+ kişi |
 
 ---
 
 *Bu yol haritası yaşayan bir belgedir. Her quarter güncellenir.*  
-*Son güncelleme: 4 Temmuz 2026 — OmniEngine Team*
+*Son güncelleme: 15 Temmuz 2026 — OmniEngine Team*

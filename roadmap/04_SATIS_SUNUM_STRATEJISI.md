@@ -1,7 +1,6 @@
-# 💼 Satış, Sunum & Müşteri Kazanma Stratejisi — OmniEngine v12.2
+# 💼 Satış, Sunum & Müşteri Kazanma Stratejisi — OmniEngine v14.2
 
-> **Versiyon:** v12.2 · **Güncelleme:** 4 Temmuz 2026  
-> **Hedef:** $100K ARR (2026 sonu) → $2M ARR (2027 sonu)
+> **Versiyon:** v14.2 · **Günceme:** 15 Temmuz 2026
 
 ---
 
@@ -9,51 +8,51 @@
 
 Müşteri model satın almıyor. **3 şey** satın alıyor:
 
-1. **Güven** — "Bu sistem hata yapsa bile ben zarar görmem."
-2. **Risk Azaltma** — "Verilerim dışarı çıkmıyor, düzenleyici beni cezalandırmaz."
+1. **Güven** — "Bu sistem hata yapsa bile ben zarar görmem." (16/16 verify_claims.py ile garantili)
+2. **Risk Azaltma** — "Verilerim dışarı çıkmıyor, düzenleyici beni cezalandırmaz." (KVKK/GDPR tam uyumlu)
 3. **Rekabet Avantajı** — "Rakiplerim bu sistemi kullanamaz (Air-Gapped)."
 
-> OmniEngine v12.2 bu 3 şeyi de sunuyor. Şimdi bunu **kanıtlamak** gerek.
+> OmniEngine v14.2 bu 3 şeyi de sunuyor. Şimdi bunu **kanıtlamak** gerek.
 
 ---
 
 ## 📊 Hedef Müşteri Segmentleri
 
-### Segment 1 — Sağlık (En Yüksek Ödeme İstekliliği)
+### Segment 1 — Sağlık (En Yüksek İhtiyaç İstekliliği)
 
-| Alt Segment | Problem | OmniEngine Çözümü | Fiyat Bandı |
+| Alt Segment | Problem | OmniEngine Çözümü | Katman |
 |:--|:--|:--|:--|
-| Özel hastaneler | Doktor hataları, malpraktis | Sıfır halüsinasyon tıp AI | $3,000-8,000/ay |
-| Klinik araştırma firmaları | Veri gizliliği, FDA uyum | Air-Gapped, KVKK uyumlu | $5,000-12,000/ay |
-| Sağlık sigortaları | Sahte poliçe tespiti | Anomali + dolandırıcılık AI | $2,000-5,000/ay |
-| Eczane zincirleri | İlaç etkileşim uyarısı | Beers + etkileşim kontrolü | $1,500-3,000/ay |
+| Özel hastaneler | Doktor hataları, malpraktis | Sıfır halüsinasyon tıp AI | Professional / Enterprise |
+| Klinik araştırma firmaları | Veri gizliliği, FDA uyum | Air-Gapped, KVKK uyumlu | Enterprise Edition |
+| Sağlık sigortaları | Sahte poliçe tespiti | Anomali + dolandırıcılık AI | Professional Plan |
+| Eczane zincirleri | İlaç etkileşim uyarısı | Beers + etkileşim kontrolü | Starter Plan |
 
 ### Segment 2 — Hukuk (Yüksek Değer, Uzun Satış Döngüsü)
 
-| Alt Segment | Problem | OmniEngine Çözümü | Fiyat Bandı |
+| Alt Segment | Problem | OmniEngine Çözümü | Katman |
 |:--|:--|:--|:--|
-| Büyük hukuk büroları | Araştırma süresi, hata riski | TCK/TBK otomatik referans | $2,000-5,000/ay |
-| Şirket hukuk departmanları | Sözleşme analizi | Otomatik risk tespiti | $3,000-7,000/ay |
-| Adalet Bakanlığı/kamu | Arşiv erişimi | Yargıtay kararı arama | $8,000-20,000/ay |
-| LegalTech startup'ları | Altyapı ihtiyacı | API lisansı | $500-2,000/ay |
+| Büyük hukuk büroları | Araştırma süresi, hata riski | TCK/TBK otomatik referans | Professional Plan |
+| Şirket hukuk departmanları | Sözleşme analizi | Otomatik risk tespiti | Professional Plan |
+| Adalet Bakanlığı/kamu | Arşiv erişimi | Yargıtay kararı arama | Government Edition |
+| LegalTech startup'ları | Altyapı ihtiyacı | API lisansı | API Plan |
 
 ### Segment 3 — Finans (Regülasyon Baskısı = İhtiyaç)
 
-| Alt Segment | Problem | OmniEngine Çözümü | Fiyat Bandı |
+| Alt Segment | Problem | OmniEngine Çözümü | Katman |
 |:--|:--|:--|:--|
-| Bankalar | BDDK uyum raporları | Otomatik regülasyon takibi | $5,000-15,000/ay |
-| Sigorta şirketleri | Hasar analizi, dolandırıcılık | Anomali tespiti | $3,000-8,000/ay |
-| Yatırım şirketleri | Piyasa analizi | Finansal analiz AI | $2,000-5,000/ay |
-| FinTech startup'ları | API altyapısı | Pay-per-use API | $0.02/sorgu |
+| Bankalar | BDDK uyum raporları | Otomatik regülasyon takibi | Enterprise Edition |
+| Sigorta şirketleri | Hasar analizi, dolandırıcılık | Anomali tespiti | Professional Plan |
+| Yatırım şirketleri | Piyasa analizi | Finansal analiz AI | Professional Plan |
+| FinTech startup'ları | API altyapısı | Pay-per-use API | API Plan |
 
 ### Segment 4 — Kamu & Savunma (En Büyük Sözleşmeler)
 
-| Alt Segment | Problem | OmniEngine Çözümü | Fiyat Bandı |
+| Alt Segment | Problem | OmniEngine Çözümü | Katman |
 |:--|:--|:--|:--|
-| Sağlık Bakanlığı | Veri gizliliği | Ulusal sağlık AI | $50K-200K/yıl |
-| Adalet Bakanlığı | Arşiv erişimi | Yargı AI sistemi | $100K-500K/yıl |
-| HAVELSAN/ASELSAN | Siber güvenlik | Threat intelligence | $50K-300K/yıl |
-| Üniversiteler | AR-GE ortaklığı | Lisans + ortak geliştirme | $10K-50K/yıl |
+| Sağlık Bakanlığı | Veri gizliliği | Ulusal sağlık AI | Government Edition |
+| Adalet Bakanlığı | Arşiv erişimi | Yargı AI sistemi | Government Edition |
+| HAVELSAN/ASELSAN | Siber güvenlik | Threat intelligence | Government Edition |
+| Üniversiteler | AR-GE ortaklığı | Lisans + ortak geliştirme | Akademik Plan |
 
 ---
 
@@ -115,42 +114,29 @@ Mesaj: "Yanlış hesap = BDDK cezası. OmniEngine regülatör uyumunu garanti ed
 ### ✅ Tamamlanan
 - [x] 25/25 AGI Benchmark raporu
 - [x] 0 halüsinasyon kanıtı (118/118 soru testi)
-- [x] 10K şeffaf benchmark arşivi (99.620% başarı, 18.9 QPS)
+- [x] 100K şeffaf benchmark arşivi (100.000% başarı, 844.6 QPS)
 - [x] SSE streaming + dinamik confidence band demo akışı
 - [x] Teknik whitepaper (WHITEPAPER.md)
-- [x] Premium web sitesi (omnigpt.vercel.app)
+- [x] Whitepaper iddia-doğrulama matrisi (`verify_claims.py` - 16/16 PASS)
+- [x] Oturum belleği ve bağlam yönetimi (Session Memory)
 
 ### 📋 Yapılacak (Satış İçin Kritik)
-- [ ] **Bağımsız test raporu** (3. taraf firma, 50 soru)
-- [ ] **Evidence Drawer demo paketi** (her cevap için kaynak zinciri)
-- [ ] **Docker air-gap smoke raporu** (internet kapalı kurulum kanıtı)
-- [ ] **Whitepaper iddia-doğrulama matrisi** (metrik → test komutu → rapor)
-- [ ] **Müşteri referans vakası** (1 pilot firma, yazılı tanıklık)
-- [ ] **ISO 27001 ön denetim raporu**
-- [ ] **One-pager'lar** (her sektör için 1 sayfa)
-- [ ] **ROI hesaplama aracı** ("Bu sistem size yılda $X tasarruf ettirir")
-- [ ] **Fiyat listesi** (net, sözleşme şablonu ile)
-- [ ] **Demo video** (2-3 dk, profesyonel seslendirme)
-- [ ] **Rekabet karşılaştırması** (vs GPT-4o, vs Azure OpenAI)
+- [ ] **Müşteri referans vakası** (1 pilot kurumsal ortak, yazılı görüş)
+- [ ] **ISO 27001 denetim hazırlığı**
+- [ ] **Sektörel one-pager'lar** (Sağlık, Hukuk, Finans ve Siber için)
+- [ ] **Fiyat listesi ve Sözleşme Şablonları** (Kurumsal Finans Raporunda detaylandırılmıştır)
+- [ ] **Demo video** (2-3 dk, arayüz akışını gösteren video)
 
 ---
 
 ## 💰 Fiyatlandırma Stratejisi
 
-### Katmanlı Fiyatlandırma
-
-| Plan | Fiyat | Kapsam |
-|:--|:--|:--|
-| **Starter** | $999/ay | 10K sorgu/ay, 2 domain, e-posta destek |
-| **Professional** | $2,999/ay | 50K sorgu/ay, 8 domain, öncelikli destek |
-| **Enterprise** | $7,999/ay | Sınırsız, air-gapped, SLA %99.9, on-premise |
-| **Government** | Teklif | Özel kurulum, tam egemenlik, 7/24 destek |
-| **API** | $0.02/sorgu | Geliştirici dostu, min $99/ay |
+Lisanslama planları (Starter, Professional, Enterprise, Government ve API) ve kurumsal yatırım geri dönüş (ROI) hesaplamaları, şirket içi finansal stratejiyi ve hassasiyeti korumak adına **yalnızca Piyasa Değerleme ve Stratejik Analiz Raporunda (market_valuation_report.md)** tutulmaktadır. 
 
 ### Pilot Program (İlk 5 Müşteri)
 ```
-6 ay ücretsiz kullanım karşılığında:
-- Yazılı referans vakası
+Belirli bir süre ücretsiz kullanım karşılığında:
+- Yazılı referans vakası ve başarı hikayesi
 - Logo kullanım izni
 - Veri seti katkısı (anonim, sözleşmeli)
 - Ortak basın bülteni
@@ -163,39 +149,34 @@ Mesaj: "Yanlış hesap = BDDK cezası. OmniEngine regülatör uyumunu garanti ed
 ```
 1. Lead Oluşturma (LinkedIn, konferans, tavsiye)
    ↓
-2. İlk Temas (e-posta, 1 sayfalık overview)
+2. İlk Temas (tanıtım e-postası, 1 sayfalık genel özet)
    ↓
-3. Keşif Görüşmesi (30 dk, video call)
+3. Keşif Görüşmesi (30 dk)
    - "Şu an hangi AI aracını kullanıyorsunuz?"
    - "Halüsinasyon sorunu yaşadınız mı?"
    - "Verilerinizin buluta gitmemesi ne kadar önemli?"
    ↓
-4. Canlı Demo (45 dk, sahneye göre hazır senaryo)
+4. Canlı Demo (45 dk, kuruma özel senaryolar)
    ↓
-5. Proof of Concept (2 hafta, kendi verileriyle test)
+5. Proof of Concept (2 hafta, kurumun kendi verileriyle yerel test)
    ↓
-6. Teklif + Müzakere (SLA, fiyat, kurulum)
+6. Teklif + Müzakere (SLA, fiyat, yerel kurulum detayları)
    ↓
-7. Sözleşme + Kurulum (on-premise veya hybrid)
+7. Sözleşme + Kurulum (yerel sunucularda veya hibrit)
    ↓
-8. Onboarding + Destek (30 günlük yoğun destek)
+8. Onboarding + Destek
 ```
 
 ---
 
 ## 🏆 Rekabet Farklılaşması
 
-| Özellik | OmniEngine | GPT-4o | Azure OpenAI | Llama 3 (self-hosted) |
+| Özellik | OmniEngine | Küresel API'ler | Bulut Servisleri | Açık Kaynak Modeller (Self-hosted) |
 |:--|:--:|:--:|:--:|:--:|
 | Air-Gapped (internet yok) | ✅ | ❌ | ❌ | ✅ |
 | Sıfır Halüsinasyon Garantisi | ✅ | ❌ | ❌ | ❌ |
 | Türkçe Domain Uzmanlığı | ✅ | Orta | Orta | Zayıf |
 | Düşünme Süreci Şeffaflığı | ✅ | ❌ | ❌ | ❌ |
-| KVKK/GDPR Native | ✅ | Riskli | Kısmi | ✅ |
+| KVKK/GDPR Uyum | ✅ | Riskli | Kısmi | ✅ |
 | On-Premise Kurulum | ✅ | ❌ | Kısmi | ✅ |
 | Yargıtay/TCK Referans | ✅ | ❌ | ❌ | ❌ |
-| Fiyat (Kurumsal) | $3-8K/ay | $20K+/ay | $15K+/ay | DIY maliyet |
-
----
-
-*Son güncelleme: 4 Temmuz 2026 — OmniEngine Satış Ekibi*

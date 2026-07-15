@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v14.1
+# 🧠 OmniEngine Cognitive Core — v14.2
 
 **Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · PDF Öğrenme**  
 **Hibrit FAISS+RRF Retrieval · Tıbbi Görüntü Yorumlama · FHIR/HL7 Cihaz Entegrasyonu**  
@@ -12,7 +12,7 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v14.1-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v14.2-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
@@ -31,26 +31,26 @@
 
 ---
 
-## Güncel Gelişim Durumu — v14.1 (15 Temmuz 2026)
+## Güncel Gelişim Durumu — v14.2 (15 Temmuz 2026)
 
-OmniEngine **v14.1** ile sistem hibrit semantik arama, tıbbi görüntü yorumlama ve FHIR/HL7 tıbbi cihaz entegrasyon katmanlarıyla yeni bir çığır açtı. v14.0'ın %100.000 benchmark başarısı ve 839K+ düğümlü HoloDB temeli üzerine üç kritik ileri katman inşa edildi.
+OmniEngine **v14.2** ile sistem; Whitepaper iddia doğrulama matrisi (16/16 PASS), oturum bağlam belleği (SessionMemory), 500K kayıtlı SFT v12 derin eğitim hattı, DPO tercih optimizasyonu ve FAISS otomasyonu ile tamamlandı. v14.1'in hibrit retrieval, tıbbi görüntü ve FHIR/HL7 temeli üzerine inşa edildi.
 
 | Alan | Güncel durum |
 |:--|:--|
 | Platform | Next.js 16.2.6 + Turbopack build doğrulandı; 33 sayfa statik üretildi |
-| **Hibrit Retrieval (YENİ)** | `retriever.py` BM25 + FAISS IVFFlat + RRF füzyon; FAISS yoksa keyword-only |
-| **Tıbbi Görüntü (YENİ)** | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
-| **FHIR/HL7 Gateway (YENİ)** | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
-| RAG + PDF Öğrenme | `/learn_pdf` API; PyMuPDF→pdfplumber→pypdf fallback; HoloDB enjeksiyon |
-| SQLite → HoloDB Sync | `sync_sqlite_to_holodb.py` — SQLite DocumentChunk → HoloDB 839.481 düğüm |
-| Klinik Karar Desteği | Composer dual-mode: hasta modu / doktor modu (Bayesian DDx, ADA 2024, ESC 2023) |
-| SFT Medical 100K | HoloDB'den 216K gerçek düğüm → `sft_medical_100k.jsonl` ✅ |
-| SFT Legal 100K | HoloDB'den 276K gerçek düğüm → `sft_legal_100k.jsonl` ✅ |
+| **Claims-Verify (YENİ)** | `verify_claims.py` — 16/16 whitepaper iddiası deterministik doğrulandı (100% PASS) |
+| **Session Memory (YENİ)** | `session_memory.py` — Son 5 tur sliding window; `/api/chat` + SSE stream entegrasyonu |
+| **SFT v12 Derin Eğitim (YENİ)** | `sft_train_v12_deep.py` — 5 domain × 100K = 500K kayıt, 1.015B MoE, Cosine LR |
+| **DPO Eğitim Hattı (YENİ)** | `dpo_train.py` — beta=0.1 LoRA/DPO tercih optimizasyonu |
+| **FAISS Otomasyonu (YENİ)** | `run_faiss_build.mjs` — 5 domain FAISS indeks otomasyonu + build raporu |
+| Hibrit Retrieval | `retriever.py` BM25 + FAISS IVFFlat + RRF füzyon |
+| Tıbbi Görüntü | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
+| FHIR/HL7 Gateway | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
 | HoloDB v5.0 | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
 | 100K Benchmark | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
 | Güvenlik | 1,135 adversarial guard block; %100 bloklama |
 
-**Açık üretim borçları:** FAISS binary indeks oluşturma (839K node, ~2-4h CPU), SFT/DPO eğitimi, Docker air-gap smoke test, CI/CD.
+**Açık üretim borçları:** FAISS binary indeks build çalıştırma (839K node, ~2-4h CPU), SFT/DPO eğitimi, Docker air-gap smoke test, CI/CD.
 
 ## 📑 İçindekiler
 
