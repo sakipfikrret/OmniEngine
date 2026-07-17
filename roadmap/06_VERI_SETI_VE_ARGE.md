@@ -1,21 +1,24 @@
-# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v14.1
+# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v14.3
 
-> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
-> **Durum:** 473,000+ SFT kaydı + HoloDB v5.0 (839K Düğüm) + 100K Benchmark tamamlandı
+> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
+> **Durum:** 500,000+ SFT kaydı + HoloDB v5.0 (839K Düğüm) + 100K Benchmark tamamlandı + GraphRAG PathFinder + Co-Occurrence Linker + Yerel LLM Sentezleyici
 
 ---
 
 ## 📈 Veri Seti Durumu
 
-| Bileşen | v11.1 Başlangıç | v14.1 Mevcut (v14 Hardening) | Uzun Vadeli Hedef (v15+) |
+| Bileşen | v11.1 Başlangıç | v14.3 Mevcut | Uzun Vadeli Hedef (v15+) |
 |:--|:--:|:--:|:--:|
-| **SFT Veri Seti (Toplam)** | 11,100 kayıt | **473,000+ kayıt** (5 Domain SFT) | 1,000,000 kayıt |
+| **SFT Veri Seti (Toplam)** | 11,100 kayıt | **500,000+ kayıt** (5 Domain SFT) | 1,000,000 kayıt |
 | -- *SFT Medical* | 1,620 kayıt | **100,000+ kayıt** (sft_medical_100k) | 250,000 kayıt |
 | -- *SFT Legal* | 770 kayıt | **100,000+ kayıt** (sft_legal_100k) | 250,000 kayıt |
 | -- *SFT Finance* | 360 kayıt | **100,000+ kayıt** (sft_finance_100k) | 200,000 kayıt |
 | -- *SFT Cyber* | 858 kayıt | **67,000+ kayıt** (sft_cyber_100k) | 150,000 kayıt |
 | -- *SFT General/CoT* | 7,500 kayıt | **111,000+ kayıt** (sft_general_100k) | 250,000 kayıt |
-| **HoloDB Bilgi Grafı** | 910 KB (statik) | **839,481 Düğüm / 6.39M Kenar** (255MB mmap) | 2,000,000 Düğüm |
+| -- *Sentezleyici Üretimi* | — | **+Aktif** (run_synthetic_generation.py) | 50,000+ ek |
+| **HoloDB Bilgi Grafı** | 910 KB (statik) | **839,486 Düğüm / 6.39M Kenar** (255MB mmap) | 2,000,000 Düğüm |
+| -- *GraphRAG PathFinder* | — | **Aktif** (BFS/Dijkstra derinlik-3) | 5-hop Reasoning |
+| -- *Co-Occurrence Linker* | — | **Aktif** (threshold=0.5, weight=0.2) | Dinamik KB |
 | **RAG Vektör Veri Tabanı** | 5 MB (vectors.json) | **1.45 GB** (sync_sqlite_to_holodb ile güncel) | 5 GB |
 | **Doğrulama Benchmark Arşivi**| 10,000 QA | **100,000 QA** (100K benchmark test raporu) | 1,000,000 QA |
 
@@ -263,6 +266,16 @@ v13: Hukuk ontolojisi
 
 v14: Tüm domain birleşik grafik
      → Multidomain reasoning: "Bu hasta hem tıbbi hem hukuki risk taşıyor"
+
+v14.3: GraphRAG PathFinder & Co-Occurrence Auto-Linker
+     → BFS/Dijkstra ile kavramlar arası yol keşfi (derinlik 3)
+     → Metin tabanlı otomatik düşük-ağırlıklı kenar oluşturma
+     → 1-hop GraphRAG arama genişletmesi (retriever.py)
+     → Bilgi grafinin kendi kendini organize etmesi
+
+v15 Hedef: Dinamik KB
+     → Her yeni SFT/DPO üretiminde co-occurrence linker grafı büyütür
+     → Hedef: 2,000,000 düğüm, 50M kenar
 ```
 
 ---
@@ -349,17 +362,32 @@ Kabul kriterleri:
 
 ---
 
-## 9. 📅 AR-GE Takvimi
+## 9.5 🤖 Yerel LLM Sentezleyici AR-GE ★ YENİ (v14.3)
 
-| Dönem | Hedef | Kayıt Sayısı |
-|:--|:--|:--|
-| Q3 2026 | Tıp genişleme sprint 1 | +2,000 |
-| Q4 2026 | Hukuk genişleme sprint 1 | +2,000 |
-| Q1 2027 | Finans + Siber sprint | +2,000 |
-| Q2 2027 | CoT v4 üretimi | +3,000 CoT |
-| Q3 2027 | Kurumsal veri entegrasyonu | +10,000 |
-| Q4 2027 | v13 final veri seti | **50,000 toplam** |
+| AR-GE Konusu | Açıklama | Durum |
+|:--|:--|:--:|
+| Port Keşif Motoru | Ollama/LM Studio/vLLM otomatik tarama | ✅ |
+| Domain CoT Şablonları | Tıp/Hukuk/Siber/Finans/Genel | ✅ |
+| Fallback Modu | Çevrimdışı güçlü şablon veri modu | ✅ |
+| Pipeline Otomasyonu | SFT+DPO+HoloDB+FAISS uçtan uca | ✅ |
+| Model Bağımsızlığı | Çıkarımda %0 dış LLM bağlılığı | ✅ |
+| Windows Encoding Uyumu | UTF-8 stdout reconfigure | ✅ |
 
 ---
 
-*Son güncelleme: 4 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+## 📅 AR-GE Takvimi
+
+| Dönem | Hedef | Kayıt Sayısı |
+|:--|:--|:--|
+| Q2 2026 (Tamamlandı) | HoloDB v5.0, RAG 2.0, Vision, FHIR | 500K SFT |
+| Q3 2026 (Aktif) | GraphRAG + Sentezleyici + DPO pipeline | +50K |
+| Q4 2026 | Tıp genişletme sprint 1 | +2,000 |
+| Q1 2027 | Hukuk genişletme sprint 1 | +2,000 |
+| Q2 2027 | Finans + Siber sprint | +2,000 |
+| Q3 2027 | CoT v4 üretimi | +3,000 CoT |
+| Q4 2027 | Kurumsal veri entegrasyonu | +10,000 |
+| 2028 | v15 final veri seti | **1,000,000 toplam** |
+
+---
+
+*Son güncelleme: 17 Temmuz 2026 — OmniEngine AR-GE Ekibi*

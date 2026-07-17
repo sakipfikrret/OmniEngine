@@ -1,7 +1,7 @@
-# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v14.1
+# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v14.3
 
-> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
-> **Kapsam:** Mimari derinleştirme, eğitim iyileştirme, ölçekleme stratejisi
+> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
+> **Kapsam:** Mimari derinleştirme, GraphRAG yol bulma, HoloDB co-occurrence, yerel LLM sentezleyici ve eğitim pipeline otomasyonu
 
 ---
 
@@ -18,11 +18,14 @@ Kullanıcı Sorusu
          │
     ┌────▼────┐
     │ HoloDB  │  ← Kavram grafiği, ilişki zinciri
-    │  mmap   │  ← SQLite->HoloDB sync entegrasyonu (yeni)
-    └────┬────────────┘
+    │  mmap   │  ← SQLite→HoloDB sync entegrasyonu
+    │         │  ← PathFinder BFS/Dijkstra (derinlik 3) ★ YENİ
+    │         │  ← Co-Occurrence Auto-Linker             ★ YENİ
+    └────────┬────────────┘
          │
 ┌────────▼────────────┐
-│  RAG 2.0 Retrieval  │  ← FAISS semantik + BM25 + RRF (yeni)
+│  RAG 3.0 Retrieval   │  ← FAISS semantik + BM25 + RRF
+│                     │  ← 1-hop GraphRAG komşu takviyesi ★ YENİ
 └────────┬────────────┘
          │
 ┌────────▼────────────┐
@@ -211,17 +214,49 @@ Soru: "Metformin ile aspirin etkileşimi nedir?"
    → Skor: <40 → Kırmızı (BLOCK)
 ```
 
-### 4.2 Hibrit RAG 2.0
+### 4.2 Hibrit RAG 3.0 — GraphRAG Takviyesi ★ YENİ
 
 ```
 Dense Retrieval  →  BM25 (sparse)  →  Cross-Encoder Reranking
      ↓                   ↓                        ↓
  Semantic match      Keyword match           En iyi 3 pasaj
-     ↓─────────────────────↓────────────────────────↓
-                    Fusion → LLM
+     ↓───────────────────────↓────────────────────────↓
+                    Fusion (RRF)
+                        ↓
+               GraphRAG 1-hop Komşu Takviyesi
+               (Bulunan kavramların HoloDB komşuları)
+                        ↓
+                   Zenginleşmiş Bağlam → LLM
 ```
 
-### 4.3 Session Context Manager
+**v14.3 Sonuçları:**
+- Arama derinliği: Direkt eşleşme + 1-hop komsu = **2 katmanlı kavrayabilme**
+- PathFinder ile ilişkisel reasoning: `Metformin` → `Böbrek yetmezliği` → yol bulundu ✅
+- Co-occurrence: Metinlerdeki ortak kavramlar otomatik grafta bağlanır
+
+### 4.3 GraphRAG PathFinder ★ YENİ
+
+```python
+# HoloDB üzerinde BFS ile anlamsal yol keşfi
+path = holo_db.find_semantic_path(
+    source="Metformin",
+    target="Böbrek yetmezliği",
+    max_depth=3
+)
+# Çıktı: [Metformin] -[KONTRAENDİKE]-> [Böbrek yetmezliği]
+
+# Metinlerdeki birlikte geçen kavramları otomatik bağla
+holo_db.auto_link_cooccurrence(
+    text="Metformin kullanan hastalarda Böbrek yetmezliği riski...",
+    weight=0.2,
+    threshold=0.5
+)
+```
+
+**İki kavram arasındaki ilişkisel kanalları kesin sorgu ile tespit etme:**  
+Multi-hop reasoning için temel altyapı kuruldu.
+
+### 4.4 Session Context Manager
 
 ```python
 class SessionMemory:
@@ -347,4 +382,42 @@ Monitor:  Prometheus + Grafana
 
 ---
 
-*Son güncelleme: 4 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+---
+
+## 8. 🤖 Yerel LLM Sentezleyici & Eğitim Otomasyonu ★ YENİ
+
+### 8.1 Yerel LLM Sentezleyici (`local_llm_synthesizer.py`)
+
+```
+Port Tarama (Otomatik):
+  ├── Ollama      : localhost:11434
+  ├── LM Studio  : localhost:1234
+  ├── vLLM        : localhost:8000
+  └── Fallback    : Yerleşik şablon modu (offline)
+
+Domain Prompt Şablonları:
+  ├── Tıp     : ICD-10, Beers kriterleri, ilaç etkileşimi CoT
+  ├── Hukuk   : KVKK, TCK, TBK madde analizi CoT
+  ├── Siber   : CWE, MITRE ATT&CK, CVE analizi CoT
+  ├── Finans  : Basel III, BDDK, SPK analizi CoT
+  └── Genel   : Multi-hop reasoning CoT
+```
+
+### 8.2 Otomatik Eğitim Pipeline (`run_synthetic_generation.py`)
+
+```
+python run_synthetic_generation.py --iters 100
+
+  1️⃣  Yerel LLM / Fallback’dan veri üret
+  2️⃣  SFT: turkish_{domain}_sft.jsonl dosyasına ekle
+  3️⃣  DPO: dpo_pairs.jsonl dosyasına ekle
+  4️⃣  HoloDB: Düğüm ekle + auto_link_cooccurrence
+  5️⃣  FAISS: vectors.json güncelle + index.faiss yeniden derle
+
+Model bağımsızlığı: Sentezleyici SADECE eğitim verisi üretir.
+Çıkarım anında OmniEngine dış LLM'ye %0 bağlıdır.
+```
+
+---
+
+*Son güncelleme: 17 Temmuz 2026 — OmniEngine AR-GE Ekibi*

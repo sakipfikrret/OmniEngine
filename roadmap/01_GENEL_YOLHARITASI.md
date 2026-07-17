@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2025–2030+)
 
-> **Versiyon:** v14.2 · **Güncelleme:** 15 Temmuz 2026  
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | 16 İddia Doğrulama (PASS) | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
+> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | 16 İddia Doğrulama (PASS) | GraphRAG PathFinder | HoloDB Co-Occurrence | Yerel LLM Sentezleyici | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
 
 ---
 
@@ -13,7 +13,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 
 ---
 
-## 🏆 Mevcut Durum (v14.2 — Temmuz 2026)
+## 🏆 Mevcut Durum (v14.3 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
@@ -22,7 +22,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 | Veri Seti Boyutu | **500,000+ kayıt** (SFT 5 domain) | 500,000 hedef ✅ |
 | SFT Eğitim Yinelemesi | **Derin LoRA v12 SFT ve DPO pipeline** | Aktif ✅ |
 | Expert Modül Sayısı | **8 domain** | 10 hedef |
-| HoloDB Kavram Bağlantısı | **839,480 Düğüm, 6.39M Kenar** (255MB pack) | 1M Düğüm hedef |
+| HoloDB Kavram Bağlantısı | **839,486 Düğüm, 6.39M Kenar** (255MB pack) | 1M Düğüm hedef |
 | Platform | Next.js 16.2.6 + 3D UI + SSE | Production ✅ |
 | Model Boyutu | ~700M param / 1.015B MoE | < 1.5B |
 | 100K Şeffaf Benchmark | **100.000% başarı** (844.6 QPS, 69.72ms P99) | >99.9% ✅ |
@@ -33,6 +33,11 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 | Tıbbi Cihaz Gateway | **FHIR R4, HL7 v2.x, MQTT vital simülatörü** | Entegre ✅ |
 | İddia Doğrulama Matrisi | **16/16 Başarılı (verify_claims.py)** | Entegre ✅ |
 | Oturum Geçmişi Belleği | **SessionMemory entegrasyonu** | Entegre ✅ |
+| **GraphRAG PathFinder** | **BFS/Dijkstra derinlik-3 yol bulma** | Entegre ✅ |
+| **HoloDB Co-Occurrence** | **Otomatik düğüm ilişkilendirme (0.5 threshold)** | Entegre ✅ |
+| **Yerel LLM Sentezleyici** | **Ollama/LM Studio/vLLM port keşif + CoT şablonlar** | Entegre ✅ |
+| **Veri Üretim Otomasyonu** | **Tek komutla SFT+DPO+HoloDB+FAISS pipeline** | Entegre ✅ |
+| **Çıkarım Bağımsızlığı** | **%0 dış LLM bağımlılığı (Air-Gapped)** | Garanti ✅ |
 
 ---
 
@@ -105,6 +110,11 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 - v14.1: Retrieval-Augmented Generation 2.0 (FAISS semantik + BM25 keyword + RRF füzyonu) ✅
 - v14.1: Tıbbi Görüntü Yorumlama (vision_expert — DICOM/JPEG, modalite/bulgu tespiti) ✅
 - v14.1: Tıbbi Cihaz Entegrasyonu (fhir_device_gateway — FHIR R4, HL7 v2.x, MQTT vital simülatörü) ✅
+- **v14.3: GraphRAG PathFinder** (`find_semantic_path()` — iki kavram arası BFS/Dijkstra yol keşfi, maks derinlik 3) ✅
+- **v14.3: HoloDB Co-Occurrence Auto-Linker** (`auto_link_cooccurrence()` — metinlerdeki kavramları grafta otomatik bağlar) ✅
+- **v14.3: GraphRAG Retrieval Genişletme** (retriever.py 1-hop komşu takviyesi ile bağlam zenginleştirme) ✅
+- **v14.3: Yerel LLM Sentezleyici** (`local_llm_synthesizer.py` — Ollama/LM Studio/vLLM port tarama, 5 domain CoT şablonları, akıllı fallback) ✅
+- **v14.3: Otomatik Veri Üretim Pipeline** (`run_synthetic_generation.py` — SFT+DPO+HoloDB+FAISS uçtan uca otomasyon) ✅
 - Agent Orchestrator: 3 uzman aynı anda çalışır, birbirini denetler 🔄
 - Model compression: 4-bit GPTQ + FP16 inference 📋
 - FAISS binary index inşası (839K node için) 🔄
@@ -266,4 +276,4 @@ Lisanslama ve fiyatlandırma politikaları kurumsal ölçeğe göre esnek paketl
 ---
 
 *Bu yol haritası yaşayan bir belgedir. Her quarter güncellenir.*  
-*Son güncelleme: 15 Temmuz 2026 — OmniEngine Team*
+*Son güncelleme: 17 Temmuz 2026 — OmniEngine Team*

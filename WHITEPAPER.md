@@ -1,18 +1,18 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v14.2
+# OmniEngine Cognitive Core — Technical Whitepaper v14.3
 
-**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
+**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · GraphRAG PathFinder & Co-Occurrence Auto-Linker · Yerel LLM Sentezleyici (Ollama/LM Studio/vLLM) · Otomatik SFT+DPO+FAISS Pipeline · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
 
 ---
 
 ## Yönetici Özeti
 
-OmniEngine v14.2, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v14.3, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
 Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v14.2'nin temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)**, **FHIR R4 / HL7 v2.x Tıbbi Cihaz Entegrasyonu**, **Oturum Geçmişi Belleği (Session Memory)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktır. v11.1–v14.2 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
+**v14.3'ün temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **GraphRAG PathFinder (BFS/Dijkstra derinlik-3)**, **HoloDB Co-Occurrence Auto-Linker**, **Yerel LLM Sentezleyici (Ollama/LM Studio/vLLM + fallback)**, **Otomatik SFT+DPO+FAISS Pipeline**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)**, **FHIR R4 / HL7 v2.x Tıbbi Cihaz Entegrasyonu**, **Oturum Geçmişi Belleği (Session Memory)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktadır. v11.1–v14.3 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
 
-### v14.2 Doğrulama Özeti
+### v14.3 Doğrulama Özeti
 
 | Katman | Durum | Kanıt / çıktı |
 |:--|:--|:--|
@@ -20,8 +20,14 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 | **İddia Doğrulama Matrisi** | **Geçti** | `verify_claims.py` ile 16 kritik whitepaper iddiasının tamamı doğrulandı (16/16 PASS) |
 | **Oturum Belleği (Session Memory)** | **Geçti** | `session_memory.py` ile Prisma entegre son 5 mesaj çiftinin bağlam olarak Composer'a aktarımı |
 | RAG Upload + PDF | Geçti | `/learn_pdf` endpoint, PyMuPDF→pdfplumber→pypdf fallback |
-| SQLite → HoloDB Sync | Geçti | `sync_sqlite_to_holodb.py`, 839.481 düğüm derlendi |
+| SQLite → HoloDB Sync | Geçti | `sync_sqlite_to_holodb.py`, 839.486 düğüm derlendi |
 | **Hibrit FAISS+RRF Retrieval** | **Geçti** | `retriever.py` BM25+FAISS IVFFlat+RRF; graceful degradation |
+| **GraphRAG PathFinder** | **Geçti** | `holo_db_writer.py find_semantic_path()`; BFS/Dijkstra derinlik-3; Metformin→Böbrek ✅ |
+| **HoloDB Co-Occurrence** | **Geçti** | `auto_link_cooccurrence()`; threshold=0.5, weight=0.2; otomatik CO_OCCURRENCE kenar |
+| **1-hop GraphRAG Retrieval** | **Geçti** | `retriever.py` sonr. HoloDB komşu takviyesi; zenginleşmiş bağlam → LLM |
+| **Yerel LLM Sentezleyici** | **Geçti** | `local_llm_synthesizer.py`; Ollama/LM Studio/vLLM port tarama; fallback aktif |
+| **Otomasyon Pipeline** | **Geçti** | `run_synthetic_generation.py`; SFT+DPO+HoloDB+FAISS |
+| **Çıkarım Bağımsızlığı** | **Geçti** | Runtime dış LLM bağlılığı %0; tamamen air-gapped |
 | **Tıbbi Görüntü Yorumlama** | **Geçti** | `vision_expert.py`; XRay/CT/MRI/US; 57ms; `/analyze_image` |
 | **FHIR R4 Gateway** | **Geçti** | FHIR Observation, LOINC kodlama, risk sınıflandırma |
 | **HL7 v2.x Parser** | **Geçti** | ORU^R01 segment ayrıştırma, OBX→LOINC eşleştirme |
@@ -30,8 +36,8 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 | Streaming | Geçti | `/api/chat/stream` SSE: thinking step, token, done |
 | 100K benchmark | Geçti | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
 | Güvenlik blokları | Geçti | 1,135 adversarial sorgu başarıyla bloklandı (Guard) |
-| HoloDB v5.0 | Geçti | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
-| Açık borç | Aktif | FAISS binary build (839K), SFT/DPO eğitimi, Docker, CI/CD |
+| HoloDB v5.0 | Geçti | 839,486 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
+| Açık borç | Aktif | Docker smoke, CI/CD (FAISS binary build tamamlandı) |
 
 ## İçindekiler
 
@@ -54,6 +60,7 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 17. [Eğitim Metodolojisi](#17-egitim-metodolojisi--detayli-teknik-plan)
 18. [Platform Mimarisi](#18-platform-mimarisi--v140-web)
 19. [v14.1 İleri Entegrasyonlar: Hibrit Retrieval, Vision, FHIR](#19-v141-ileri-entegrasyonlar)
+20. [v14.3 GraphRAG, HoloDB Co-Occurrence & Yerel LLM Sentezleyici](#20-v143-graphrag-holodb-co-occurrence--yerel-llm-sentezleyici)
 
 ---
 
@@ -1336,3 +1343,86 @@ Temp    = 36.8  -> NORMAL
 | `/vital_status` | GET | Tum aktif simulatorleri listele |
 
 ---
+
+## 20. v14.3 GraphRAG, HoloDB Co-Occurrence & Yerel LLM Sentezleyici
+
+### 20.1 GraphRAG PathFinder
+
+v14.3 ile HoloDB bilgi grafı artık pasif bir depo değil; **sorgulanabilir bir anlamsal yol keşif motoruna** dönüştü.
+
+```python
+# holo_db_writer.py :: find_semantic_path()
+path = db.find_semantic_path(
+    source="Metformin",
+    target="Böbrek yetmezliği",
+    max_depth=3
+)
+# Çıktı: [Metformin] -[KONTRAENDİKE]-> [Böbrek yetmezliği]
+```
+
+| Özellik | Detay |
+|:--|:--|
+| Algoritma | BFS / Dijkstra |
+| Maksimum Derinlik | 3-hop |
+| Çıktı | Düğüm-Kenar-Düğüm dizisi |
+| Kullanım | Klinik, hukuki ve finansal multi-hop reasoning |
+
+### 20.2 HoloDB Co-Occurrence Auto-Linker
+
+Üretilen veya yüklenen her metindeki bilinen HoloDB kavramları arasında otomatik düşük-ağırlıklı kenarlar oluşturarak bilgi grafının kendi kendini organize etmesini sağlar.
+
+```python
+# holo_db_writer.py :: auto_link_cooccurrence()
+db.auto_link_cooccurrence(
+    text="Metformin kullanan hastalarda Böbrek yetmezliği riski artar.",
+    weight=0.2,       # Düşük ağırlık (güçlü olmayan ilişki)
+    threshold=0.5     # Benzerlik eşiği (Jaccard/token overlap)
+)
+# Sonuç: Metformin --[CO_OCCURRENCE, 0.2]--> Böbrek yetmezliği
+```
+
+### 20.3 1-hop GraphRAG Retrieval Takviyesi
+
+retriever.py hibrit RAG sonrasında devreye girer:
+
+```
+RAG Top-3 Sonuçları
+       |
+       v
+Kavram Çıkarma
+       |
+       v
+HoloDB 1-hop Genişletme (Komşular)
+       |
+       v
+Zenginleşmiş Bağlam --> LLM
+```
+
+### 20.4 Yerel LLM Sentezleyici
+
+**Model bağımsızlığı prensibi:** Sentezleyici yalnızca eğitim verisi üretmek için kullanılır. Runtime çıkarımında OmniEngine **%0 dış LLM bağlılığıyla** çalışır.
+
+| Sunucu | Port | Protokol |
+|:--|:--:|:--|
+| Ollama | 11434 | `/api/generate` |
+| LM Studio | 1234 | OpenAI-compat `/v1/chat/completions` |
+| vLLM | 8000 | OpenAI-compat `/v1/chat/completions` |
+| Fallback | — | Çevrimdışı şablon modu |
+
+### 20.5 Otomatik Eğitim Pipeline
+
+```bash
+python src/python/tools/run_synthetic_generation.py --iters 100
+```
+
+Tek komutla:
+1. Yerel LLM / fallback'tan CoT verisi üret
+2. `turkish_{domain}_sft.jsonl` SFT dosyasına ekle
+3. `dpo_pairs.jsonl` DPO dosyasına ekle
+4. HoloDB'ye düğüm ekle + `auto_link_cooccurrence` çalıştır
+5. `vectors.json` güncelle + `index.faiss` yeniden derle
+
+---
+
+*OmniEngine Cognitive Core — Technical Whitepaper v14.3*  
+*Güncelleme: 17 Temmuz 2026 — OmniEngine AR-GE Ekibi*

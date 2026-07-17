@@ -50,7 +50,8 @@ Büyük yapay zeka şirketleri veri edinimi için büyük yatırımlar yapar. Bi
 | Siber Güvenlik SFT | 100,000 senaryo | **Sıfır** |
 | Finansal SFT | 100,000 senaryo | **Sıfır** |
 | Genel / CoT SFT | 100,000 senaryo | **Sıfır** |
-| **TOPLAM** | **500,000 senaryo** | **Sıfır** |
+| **Yerel LLM Sentezleyici** | **Sınırsız (devam eden)** | **Sıfır** |
+| **TOPLAM** | **500,000+ senaryo** | **Sıfır** |
 
 ---
 
@@ -64,18 +65,61 @@ Standart veritabanları yerine, kendi **Holografik Graf Veritabanımızı** icat
 omni_knowledge.holo yapısı:
 ├── HEADER  →  Versiyon v5.0, tarih, toplam node sayısı
 ├── NODES   →  Her kavram: ID, başlık, metin, domain, ağırlıklar
-├── EDGES   →  Kavramlar arası ilişkiler (KONTRENDIKE, ZORUNLU, vs.)
+├── EDGES   →  Kavramlar arası ilişkiler (KONTRENDIKE, ZORUNLU, CO_OCCURRENCE, vs.)
 └── INDEX   →  Keyword → Node ID hızlı arama haritası
 ```
 
-**Mevcut Durum:**
-- ✅ **839,480 Düğüm** ve **6.39M Kenar** kapasitesi.
+**Mevcut Durum (v14.3):**
+- ✅ **839,486 Düğüm** ve **6.39M Kenar** kapasitesi.
 - ✅ **Binary Derleme (.binpack & .binindex)** — 255.52 MB `.binpack` ve 415.59 MB `.binindex` dosyaları.
 - ✅ **FastAPI mmap Pre-Load** — 24M+ indeks girdisi ile RAM tüketmeden <15ms ortalama gecikme ile sorgulama.
+- ✅ **GraphRAG PathFinder** — BFS/Dijkstra ile iki kavram arası anlamsal yol keşfi (maks derinlik 3). **[YENİ v14.3]**
+- ✅ **Co-Occurrence Auto-Linker** — Metin tabanlı otomatik düşük ağırlıklı kenar oluşturma (threshold=0.5, weight=0.2). **[YENİ v14.3]**
+- ✅ **1-hop GraphRAG Retrieval Takviyesi** — RAG sonuçlarının HoloDB komşularıyla zenginleştirilmesi. **[YENİ v14.3]**
 
 ---
 
-## IV. KUSURSUZ EŞLEŞTİRME VE KALİTE KAPISI (Quality Gate)
+## IV. YENİ: GRAPHRAG PATHFINDER MOTORU (v14.3)
+
+HoloDB artık yalnızca bilgi deposu değil; **akıllı bir ilişki keşif motoru** haline geldi.
+
+| Yetenek | Açıklama | Durum |
+|:--|:--|:--:|
+| **find_semantic_path()** | İki kavram arasındaki BFS/Dijkstra yol bulucu (derinlik 3) | ✅ |
+| **auto_link_cooccurrence()** | Metin tabanlı otomatik CO_OCCURRENCE kenar üretimi | ✅ |
+| **1-hop GraphRAG Takviye** | RAG sonuçlarını komşu düğümlerle zenginleştirme | ✅ |
+| **Multi-hop Reasoning Temeli** | Karmaşık çok adımlı klinik/hukuki reasoning için zemin | ✅ |
+
+**Örnek Kullanım:**
+```python
+# Metformin ile Böbrek yetmezliği arasındaki ilişkisel yol
+path = db.find_semantic_path("Metformin", "Böbrek yetmezliği", max_depth=3)
+# Çıktı: [Metformin] -[KONTRAENDİKE]-> [Böbrek yetmezliği]  ✅
+```
+
+---
+
+## V. YENİ: YEREL LLM SENTEZLEYİCİ & OTOMASYON PIPELINE (v14.3)
+
+**Model Bağımsızlığı Prensibi:** Yerel LLM yalnızca eğitim verisi üretiminde yardımcıdır.  
+OmniEngine runtime çıkarım anında **%0 dış LLM bağımlılığıyla** çalışır.
+
+```
+Yerel LLM Sentezleyici:
+  Port Tarama: Ollama (11434) | LM Studio (1234) | vLLM (8000)
+  Fallback: Güçlü şablon modu (offline, her zaman çalışır)
+  Domain CoT Şablonları: Tıp / Hukuk / Siber / Finans / Genel
+
+Otomatik Pipeline (run_synthetic_generation.py):
+  1. Yerel LLM'den/Fallback'tan CoT verisi üret
+  2. SFT + DPO JSONL dosyalarına ekle
+  3. HoloDB'ye düğüm ekle + auto_link_cooccurrence çalıştır
+  4. vectors.json güncelle + FAISS index yeniden derle
+```
+
+---
+
+## VI. KUSURSUZ EŞLEŞTİRME VE KALİTE KAPISI (Quality Gate)
 
 > [!WARNING]
 > Yapay zekanın %1'lik bir halüsinasyonu bile tıp dünyasında ölüme, hukuk dünyasında mahkumiyete yol açabilir. Bu problemi **Symbolic Quality Gate** ile çözdük.
@@ -90,7 +134,7 @@ omni_knowledge.holo yapısı:
 
 ---
 
-## V. ANIMSAL VE OTURUM GEÇMİŞİ BELLEĞİ (Session Memory)
+## VII. ANIMsAL VE OTURUM GEÇMİŞİ BELLEĞİ (Session Memory)
 
 Önceki konuşma bağlamını kaybetmeden sürdüren **Session Memory** entegrasyonu tamamlandı.
 - **Sliding Window:** Son 5 konuşma turunu (kullanıcı/asistan) Prisma SQLite üzerinden takip eder.
@@ -98,7 +142,7 @@ omni_knowledge.holo yapısı:
 
 ---
 
-## VI. ZEKA ÖLÇÜMÜ VE WHITEPAPER İDDİA DOĞRULAMA MATRİSİ
+## VIII. ZEKA ÖLÇÜMÜ VE WHITEPAPER İDDİA DOĞRULAMA MATRİSİ
 
 Eğitilen her sürümü denetleyen otomatik zeka ölçüm testlerine ek olarak **16 kritik iddia doğrulama matrisi** (`verify_claims.py`) devreye alınmıştır.
 
@@ -113,15 +157,18 @@ Eğitilen her sürümü denetleyen otomatik zeka ölçüm testlerine ek olarak *
 
 ---
 
-## VII. TEKNOLOJİ YIĞINI
+## IX. TEKNOLOJİ YIĞINI (v14.3)
 
 ```
 ┌──────────────────────────────────────────────┐
-│          OmniEngine Technology Stack         │
+│          OmniEngine Technology Stack v14.3   │
 ├──────────────────────────────────────────────┤
 │  Model        OmniEngine MoE (1.015B param) │
 │  Eğitim       PyTorch + LoRA SFT/DPO         │
 │  Veritabanı   HoloDB v5.0 Binary (mmap)     │
+│  GraphRAG     PathFinder + Co-Occurrence     │
+│  RAG          FAISS + BM25 + RRF + 1-hop    │
+│  Sentezleyici Yerel LLM (Ollama/fallback)   │
 │  Güvenlik     Quality Gate (Kural Tabanlı)   │
 │  Arayüz       Next.js 16 + FastAPI Sunucusu  │
 │  Dağıtım      Docker + CPU/GPU Uyumlu        │
@@ -131,9 +178,30 @@ Eğitilen her sürümü denetleyen otomatik zeka ölçüm testlerine ek olarak *
 
 ---
 
-## VIII. REKABET ÜSTÜNLÜĞÜ
+## X. BAŞARILI AR-GE ÇALIŞMALARI ÖZET TABLOSU
+
+| Versiyon | AR-GE Konusu | Tamamlanma | Kanıt Dosyası |
+|:--|:--|:--:|:--|
+| v11.1 | MoE Router, HoloDB v1, SFT Pipeline | Ocak 2025 | `HOLO_AGI_FINAL.pth` |
+| v12.2 | SSE Streaming, Confidence Band, AGI 25/25 | Haziran 2026 | `eval_results.json` |
+| v14.0 | 500K SFT, SQLite→HoloDB Sync | Temmuz 2026 | `sync_sqlite_to_holodb.py` |
+| v14.1 | RAG 2.0 (FAISS+BM25+RRF), Vision, FHIR/HL7 | Temmuz 2026 | `retriever.py`, `vision_expert.py` |
+| v14.2 | Session Memory, 100K Benchmark, 16/16 verify | Temmuz 2026 | `verify_claims.py` |
+| **v14.3** | **GraphRAG PathFinder, Co-Occurrence, Yerel LLM Sentezleyici, Veri Pipeline Otomasyonu** | **17 Temmuz 2026** | **`holo_db_writer.py`, `local_llm_synthesizer.py`, `run_synthetic_generation.py`** |
+
+---
+
+## XI. REKABET ÜSTÜNLÜĞÜ
 
 - ✅ **İnternetsiz** çalışır (Air-Gapped)
 - ✅ **GPU olmadan** — ofis bilgisayarlarında CPU ile çalışabilir
 - ✅ **KVKK ihlali sıfır** — veriler yerel sunuculardan dışarı çıkmaz
 - ✅ **Yerli ve Milli** — tamamen özgün mimari
+- ✅ **GraphRAG** — HoloDB üzerinde multi-hop ilişkisel akıl yürütme
+- ✅ **Sıfır bütçeyle veri** — Yerel LLM sentezleyici ile sınırsız veri üretimi
+- ✅ **Kendi kendine büyüyen KB** — Co-occurrence linker ile bilgi grafı sürekli genişler
+
+---
+
+*OmniEngine v14.3 — AR-GE Raporu — 17 Temmuz 2026*  
+*Hazırlayan: OmniEngine AR-GE Ekibi*

@@ -1,6 +1,6 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.1
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.3
 
-> **Versiyon:** v14.1 · **Güncelleme:** 15 Temmuz 2026  
+> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
 > **Kapsam:** Kısa vadeli, orta vadeli ve tamamlanan ileri özellikler yol haritası
 
 ---
@@ -9,12 +9,16 @@
 
 | Özellik | Değer | Efor | Öncelik | Durum |
 |:--|:--:|:--:|:--:|:--:|
-| Multi-Agent Konsültasyon | Yüksek | Orta | 🔴 Kritik | 🔄 Aktif |
+| Multi-Agent Konsultasyon | Yüksek | Orta | 🔴 Kritik | 🔄 Aktif |
 | Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
 | Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
 | RAG 2.0 (hibrit arama) | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
 | Tıbbi Görüntü Yorumlama | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
 | Tıbbi Cihaz Entegrasyonu | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
+| **GraphRAG PathFinder** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
+| **HoloDB Co-Occurrence** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
+| **Yerel LLM Sentezleyici** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
+| **Veri Üretim Otomasyonu** | **Çok Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
 | Session Memory | Yüksek | Orta | 🟠 Yüksek | 🔄 Aktif |
 | API Gateway | Orta | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.1) |
 | Legal Brief Generator | Orta | Yüksek | 🟡 Orta | 🔄 Aktif |
@@ -27,7 +31,7 @@
 
 ## 🔴 KRİTİK — v12/v14 (Tamamlandı ✅)
 
-### 1. Multi-Agent Konsültasyon Modu
+### 1. Multi-Agent Konsultasyon Modu
 ... (aktif geliştirme devam ediyor) ...
 
 ### 2. Streaming Token Üretimi ✅ v12.2 SSE MVP tamamlandı
@@ -54,7 +58,59 @@ Kullanıcı Sorusu
 
 ---
 
-### 5. Tıbbi Görüntü Yorumlama (Vision) ✅ v14.1 tamamlandı
+### 4b. RAG 3.0 — GraphRAG 1-hop Takviye ★ YENİ v14.3 ✅
+**Eklenen:** Hibrit RAG sonuçlarından çıkan kavramların HoloDB'deki 1-hop komşuları ek bağlam olarak LLM'e gönderilir.
+
+```
+Hibrit RAG Sonuçları (Top-3 pasaj)
+         │
+         ▼
+Kavram Çıkarma (anahtar terimler)
+         │
+         ▼
+HoloDB 1-hop Graph Genişletme
+  (Her kavramın komşuları → ek bağlam)
+         │
+         ▼
+Zenginleşmiş Bağlam → LLM
+```
+**Kazanım:** Model, direkt eşleşmenin ötesinde ilişkisel bağlamla yanıt üretir.
+
+---
+
+### 5. GraphRAG PathFinder (HoloDB) ★ YENİ v14.3 ✅
+
+**Ne?** HoloDB bilgi grafi üzerinde iki kavram arasındaki ilişkisel yolu BFS/Dijkstra ile bulan anlamsal yol keşif motoru (`holo_db_writer.py :: find_semantic_path()`).
+
+```python
+# Örnek: Metformin ile Böbrek yetmezliği arasındaki ilişki
+path = db.find_semantic_path(”Metformin”, ”Böbrek yetmezliği”, max_depth=3)
+# Sonuç: [Metformin] -[KONTRAENDİKE]-> [GFR düşükünde dikkat] -» [Böbrek yetmezliği]
+```
+
+**Kullanım Senaryoları:**
+- Multi-hop klinik reasoning: “Bu ilacı neden vermemeli?” → Grafta yol bul, açıkla
+- Hukuki neden zinciri: “Bu suç hangi maddeyi ihlal ediyor?”
+- Finansal risk propagasyonu: “Bu risk neden daha büyük bir probleme yöl açıyor?”
+
+---
+
+### 6. HoloDB Co-Occurrence Auto-Linker ★ YENİ v14.3 ✅
+
+**Ne?** Üretilen veya yüklenen metin içindeki bilinen kavramları otomatik olarak düşük ağırlıklı `CO_OCCURRENCE` kenarları ile birleştiren ve bilgi grafiının kendi kendini organize etmesini sağlayan motor (`holo_db_writer.py :: auto_link_cooccurrence()`).
+
+```
+Metin: “Metformin kullanan hastalarda Böbrek yetmezliği riski vardır.”
+
+Mevcut Düğümler: Metformin, Böbrek yetmezliği
+Kurulan Kenar: Metformin --[CO_OCCURRENCE, ağ=0.2]--> Böbrek yetmezliği
+
+Birikim: Her yeni metinle grafin yoğunluğu artar → Otomatik öğrenen kural olmadan gelişen KB
+```
+
+---
+
+### 7. Yerel LLM Sentezleyici + Eğitim Otomasyonu ★ YENİ v14.3 ✅
 **Ne?** Radyoloji ve klinik görüntüleri (XRay, CT, MRI, Ultrasound) yorumlama motoru (`vision_expert.py`).  
 **API Endpoint:** `POST /analyze_image`  
 **Pipeline:**  
@@ -66,7 +122,7 @@ Kullanıcı Sorusu
 
 ---
 
-### 6. Tıbbi Cihaz Entegrasyonu (FHIR/HL7/MQTT) ✅ v14.1 tamamlandı
+### 9. Tıbbi Cihaz Entegrasyonu (FHIR/HL7/MQTT) ✅ v14.1 tamamlandı
 **Ne?** Hastane cihazlarından ve vital monitörlerden gelen canlı veya yapısal veriyi analiz etme motoru (`fhir_device_gateway.py`).  
 **API Endpointleri:** `/fhir_observation`, `/vital_simulate`, `/vital_status`  
 **Desteklenen Standartlar:**  
@@ -216,4 +272,4 @@ Banka C   → Yerel model güncelleme (gradient)
 
 ---
 
-*Son güncelleme: 4 Temmuz 2026 — OmniEngine Ürün Ekibi*
+*Son güncelleme: 17 Temmuz 2026 — OmniEngine Ürün Ekibi*

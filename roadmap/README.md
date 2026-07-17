@@ -1,6 +1,6 @@
 # 🗺️ OmniEngine Yol Haritası Dizini
 
-> **Versiyon:** v14.2 · **Son Güncelleme:** 15 Temmuz 2026
+> **Versiyon:** v14.3 · **Son Güncelleme:** 17 Temmuz 2026
 
 Bu dizin OmniEngine'in tam stratejik ve teknik yol haritasını içerir.
 
@@ -20,7 +20,7 @@ Bu dizin OmniEngine'in tam stratejik ve teknik yol haritasını içerir.
 
 ---
 
-## 🏆 Özet Durum (v14.2)
+## 🏆 Özet Durum (v14.3)
 
 ```
 AGI Eval:          25/25 (%100.0) 🏆
@@ -30,10 +30,14 @@ Halüsinasyon:      %0 (1,135 adversarial testi geçildi)
 Oturum Belleği:    Gelişmiş Session Memory entegrasyonu tamamlandı
 Veri Seti:         500,000+ kayıt (sft_medical, sft_legal, sft_finance vb.)
 Retrieval:         FAISS semantik + BM25 keyword + RRF hibrit arama (RAG 2.0)
+GraphRAG:          PathFinder BFS/Dijkstra (derinlik 3) + 1-hop retrieval takviyesi [YENİ]
+HoloDB:            839,486 Düğüm · 6.39M Kenar · Co-Occurrence Auto-Linker [YENİ]
+Yerel LLM:         Ollama/LM Studio/vLLM sentezleyici + CoT şablonları + Fallback [YENİ]
+Otomasyon:         SFT+DPO+HoloDB+FAISS uçtan uca pipeline (run_synthetic_generation.py) [YENİ]
+Çıkarım:           %0 dış LLM bağlılığı — Tamamen Air-Gapped [YENİ]
 Tıbbi Görüntü:     JPEG/DICOM modalite ve bulgu tespiti (vision_expert, 57ms)
 Cihaz Entegrasyonu:FHIR R4, HL7 v2.x, MQTT vital akış simülatörü
 Platform:          Next.js 16.2.6 + SSE Streaming + Confidence Band
-Üretim Borçları:   FAISS build (839K) · SFT/DPO eğitim · Docker smoke · CI/CD
 ```
 
 ---
@@ -42,12 +46,12 @@ Platform:          Next.js 16.2.6 + SSE Streaming + Confidence Band
 
 | Tarih | Hedef |
 |:--|:--|
-| Temmuz 2026 | FAISS binary build (839K), Docker air-gap smoke, CI/CD temel hattı |
+| Temmuz 2026 | GraphRAG PathFinder + Co-Occurrence Linker + Yerel LLM Sentezleyici ✅ |
 | Ağustos 2026 | Live Demo API, auth/tenant izolasyonu, SEO optimizasyonu |
-| Q3 2026 | v14.2 SFT ve DPO eğitimlerinin tamamlanması (500K veri, LoRA r=64) |
+| Q3 2026 | v14.3 SFT ve DPO eğitimlerinin tamamlanması (500K+ veri, LoRA r=64) |
 | Q4 2026 | İlk pilot müşteri POC teslimi |
 | Q1 2027 | Tohum Yatırım Turu (Seed Round) |
-| Q4 2027 | Yıllık Tekrarlanan Gelir (ARR) hedeflerine ulaşılması ve Seri A hazırlığı |
+| Q4 2027 | Yıllık Tekrarlayan Gelir (ARR) hedeflerine ulaşılması ve Seri A hazırlığı |
 | 2028 | Uluslararası B2B Kurumsal pazarlarda liderlik |
 
 ---
