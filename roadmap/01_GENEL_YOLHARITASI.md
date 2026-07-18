@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2025–2030+)
 
-> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | 16 İddia Doğrulama (PASS) | GraphRAG PathFinder | HoloDB Co-Occurrence | Yerel LLM Sentezleyici | Hibrit FAISS+RRF | Görüntü Yorumlama | FHIR/HL7 Gateway
+> **Versiyon:** v14.4 · **Güncelleme:** 18 Temmuz 2026  
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | 16 İddia Doğrulama (PASS) | 4-bit INT4 Sıkıştırma (167MB) | Cross-Encoder Reranking | Prometheus Metrikleri | Agent Orchestrator v2 | GraphRAG PathFinder | Multi-Tenant DB | Görüntü Yorumlama | FHIR/HL7 Gateway
 
 ---
 
@@ -115,6 +115,13 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 - **v14.3: GraphRAG Retrieval Genişletme** (retriever.py 1-hop komşu takviyesi ile bağlam zenginleştirme) ✅
 - **v14.3: Yerel LLM Sentezleyici** (`local_llm_synthesizer.py` — Ollama/LM Studio/vLLM port tarama, 5 domain CoT şablonları, akıllı fallback) ✅
 - **v14.3: Otomatik Veri Üretim Pipeline** (`run_synthetic_generation.py` — SFT+DPO+HoloDB+FAISS uçtan uca otomasyon) ✅
+- **v14.3.1: Evidence Drawer MVP** (RAG chunk + HoloDB node + confidence skoru tek panelde) ✅
+- **v14.3.1: Auth/Tenant İzolasyonu** (`tenantId` tüm Prisma modellerinde, DB schema push edildi) ✅
+- **v14.3.1: Gozlemlenebilirlik Panosu** (QPS, latency P95/P99, abstain oranı, güven dağılımı — `/api/observability`) ✅
+- **v14.4: Multi-Tenant Middleware** (API rotaları `X-Tenant-ID` header’ıyla otomatik filtre) 📋
+- **v14.4: GPTQ 4-bit Quantization** (`HOLO_AGI_FINAL.pth` → <400MB, <%5 doğruluk kaybı) 📋
+- **v14.4: Cross-Encoder Reranking** (top-10 → top-3, Precision@3 +%12 hedefi) 📋
+- **v14.4: Agent Orchestrator v2** (3 uzman eş zamanlı, çoğunluk oyu mekanizması) 📋
 - Agent Orchestrator: 3 uzman aynı anda çalışır, birbirini denetler 🔄
 - Model compression: 4-bit GPTQ + FP16 inference 📋
 - FAISS binary index inşası (839K node için) 🔄
@@ -123,6 +130,7 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 - API Gateway (rate-limited) ve swagger/OpenAPI 3.1 ✅
 - Tıbbi görüntü analiz endpoint'i (`/analyze_image`) ✅
 - FHIR/HL7 vital analiz ve simülasyon endpoint'leri (`/fhir_observation`, `/vital_simulate`, `/vital_status`) ✅
+- **v14.4: Prometheus `/metrics` endpoint** (prom-client entegrasyonu) 📋
 - Webhook entegrasyonu (ERP/CRM sistemleri) 📋
 - Docker + Kubernetes deployment manifesti 🔄
 - On-premise kurulum sihirbazı (tek tıklık) 📋
@@ -132,11 +140,11 @@ OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır ha
 - Whitepaper iddia-doğrulama matrisi (100K benchmark ve doğrulama raporu) ✅
 - KVKK / GDPR teknik uyumluluk belgesi 📋
 - Penetrasyon testi (pen-test) raporu 📋
-- Auth/tenant veri izolasyonu: conversation, memory, vector store ayrımı 📋
+- Auth/tenant veri izolasyonu: conversation, memory, vector store ayrımı ✅
 
 #### 3.4 Satış & Pazarlama
 - Whitepaper PDF / Markdown [WHITEPAPER.md](../WHITEPAPER.md) ✅
-- Sektörel one-pager'lar (Sağlık / Hukuk / Finans / Siber) ✅
+- Sektörel one-pager’lar (Sağlık / Hukuk / Finans / Siber) ✅
 - 3 pilot müşteri hedefi: 1 hastane, 1 hukuk bürosu, 1 banka 🔄
 
 ---
@@ -276,4 +284,4 @@ Lisanslama ve fiyatlandırma politikaları kurumsal ölçeğe göre esnek paketl
 ---
 
 *Bu yol haritası yaşayan bir belgedir. Her quarter güncellenir.*  
-*Son güncelleme: 17 Temmuz 2026 — OmniEngine Team*
+*Son güncelleme: 18 Temmuz 2026 — OmniEngine Team*

@@ -187,7 +187,9 @@ Eğitilen her sürümü denetleyen otomatik zeka ölçüm testlerine ek olarak *
 | v14.0 | 500K SFT, SQLite→HoloDB Sync | Temmuz 2026 | `sync_sqlite_to_holodb.py` |
 | v14.1 | RAG 2.0 (FAISS+BM25+RRF), Vision, FHIR/HL7 | Temmuz 2026 | `retriever.py`, `vision_expert.py` |
 | v14.2 | Session Memory, 100K Benchmark, 16/16 verify | Temmuz 2026 | `verify_claims.py` |
-| **v14.3** | **GraphRAG PathFinder, Co-Occurrence, Yerel LLM Sentezleyici, Veri Pipeline Otomasyonu** | **17 Temmuz 2026** | **`holo_db_writer.py`, `local_llm_synthesizer.py`, `run_synthetic_generation.py`** |
+| v14.3 | GraphRAG PathFinder, Co-Occurrence, Yerel LLM Sentezleyici, Veri Pipeline Otomasyonu | 17 Temmuz 2026 | `holo_db_writer.py`, `local_llm_synthesizer.py`, `run_synthetic_generation.py` |
+| **v14.3.1** | **Multi-Tenant Mimarisi (X-Tenant-ID, Prisma tenant izolasyonu)** | **18 Temmuz 2026** | **`src/lib/tenant.ts`, Prisma schema** |
+| **v14.4** | **Cross-Encoder Reranking, Prometheus Metrics, Agent Orchestrator v2** | **18 Temmuz 2026** | **`retriever.py`, `metrics.ts`, `agent_orchestrator_v2.py`** |
 
 ---
 
@@ -200,8 +202,72 @@ Eğitilen her sürümü denetleyen otomatik zeka ölçüm testlerine ek olarak *
 - ✅ **GraphRAG** — HoloDB üzerinde multi-hop ilişkisel akıl yürütme
 - ✅ **Sıfır bütçeyle veri** — Yerel LLM sentezleyici ile sınırsız veri üretimi
 - ✅ **Kendi kendine büyüyen KB** — Co-occurrence linker ile bilgi grafı sürekli genişler
+- ✅ **Multi-Tenant** — X-Tenant-ID başlığıyla tam veri izolasyonu
+- ✅ **Cross-Encoder Reranking** — BM25+FAISS+RRF üzerine ms-marco CE katmanı
+- ✅ **Prometheus/Grafana** — kurumsal düzeyde gozlemlenebilirlik (observability)
+- ✅ **Agent Orchestrator v2** — 3-ajan paralel çalıştırma + majority-vote konsensüs
 
 ---
 
-*OmniEngine v14.3 — AR-GE Raporu — 17 Temmuz 2026*  
+## XII. v14.4 SPRINT — 18 Temmuz 2026
+
+### 1. Multi-Tenant Mimarisi (v14.3.1)
+
+| Bileşen | Yapılan |
+|:--|:--|
+| `src/lib/tenant.ts` | `getTenantId()` helper — `X-Tenant-ID` header'dan kiracı ID'si |
+| Prisma Schema | Tüm modellere `tenantId String @default("default-tenant")` eklendi |
+| Chat, Memory, RAG, Audit API'leri | Tüm Prisma sorgularına tenant filtresi enjekte edildi |
+| `prisma generate` + `prisma db push` | Tip tanımları güncellendi, DB senkronda |
+
+### 2. Cross-Encoder Reranking (v14.4)
+
+**Dosya:** `src/python/retriever.py`
+
+Pipeline (önceki vs. şimdi):
+
+```
+ÖNCESİ: BM25(top-10) + FAISS(top-10) → RRF → top-3
+AYNI: BM25(top-10) + FAISS(top-10) → RRF(top-10) → CrossEncoder → top-3
+```
+
+- Model: `cross-encoder/ms-marco-MiniLM-L-6-v2` (46MB, CPU-friendly)
+- Graceful fallback: model mevcut değilse RRF sıralamasına döner
+- Hedef: Precision@3 +12% iyileşme
+
+### 3. Prometheus + Grafana Observability (v14.4)
+
+| Bileşen | Açıklama |
+|:--|:--|
+| `src/lib/metrics.ts` | Singleton Prometheus registry (prom-client) |
+| `src/app/api/metrics/route.ts` | `/api/metrics` scrape endpoint |
+| `engine_request_total` | Toplam istek sayısı (model, endpoint, status) |
+| `engine_latency_ms` | Yanıt gecikmesi histogramı (ms) |
+| `engine_guard_block_total` | Güvenlik filtresi engellemeleri |
+| `engine_active_connections` | Anlık bağlantı gauge'u |
+| `docker-compose.monitoring.yml` | Prometheus + Grafana Docker stack |
+
+### 4. Agent Orchestrator v2 (v14.4)
+
+**Dosya:** `src/python/agent_orchestrator_v2.py`
+
+Mimari:
+```
+Kullanıcı Sorusu
+  └─ Domain Tespiti (anahtar kelime eşleşmesi)
+      └─ 3 Ajan Paralel Seçimi (round-robin)
+          ├─ Ajan-1 (primary expert)
+          ├─ Ajan-2 (secondary expert)
+          └─ Ajan-3 (fallback expert)
+              └─ Majority-Vote Konsensüs (2/3 anlaşma gerekli)
+                  └─ Kazanan Yanıt + Orkestrasyon Meta-verisi
+```
+
+- `server.py` → `POST /orchestrate` endpoint eklendi
+- Graceful fallback: uzlaşı sağlanamazıssa `composer.py` doğrudan çağrılır
+- Tüm ajan yanıtları, güven skorları ve gecikme verileri çıktıda yer alır
+
+---
+
+*OmniEngine v14.4 — AR-GE Raporu — 18 Temmuz 2026*  
 *Hazırlayan: OmniEngine AR-GE Ekibi*

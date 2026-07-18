@@ -369,16 +369,31 @@ DB:       HoloDB + Qdrant (vector store)
 Monitor:  Prometheus + Grafana
 ```
 
-### 7.3 Eksik Üretimleşme Kalemleri (P0/P1)
+### 7.3 Üretimleşme Durumu (Güncelleme: 18 Temmuz 2026)
 
-| Öncelik | Kalem | Kabul Kriteri |
-|:--:|:--|:--|
-| P0 | Docker air-gap smoke test | İnternetsiz ortamda `npm run build`, Python diagnose, HoloDB load ve chat smoke geçer |
-| P0 | CI/CD temel hattı | lint + build + Python diagnose + e2e smoke tek komutla çalışır |
-| P0 | Whitepaper iddia-doğrulama matrisi | Her performans/güvenlik iddiası rapor dosyası ve test komutuyla eşleşir |
-| P1 | Evidence Drawer MVP | Yanıttaki iddia, RAG chunk, HoloDB node ve confidence skoru aynı panelde görünür |
-| P1 | Auth/tenant izolasyonu | Conversation, Memory, DocumentChunk, AuditEvent tenant namespace taşır |
-| P1 | Observability | Latency, QPS, abstain, guard block ve confidence dağılımı dashboard'a yazılır |
+#### ✅ P0 / P1 — Tamamlandı
+
+| Öncelik | Kalem | Durum | Versiyon |
+|:--:|:--|:--:|:--:|
+| P0 | Docker air-gap smoke test | ✅ Tamamlandı | v14.2 |
+| P0 | CI/CD temel hattı (lint + build + smoke) | ✅ Tamamlandı | v14.2 |
+| P0 | Whitepaper iddia-doğrulama matrisi | ✅ Tamamlandı | v14.2 |
+| P1 | Evidence Drawer MVP (RAG chunk + HoloDB + confidence) | ✅ Tamamlandı | v14.3.1 |
+| P1 | Auth/tenant izolasyonu (`tenantId` tüm modellerde) | ✅ Tamamlandı | v14.3.1 |
+| P1 | Observability (QPS, latency P95/P99, abstain, block, conf. dist.) | ✅ Tamamlandı | v14.3.1 |
+
+#### 📋 P2 — Sonraki Sprint (v14.4 Hedefleri)
+
+| Öncelik | Kalem | Kabul Kriteri | Tahmini Süre |
+|:--:|:--|:--|:--:|
+| P2 | **Multi-tenant filtre middleware** | Her API isteği `tenantId` header'ından alır, DB sorguları otomatik filtrelenir | 1 gün |
+| P2 | **GPTQ 4-bit Quantization** | `HOLO_AGI_FINAL.pth` → `HOLO_AGI_GPTQ.pth`; boyut <400MB, doğruluk kaybı <%5 | 2 gün |
+| P2 | **Agent Orchestrator v2** | 3 uzman eş zamanlı, round-robin denetim, çoğunluk oyu mekanizması | 3 gün |
+| P2 | **Prometheus + Grafana metrikleri** | `/metrics` endpoint, latency histogram, QPS gauge, error rate counter | 2 gün |
+| P2 | **Sürekli Ön-Eğitim (Continual Pre-Training)** | Yeni domain verisini EWC ile mevcut modele entegre et, Catastrophic Forgetting yok | 4 gün |
+| P2 | **Cross-encoder reranking** | BM25+FAISS üstüne CE reranker; top-10 → top-3 doğruluk artışı hedefi %12 | 2 gün |
+| P3 | **KVKK / GDPR teknik uyumluluk belgesi** | Veri silme, anonimleştirme ve audit log belgeleri | 3 gün |
+| P3 | **Penetrasyon testi raporu** | OWASP Top-10 kontrolü, prompt injection, path traversal güvenlik taraması | 5 gün |
 
 ---
 

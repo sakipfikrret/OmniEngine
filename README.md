@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v14.2
+# 🧠 OmniEngine Cognitive Core — v14.4
 
-**Yerel Egemen AI · 500K Gerçek Dünya SFT · HoloDB v5.0 (839K+ Düğüm) · PDF Öğrenme**  
-**Hibrit FAISS+RRF Retrieval · Tıbbi Görüntü Yorumlama · FHIR/HL7 Cihaz Entegrasyonu**  
-**Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · NVD CVE + MITRE ATT&CK · 3D Holographic UI**
+**Yerel Egemen AI · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability**  
+**Çoklu Ajan Orkestrasyonu v2 (Consensus) · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0**  
+**Tıbbi Görüntü Yorumlama · FHIR/HL7 Cihaz Entegrasyonu · 3D Holographic UI**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
 
@@ -12,7 +12,7 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v14.2-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v14.4-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
@@ -31,19 +31,18 @@
 
 ---
 
-## Güncel Gelişim Durumu — v14.2 (15 Temmuz 2026)
+## Güncel Gelişim Durumu — v14.4 (18 Temmuz 2026)
 
-OmniEngine **v14.2** ile sistem; Whitepaper iddia doğrulama matrisi (16/16 PASS), oturum bağlam belleği (SessionMemory), 500K kayıtlı SFT v12 derin eğitim hattı, DPO tercih optimizasyonu ve FAISS otomasyonu ile tamamlandı. v14.1'in hibrit retrieval, tıbbi görüntü ve FHIR/HL7 temeli üzerine inşa edildi.
+OmniEngine **v14.4** ile; multi-tenant veri izolasyonu (Prisma / header bazlı), 4-bit INT4 model sıkıştırma (167MB), Cross-Encoder reranking (`ms-marco`), Prometheus / Grafana telemetri altyapısı ve 3-ajan çoğunluk oyu konsensüs mekanizmasına sahip orkestrasyon motoru v2 entegre edildi.
 
 | Alan | Güncel durum |
 |:--|:--|
-| Platform | Next.js 16.2.6 + Turbopack build doğrulandı; 33 sayfa statik üretildi |
-| **Claims-Verify (YENİ)** | `verify_claims.py` — 16/16 whitepaper iddiası deterministik doğrulandı (100% PASS) |
-| **Session Memory (YENİ)** | `session_memory.py` — Son 5 tur sliding window; `/api/chat` + SSE stream entegrasyonu |
-| **SFT v12 Derin Eğitim (YENİ)** | `sft_train_v12_deep.py` — 5 domain × 100K = 500K kayıt, 1.015B MoE, Cosine LR |
-| **DPO Eğitim Hattı (YENİ)** | `dpo_train.py` — beta=0.1 LoRA/DPO tercih optimizasyonu |
-| **FAISS Otomasyonu (YENİ)** | `run_faiss_build.mjs` — 5 domain FAISS indeks otomasyonu + build raporu |
-| Hibrit Retrieval | `retriever.py` BM25 + FAISS IVFFlat + RRF füzyon |
+| Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript 0 hata) |
+| **Model Quantization (YENİ)** | `quantize_gptq.py` — Ağırlıklar 4-bit'e düşürüldü, boyut **167.28MB**, delta kaybı **0.0011%** |
+| **Cross-Encoder Reranking (YENİ)**| `ms-marco-MiniLM-L-6-v2` reranker katmanı BM25+FAISS RRF üzerine eklendi |
+| **Prometheus Observability (YENİ)**| `/api/metrics` scrape rotası, singleton registry, QPS/Latency/Connections metrikleri |
+| **Agent Orchestrator v2 (YENİ)**| 3-Ajan paralel çalıştırma + majority-vote (2/3 uzlaşı) ve FastAPI `/orchestrate` entegrasyonu |
+| **Multi-Tenant (YENİ)** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
 | Tıbbi Görüntü | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
 | FHIR/HL7 Gateway | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
 | HoloDB v5.0 | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |

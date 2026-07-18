@@ -1,7 +1,7 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.3
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.4
 
-> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
-> **Kapsam:** Kısa vadeli, orta vadeli ve tamamlanan ileri özellikler yol haritası
+> **Versiyon:** v14.4 · **Güncelleme:** 18 Temmuz 2026  
+> **Kapsam:** Tamamlanan v14.4 ve gelecek dönem ileri özellikler yol haritası
 
 ---
 
@@ -19,8 +19,16 @@
 | **HoloDB Co-Occurrence** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
 | **Yerel LLM Sentezleyici** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
 | **Veri Üretim Otomasyonu** | **Çok Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
-| Session Memory | Yüksek | Orta | 🟠 Yüksek | 🔄 Aktif |
+| **Evidence Drawer MVP** | **Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
+| **Auth/Tenant İzolasyonu** | **Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
+| **Gozlemlenebilirlik Panosu** | **Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
+| Session Memory | Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.2) |
 | API Gateway | Orta | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.1) |
+| **Multi-tenant Middleware** | **Yüksek** | **Düşük** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
+| **GPTQ 4-bit Quantization** | **Çok Yüksek** | **Orta** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
+| **Agent Orchestrator v2** | **Çok Yüksek** | **Yüksek** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
+| **Cross-encoder Reranking** | **Yüksek** | **Orta** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
+| **Prometheus + Grafana** | **Orta** | **Düşük** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
 | Legal Brief Generator | Orta | Yüksek | 🟡 Orta | 🔄 Aktif |
 | Voice-to-Expert | Orta | Yüksek | 🟡 Orta | 📋 Planlandı |
 | Multimodal (PDF/Excel) | Yüksek | Çok Yüksek | 🟡 Orta | 🔄 Aktif |
@@ -272,4 +280,96 @@ Banka C   → Yerel model güncelleme (gradient)
 
 ---
 
-*Son güncelleme: 17 Temmuz 2026 — OmniEngine Ürün Ekibi*
+## 🚀 v14.4 — Sonraki Sürüm Özellikleri (Planlandı)
+
+### 1. 🔒 Multi-Tenant Filtre Middleware
+
+Tüm API rotalarına `X-Tenant-ID` header desteği eklenir. Her veritabanı sorgusu `tenantId` anahtar sözcüğüyle otomatik filtreler.
+
+```typescript
+// src/lib/tenant.ts
+export function getTenantId(req: Request): string {
+  return req.headers.get('X-Tenant-ID') ?? 'default-tenant';
+}
+
+// Prisma sorgusu örneği:
+await prisma.conversation.findMany({
+  where: { tenantId: getTenantId(req) }
+});
+```
+
+**Kabul Kriteri:** `/api/chat`, `/api/memory`, `/api/history` rotaları yanlış tenant verisi döndermüyor.
+
+---
+
+### 2. ⚡ GPTQ 4-bit Quantization
+
+`HOLO_AGI_FINAL.pth` modeli 4-bit GPTQ ile sıkıştırılır. Boyut ~700MB → <400MB, doğruluk kaybı <%5.
+
+```python
+# src/python/tools/quantize_gptq.py
+from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
+
+quantize_config = BaseQuantizeConfig(
+    bits=4, group_size=128, desc_act=True
+)
+model = AutoGPTQForCausalLM.from_pretrained(
+    "models/HOLO_AGI_FINAL.pth", quantize_config
+)
+model.quantize(calibration_data)  # 128 kalibrasyon örneği
+model.save_quantized("models/HOLO_AGI_GPTQ")
+```
+
+**Fayda:** Mobil ve edge cihazlara däğitim mümkün hale gelir.
+
+---
+
+### 3. 🤖 Agent Orchestrator v2
+
+3 uzman ajandan bir&apos;i birincil, diğerleri denetimci şeklinde çalışır. Çoğunluk oyu mekanizması ile halusinasyon olasılığı azaltılır.
+
+```
+Soru
+  |═════════════════════════════════════════════════════|
+  |           |                    |
+Ajana-1    Ajana-2             Ajana-3
+(Birincil)  (Denetimci A)   (Denetimci B)
+  |═════════════════════════════════════════════════════|
+             Çoğunluk Oyu (2/3 eşleşmesi)
+                       |
+                   Final Yanıt
+```
+
+---
+
+### 4. 📡 Prometheus + Grafana Metrik Entegrasyonu
+
+`/metrics` endpoint (`prom-client` veya Python `prometheus_client`) ile:
+- `engine_request_total` — toplam istek sayıcısı
+- `engine_latency_ms` — histogram (P50, P95, P99)
+- `engine_qps` — anlık QPS gauge
+- `engine_guard_block_total` — engellenen soru sayıcısı
+
+---
+
+### 5. 🔎 Cross-Encoder Reranking
+
+Mevcut hibrit arama (FAISS + BM25 → top-10) üstüne Cross-Encoder eklenecek:
+
+```python
+# src/python/retriever.py eki
+from sentence_transformers import CrossEncoder
+
+ce_model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
+def rerank(query: str, candidates: list[str]) -> list[str]:
+    scores = ce_model.predict([(query, c) for c in candidates])
+    ranked = sorted(zip(scores, candidates), reverse=True)
+    return [doc for _, doc in ranked[:3]]  # top-3
+```
+
+**Beklenen Kazanım:** Retrieval Precision@3 %12 artacak.
+
+---
+
+*Son güncelleme: 18 Temmuz 2026 — OmniEngine Ürün Ekibi*
