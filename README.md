@@ -1472,10 +1472,14 @@ v15.6 sürümü ile OmniEngine, mobil cihaz entegrasyonu me sahadaki hekim/ajanl
 - `OmniVoiceModule`: Mobil ses kaydı me Voice-to-Expert alan yönlendirmesi.
 - `OmniFhirBleModule`: Bluetooth Low Energy (BLE) tıbbi cihaz taraması me FHIR R4 VitalObservation üretimi.
 
-### 24.3 v15.x Birleşik Birim Test Süiti
+### 24.3 Web UI Entegrasyon & Kümülâtif Test Matrisi
+- **Canlı Web UI & HTTP API Testleri (`test_web_api_live.py`)**: 8 Web UI rotası (`/`, `/chat`, `/holodb`, `/holodb/health-systems`, `/holodb/explainability`, `/dashboard/tenant`, `/benchmark`, `/kvkk`) `200 OK` doğrulandı.
+- **Kümülâtif Test Skorları**:
 ```bash
 python -m unittest discover -s src/python/tests -p "test_v15_*.py"
-# Sonuç: 29/29 PASS (100% OK)
+python -m unittest src/python/tests/test_web_ui_routes.py
+python -m unittest src/python/tests/test_web_api_live.py
+# KÜMÜLÂTİF TOPLAM: 44/44 PASS (100% OK)
 ```
 
 ---

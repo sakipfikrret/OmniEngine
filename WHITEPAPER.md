@@ -1560,12 +1560,16 @@ AI modellerini PhD seviyesinde uzmanlaştırmak için tasarlanmış gerçek + se
 ### 27.2 Voice-to-Expert & BLE FHIR Gateway
 - `OmniVoiceModule`: Mobil ses yakalama ve Voice-to-Expert alan seçimi.
 - `OmniFhirBleModule`: Bluetooth Low Energy (BLE) vital monitör taraması ve FHIR R4 VitalObservation nesneleri üretimi.
-- Birleşik v15.x test doğrulama skoru: **29/29 PASS (%100 OK)**.
+
+### 27.3 Web UI & HTTP Entegrasyon Doğrulaması
+- 8 ana Web UI rotası (`/`, `/chat`, `/holodb`, `/holodb/health-systems`, `/holodb/explainability`, `/dashboard/tenant`, `/benchmark`, `/kvkk`) ve 7 API uç noktası canlı HTTP testleri ile doğrulandı.
+- Toplam kümülâtif test doğrulama skoru: **44/44 PASS (%100.0 OK)**.
 
 ---
 
 *OmniEngine Cognitive Core — Technical Whitepaper v15.6*  
 *Son Güncelleme: 23 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+
 
 
 
