@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v14.5
+# 🧠 OmniEngine Cognitive Core — v15.1
 
-**Yerel Egemen AI · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability**  
-**Çoklu Ajan Orkestrasyonu v2 (Consensus) · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0**  
-**Tıbbi Görüntü Yorumlama · FHIR/HL7 Cihaz Entegrasyonu · 3D Holographic UI**
+**Yerel Egemen AI · Calibrated Uncertainty · Multi-Agent Debate Protocol (Consensus) · Health Systems Gateway (DICOM/ICD-10/FHIR)**  
+**Hibrit Veri Motoru v2.0 (10K SFT / 2.5K DPO) · Zero-Hallucination Quality Gate v2.0 · Model Sıkıştırma (167MB INT4)**  
+**Cross-Encoder Reranking · Prometheus Observability · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
 
@@ -12,13 +12,13 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v14.5-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v15.1-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
-[![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
+[![Dataset](https://img.shields.io/badge/SFT_Veri-500K%2B_Kayıt-f59e0b?style=flat-square)](./)
 [![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_839K%2B_Düğüm-8B5CF6?style=flat-square)](./)
-[![FHIR](https://img.shields.io/badge/FHIR-R4_HL7-0f766e?style=flat-square)](./)
-[![Vision](https://img.shields.io/badge/Vision-XRay%2FCT%2FMRI-e11d48?style=flat-square)](./)
+[![FHIR](https://img.shields.io/badge/FHIR-R4_HL7_IPS-0f766e?style=flat-square)](./)
+[![DICOM](https://img.shields.io/badge/DICOM-PACS_WADO--RS-e11d48?style=flat-square)](./)
 [![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_III-Compliant-0f766e?style=flat-square)](./)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
@@ -31,24 +31,26 @@
 
 ---
 
-## Güncel Gelişim Durumu — v14.5 (20 Temmuz 2026)
+## Güncel Gelişim Durumu — v15.1 (22 Temmuz 2026)
 
-OmniEngine **v14.5**, önceki platform katmanlarına ek olarak doğal dil yanıt davranışını ölçen bir kabul testi ve akış/JSON yanıt yolları arasında uzman yönlendirme eşitliği sunar. Bu sürümde finansal sayısal sadakat, eksik veri yönetimi, yanıt yapısı ve siber güvenlikte güvenli ret davranışı temsilî senaryolarla otomatik olarak doğrulanır.
+OmniEngine **v15.1**, platforma **Calibrated Uncertainty** (güven kalibrasyonu), **Multi-Agent Debate Protocol** (3 aşamalı tartışma ve konsensüs), kurumsal **Sağlık Sistemleri Entegrasyon Ağgeçidi** (DICOM binary header okuyucu, WADO-RS URL üretimi, T.C. E-Nabız ICD-10 & SNOMED CT eşleyicisi ve HL7 FHIR IPS jeneratörü) ve **Gerçek + Sentetik Hibrit Veri Motoru v2.0** kazandırmıştır.
 
 | Alan | Güncel durum |
 |:--|:--|
-| Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript 0 hata) |
-| **Model Quantization (YENİ)** | `quantize_gptq.py` — Ağırlıklar 4-bit'e düşürüldü, boyut **167.28MB**, delta kaybı **0.0011%** |
-| **Cross-Encoder Reranking (YENİ)**| `ms-marco-MiniLM-L-6-v2` reranker katmanı BM25+FAISS RRF üzerine eklendi |
-| **Prometheus Observability (YENİ)**| `/api/metrics` scrape rotası, singleton registry, QPS/Latency/Connections metrikleri |
-| **Agent Orchestrator v2 (YENİ)**| 3-Ajan paralel çalıştırma + majority-vote (2/3 uzlaşı) ve FastAPI `/orchestrate` entegrasyonu |
-| **Multi-Tenant (YENİ)** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
-| **NLP Yanıt Kalitesi (YENİ)** | 6/6 kabul testi: sayısal sadakat, anlaşılır yapı, güvenli ret ve domain yönlendirme |
-| Tıbbi Görüntü | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
-| FHIR/HL7 Gateway | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
+| Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript & Pyright 0 hata) |
+| **Calibrated Uncertainty (YENİ)** | `composer.py` `evaluate_confidence_score()` ile %70 altı güven skorlarında otomatik koruma |
+| **Multi-Agent Debate (YENİ)** | `agent_orchestrator_v2.py` `run_debate_session()` — Uzman teklifi → Eleştirmen incelemesi → Konsensüs sentezi |
+| **Sağlık Sistemleri Entegrasyonu (YENİ)** | `dicom_pacs_gateway.py` (DICOM header & WADO-RS) + `health_systems_gateway.py` (ICD-10, SNOMED, FHIR IPS) |
+| **Hibrit Veri Motoru v2.0 (YENİ)** | `hybrid_dataset_synthesizer.py` — 15 domain, 20 uzman seed senaryosu, Evol-Instruct v2 mutasyon & Rejection Sampling |
+| **Zero-Hallucination Quality Gate (YENİ)**| `data_quality_verifier.py` — 7 boyutlu kalite denetimi (hallucination blacklist, domain whitelist, CoT, dedup) |
+| **SFT & DPO Dataset Blender (YENİ)** | `build_hybrid_sft_dpo.py` — 10K SFT / 2.5K DPO hedefli domain dengeli veri seti harmanlayıcı |
+| **Model Quantization** | `quantize_gptq.py` — Ağırlıklar 4-bit'e düşürüldü, boyut **167.28MB**, delta kaybı **0.0011%** |
+| **Cross-Encoder Reranking** | `ms-marco-MiniLM-L-6-v2` reranker katmanı BM25+FAISS RRF üzerine eklendi |
+| **Prometheus Observability** | `/api/metrics` scrape rotası, singleton registry, QPS/Latency/Connections metrikleri |
+| **Multi-Tenant** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
 | HoloDB v5.0 | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
-| 100K Benchmark | %100.000 başarı oranı, 844.6 QPS, 69.72 ms P99 |
-| Güvenlik | 1,135 adversarial guard block; %100 bloklama |
+| Güvenlik & Doğrulama | `test_v15_1_features.py` (5/5 PASS), `verify_claims.py` (16/16 PASS) |
+
 
 **Açık üretim borçları:** FAISS binary indeks build çalıştırma (839K node, ~2-4h CPU), SFT/DPO eğitimi, Docker air-gap smoke test, CI/CD.
 

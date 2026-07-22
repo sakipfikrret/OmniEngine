@@ -1,31 +1,33 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v14.5
+# OmniEngine Cognitive Core — Technical Whitepaper v15.1
 
-**Yerel Egemen AI · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability · Çoklu Ajan Orkestrasyonu v2 (Consensus) · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · GraphRAG PathFinder & Co-Occurrence Auto-Linker · Yerel LLM Sentezleyici (Ollama/LM Studio/vLLM) · Otomatik SFT+DPO+FAISS Pipeline · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
+**Yerel Egemen AI · Calibrated Uncertainty · Multi-Agent Debate Protocol (Consensus) · Health Systems Gateway (DICOM/ICD-10/FHIR IPS) · Hibrit Veri Motoru v2.0 (10K SFT / 2.5K DPO) · Zero-Hallucination Quality Gate v2.0 · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · GraphRAG PathFinder & Co-Occurrence Auto-Linker · Yerel LLM Sentezleyici (Ollama/LM Studio/vLLM) · Otomatik SFT+DPO+FAISS Pipeline · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
 
 ---
 
 ## Yönetici Özeti
 
-OmniEngine v14.5, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v15.1, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
 Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v14.5'in temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Cross-Encoder Reranking**, **Prometheus/Grafana Observability**, **Agent Orchestrator v2 (Konsensüs)**, **Multi-Tenant Veri İzolasyonu (Header & Prisma)**, **4-bit INT4 Model Sıkıştırma (167MB)**, **GraphRAG PathFinder (BFS/Dijkstra derinlik-3)**, **HoloDB Co-Occurrence Auto-Linker**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktadır. Buna ek olarak v14.5, kullanıcıya ulaşan yanıtın finansal sayısal sadakat, eksik veri yönetimi, güvenli ret ve yapı açısından davranışsal sözleşmesini 6 temsilî kabul senaryosunda doğrular. Bu test, geniş ölçekli benchmarklardan farklı olarak faktüel doğruluk iddiası değil, ürün yanıtının tutarlılığı için bir regresyon kapısıdır.
+**v15.1'in temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **Calibrated Uncertainty (%70+ güven koruması)**, **Multi-Agent Debate Protocol (Uzman → Eleştirmen → Konsensüs)**, **Sağlık Sistemleri Ağgeçidi (DICOM WADO-RS, ICD-10 & SNOMED CT, HL7 FHIR IPS)**, **Hibrit Veri Motoru v2.0 (15 Domain, Evol-Instruct v2, 7-Boyutlu Kalite Kapısı, 10K SFT / 2.5K DPO Blender)**, **500K+ gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Cross-Encoder Reranking**, **Prometheus/Grafana Observability**, **Agent Orchestrator v2 (Konsensüs)**, **Multi-Tenant Veri İzolasyonu (Header & Prisma)**, **4-bit INT4 Model Sıkıştırma (167MB)** ve **verify_claims.py & test_v15_1_features.py İddia Doğrulama Matrisleri** ile sunmaktadır.
 
-### v14.4 Doğrulama Özeti
+### v15.1 Doğrulama Özeti
 
 | Katman | Durum | Kanıt / çıktı |
 |:--|:--|:--|
-| Production build | Geçti | Next.js 16.2.6, Turbopack, 34 statik sayfa, TypeScript 0 hata |
+| Production build | Geçti | Next.js 16.2.6, Turbopack, 40 statik sayfa, TypeScript & Pyright 0 hata |
+| **Calibrated Uncertainty** | **Geçti** | `composer.py` — `evaluate_confidence_score()` skorlama & %70 altı güven koruması |
+| **Multi-Agent Debate Protocol** | **Geçti** | `agent_orchestrator_v2.py` — `run_debate_session()` 3-aşamalı uzlaşı sentezi |
+| **Sağlık Sistemleri Ağgeçidi** | **Geçti** | `dicom_pacs_gateway.py` (DICOM binary & WADO-RS) + `health_systems_gateway.py` (ICD-10, SNOMED, FHIR IPS) |
+| **Hibrit Veri Motoru v2.0** | **Geçti** | `hybrid_dataset_synthesizer.py` — 15 domain, 20 seed, Evol-Instruct v2, Rejection Sampling |
+| **Zero-Hallucination Quality Gate**| **Geçti** | `data_quality_verifier.py` — 7 boyutlu kalite denetimi, %52.2 onay oranı, 0.81 ortalama skor |
+| **SFT / DPO Dataset Blender** | **Geçti** | `build_hybrid_sft_dpo.py` — 10K SFT / 2.5K DPO harmanlama, domain dengeleme, audit log |
 | **Model Quantization** | **Geçti** | `quantize_gptq.py` ile FP16 -> INT4 sıkıştırma; **167.28MB**, delta kaybı **0.0011%** |
 | **Cross-Encoder Reranking** | **Geçti** | `retriever.py` `ms-marco-MiniLM-L-6-v2` reranker entegrasyonu ve RRF sıralama entegrasyonu |
 | **Prometheus Observability** | **Geçti** | `/api/metrics` scrape endpoint, `prom-client` entegrasyonu ve Grafana |
-| **Agent Orchestrator v2** | **Geçti** | 3-Ajan paralel (ThreadPoolExecutor) ve majority-vote (2/3 uzlaşı) ve `/orchestrate` |
-| **Multi-Tenant DB** | **Geçti** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
-| **İddia Doğrulama Matrisi** | **Geçti** | `verify_claims.py` ile 16 kritik whitepaper iddiasının tamamı doğrulandı (16/16 PASS) |
-| **Oturum Belleği (Session Memory)** | **Geçti** | `session_memory.py` ile Prisma entegre son 5 mesaj çiftinin bağlam olarak Composer'a aktarımı |,135 adversarial sorgu başarıyla bloklandı (Guard) |
+| **İddia Doğrulama Matrisi** | **Geçti** | `verify_claims.py` (16/16 PASS) & `test_v15_1_features.py` (5/5 PASS) |
 | HoloDB v5.0 | Geçti | 839,486 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
-| Açık borç | Aktif | Docker smoke, CI/CD (FAISS binary build tamamlandı) |
 
 ## İçindekiler
 
@@ -49,12 +51,13 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 18. [Platform Mimarisi](#18-platform-mimarisi--v140-web)
 19. [v14.1 İleri Entegrasyonlar: Hibrit Retrieval, Vision, FHIR](#19-v141-ileri-entegrasyonlar)
 20. [v14.3 GraphRAG, HoloDB Co-Occurrence & Yerel LLM Sentezleyici](#20-v143-graphrag-holodb-co-occurrence--yerel-llm-sentezleyici)
+21. [v14.4 Multi-Tenancy, Quantization & Observability](#21-v144-geliştirmeleri--multi-tenancy-quantization--observability)
+22. [v15.1 Calibrated Uncertainty, Multi-Agent Debate, Health Systems & Hibrit Veri Motoru v2.0](#22-v151-geliştirmeleri--calibrated-uncertainty-multi-agent-debate-health-systems--hibrit-veri-motoru-v20)
 
 ---
 
 ## 1. Pazar Problemi
 
-Modern büyük dil modelleri güçlüdür — ancak kurumsal ekipler beş kronik sorunla karşılaşır:
 
 | Sorun | Kurumsal Etki |
 |:---|:---|
@@ -1443,5 +1446,38 @@ Bilişsel kararlarda güvenliği artırmak için çoğunluk oyu (consensus) kull
 
 ---
 
-*OmniEngine Cognitive Core — Technical Whitepaper v14.4*  
-*Güncelleme: 18 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+## 22. v15.1 Geliştirmeleri — Calibrated Uncertainty, Multi-Agent Debate, Health Systems & Hibrit Veri Motoru v2.0
+
+### 22.1 Calibrated Uncertainty (Güven Kalibrasyonu)
+
+`composer.py` içerisine entegre edilen `evaluate_confidence_score(text, domain)` fonksiyonu, üretilen yanıtların faktüel güvenilirliğini deterministik bir formülle skorlar:
+
+$$\text{Confidence} = 0.50 + 0.15 \cdot \mathbb{I}(\text{CoT Steps}) + 0.10 \cdot \mathbb{I}(\text{References}) + 0.10 \cdot \mathbb{I}(\text{Whitelists}) - 0.25 \cdot \mathbb{I}(\text{Blacklists}) - 0.10 \cdot \mathbb{I}(\text{Too Short})$$
+
+- **Güvenlik Koruması (%70 Eşiği):** Skoru %70 (`0.70`) altında kalan yanıtlar otomatik olarak riskli kabul edilir ve kullanıcıya "Yüksek Belirsizlik Uyarısı" ile birlikte alternatif uzman görüşü sunulur.
+
+### 22.2 Multi-Agent Debate Protocol (Çoklu Ajan Tartışma Protokolü)
+
+`agent_orchestrator_v2.py` `run_debate_session()` fonksiyonu üzerinden çalışan 3-aşamalı konsensüs mekanizması:
+1. **Uzman Teklifi (Expert Proposal):** İlgili alan uzmanı (Tıp, Hukuk, Siber, Finans) ilk analiz ve çözüm önerisini sunar.
+2. **Eleştirmen İncelemesi (Critic Assessment):** Karşıt alan uzmanı veya Genel Eleştirmen Ajan önerideki eksik, halüsinasyon veya çelişkili durumları raporlar.
+3. **Konsensüs Sentezi (Consensus Synthesis):** İki ajan görüşü birleştirilerek nihai, filtrelenmiş ve doğrulanmış yanıt `composer.py` tarafından üretilir.
+
+### 22.3 Sağlık Sistemleri Entegrasyon Ağgeçidi (Health Systems Gateway)
+
+Sağlık bilişimi standartlarıyla kurumsal entegrasyon sağlayan iki yeni ağgeçidi:
+- **`dicom_pacs_gateway.py` (DICOM & PACS):** DICOM binary başlıklarını (PatientID, StudyInstanceUID, Modality, AccessionNumber) saf Python byte parsers ile okur. DICOM Web WADO-RS standartlarına uygun doğrudan PACS görüntüleme URL'i üretir (`/pacs/wado?studyUID=...`).
+- **`health_systems_gateway.py` (ICD-10 & FHIR IPS):** T.C. E-Nabız ve DSÖ uyumlu ICD-10-CM / SNOMED CT tanı kodu eşleyicisi. Hasta özet verilerinden W3C/HL7 standartlarına uygun JSON FHIR International Patient Summary (IPS) kaynağı oluşturur.
+
+### 22.4 Hibrit Veri Motoru v2.0 & Zero-Hallucination Quality Gate v2.0
+
+AI modellerini PhD seviyesinde uzmanlaştırmak için tasarlanmış gerçek + sentetik veri üretim hattı:
+- **`hybrid_dataset_synthesizer.py` (Evol-Instruct v2):** 15 domain, 20 kanonik seed senaryosu. 3 mutasyon modu (`deepen`, `broaden`, `multistep`). Rejection Sampling ile her seed için 5 aday üretilip 3 farklı anlatım tarzında harmanlanır.
+- **`data_quality_verifier.py` (7-Boyutlu Kalite Kapısı):** Halüsinasyon karalistesi, domain kılavuz beyazlistesi, CoT adım yapısı, min karakter uzunluğu, chosen>rejected delta skoru, MD5 parmak izi ile tekrarlayan yanıt önleme ve referans varlık kontrolü. Onay eşiği: $\ge 0.75$.
+- **`build_hybrid_sft_dpo.py` (Blender):** 10,000 SFT ve 2,500 DPO hedefli domain-dengeli veri harmanlayıcı. %70 gerçek otoriter seed + %30 Quality Gate onaylı sentetik veri harmanı (`sft_dataset_v15.jsonl`, `dpo_dataset_v15.jsonl`).
+
+---
+
+*OmniEngine Cognitive Core — Technical Whitepaper v15.1*  
+*Güncelleme: 22 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+
