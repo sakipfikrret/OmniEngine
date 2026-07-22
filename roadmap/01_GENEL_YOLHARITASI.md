@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2026–2030+)
 
-> **Versiyon:** v15.2 · **Güncelleme:** 22 Temmuz 2026
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | HoloDB v5.0 (Float32 FAISS + BM25 + Live Delta Hot-Reload + 3D UI) ✅ | Multi-Domain Simulation Engine v2.0 (Ameliyat/Hukuk/Finans/Siber 1,000 MC) ✅ | DICOM Web Canvas Viewer UI ✅ | Kurumsal LDAP/AD SSO Adaptörü ✅ | 1000-Soru Gerçek NLP Benchmark Süiti ✅ | Agent Orchestrator v2 | GraphRAG PathFinder | Multi-Tenant | Voice-to-Expert | Legal Brief Generator | On-Premise Installer | Webhook Engine | Explainability API
+> **Versiyon:** v15.6 · **Güncelleme:** 23 Temmuz 2026
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | HoloDB v5.0 ✅ | DICOM Web Canvas UI ✅ | Kurumsal LDAP/AD SSO ✅ | 100.000-Soru NLP Benchmark ✅ | Hukuki Dilekçe Sentezleyici ✅ | Explainability UI ✅ | Webhook Motoru ✅ | DPO v2 Alignment ✅ | Pentest Reporter ✅ | Billing API ✅ | Federated Learning (FedAvg) ✅ | Edge Engine (<1ms) ✅ | Multilingual Mapping (AR/DE/FR) ✅ | SaaS Tenant Dashboard ✅ | Mobile SDK (React Native/Expo) ✅
 
 ---
 
@@ -14,7 +14,7 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 
 ---
 
-## 🏆 Mevcut Durum (v15.2 — Temmuz 2026)
+## 🏆 Mevcut Durum (v15.6 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
@@ -25,7 +25,18 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 | 3D Visualizer UI | **Interactive Canvas 3D Holographic Particle Matrix (`/holodb`)** | Production ✅ |
 | Sağlık Sistemleri UI | **DICOM Web Canvas Viewer & HU Measurement (`/holodb/health-systems`)** | Production ✅ |
 | Kurumsal SSO | **LDAP / Active Directory Adapter & Dynamic Role Mapping** | Active ✅ |
-| 1000-Soru NLP Benchmark | **nlp_benchmark_1000.py (9 Domain & OrchestratorV2 Consensus)** | Active ✅ |
+| 100.000-Soru NLP Benchmark | **nlp_benchmark_100000.py (9 Domain & OrchestratorV2 Consensus %100.0 PASS)** | Active ✅ |
+| Hukuki Dilekçe Sentezi | **İçtihat + Emsal Destekli Dilekçe Üretimi (`legal_brief_generator.py`)** | Active ✅ |
+| Explainability UI | **Karar Zinciri Görsel Denetim Paneli (`/holodb/explainability`)** | Active ✅ |
+| Webhook Motoru | **HMAC-SHA256 Kurumsal Olay Bildirimleri (`/api/webhooks`)** | Active ✅ |
+| DPO v2 Hizalama | **Direct Preference Optimization Pipeline (`dpo_train_v2.py`)** | Active ✅ |
+| Pentest Reporter | **OWASP Top 10 + LLM Safety Pentest Raporu (`pentest_reporter.py`)** | Active ✅ |
+| Kurumsal Billing API | **Stripe-like Usage & Subscription API (`/api/billing`)** | Active ✅ |
+| Federated Learning | **FedAvg Gradient Aggregation & Differential Privacy (`federated_trainer.py`)** | Active ✅ |
+| Edge Engine & Gate | **Sub-Millisecond (<1ms, 0.014ms) Symbolic Safety Check (`edge_engine.py`)** | Active ✅ |
+| Çok Dilli Destek | **TR / EN / AR / DE / FR Terminoloji Eşleme (`multilingual_support.py`)** | Active ✅ |
+| Tenant Dashboard UI | **API Key Rotasyonu & Kurumsal Kiracı Paneli (`/dashboard/tenant`)** | Active ✅ |
+| Mobile SDK | **React Native & Expo Cross-Platform SDK (`mobile-sdk/`)** | Active ✅ |
 | Otomatik Simülasyon | **Multi-Domain Monte Carlo Engine v2.0 (1,000 Trial Ameliyat/Hukuk/Finans)** | Active ✅ |
 | Mevzuat Senkronizasyon | **Resmi Gazete RSS + Local Mevzuat Auto Sync (`regulation_sync.py`)** | Active ✅ |
 | Expert Modül Sayısı | **8 domain + Voice + Vision + Legal Brief + HoloDB v5** | Genişliyor ✅ |

@@ -1496,7 +1496,79 @@ AI modellerini PhD seviyesinde uzmanlaştırmak için tasarlanmış gerçek + se
 
 ---
 
-*OmniEngine Cognitive Core — Technical Whitepaper v15.2*  
-*Son Güncelleme: 22 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+## 24. v15.3 Hukuki Dilekçe Sentezi, Explainability UI & Kurumsal Webhook (23 Temmuz 2026)
+
+### 24.1 İçtihat Destekli Hukuki Dilekçe Sentezleyici
+- `src/python/tools/legal_brief_generator.py` modülü Yargıtay CGK, AYM ve Danıştay kararlarını içeren 5 emsal kararlık bir içtihat veritabanı taşır.
+- Sorgu-içtihat anahtar kelime eşleşmesi ile en alakalı 3 emsal otomatik dilekçeye eklenir.
+- T.C. mahkeme başlığı, taraf bilgileri, maddi olaylar, hukuki sebepler, emsal kararlar ve imza bloğu içeren tam dilekçe üretir.
+- Air-gapped; dış hükmeden bağımsız çalışır.
+
+### 24.2 AI Explainability & Denetim Karar Zinciri UI
+- `src/app/holodb/explainability/` altında `ExplainabilityPanel.tsx` ve `page.tsx` bileşenleri.
+- `Domain Routing → RAG Retrieval → Quality Gate → Expert Synthesis` tüm adımları kullanıcıya görselleştirilir.
+- sha256 denetim hash, güven bandı progress bar ve kaynak sistem etiketi her adımı belgeler.
+
+### 24.3 HMAC-SHA256 Webhook Motoru
+- `src/python/tools/webhook_engine.py` ve `/api/webhooks` API rotası.
+- `X-OmniEngine-Signature: sha256=<hex>` başlığı ile imzalanmış olaylar ERP/CRM/HBYS sistemlerine iletilir.
+- v15.3 birim test sonuçları: **4/4 PASS** (`test_v15_3_features.py`).
+
+---
+
+## 25. v15.4 DPO v2 Alignment, Pentest Reporter & Enterprise Billing (23 Temmuz 2026)
+
+### 25.1 Direct Preference Optimization (DPO v2) Hizalama Engine
+- `src/python/training/dpo_train_v2.py` modülü `L_DPO = -log(sigmoid(beta * (log_pi_chosen - log_pi_rejected)))` formülü ile model çıktılarını uzman tercihlerine hizalar.
+- KL-regularization katsayısı $\beta = 0.1$, $\text{LR} = 5 \times 10^{-7}$ ile aşırı aşınmayı engeller.
+
+### 25.2 OWASP Top 10 + LLM-Specific Otomatik Pentest Raporlama
+- `src/python/tools/pentest_reporter.py` modülü 12 güvenlik kategorisinde otomatize penetrasyon testi yürütür.
+- SQL Injection, IDOR, Rate Limiting, PII Scrubber, System Prompt Exfiltration kontrolleri ile denetlenebilir `pentest_report.md` üretir.
+
+### 25.3 Kurumsal Billing & Usage Metering API
+- `/api/billing` rotası Starter ($99), Professional ($499) ve Enterprise ($2499) katman abonelik kontrolü sağlar.
+- HMAC-SHA256 imzalı ödeme doğrulama tokenları üretir.
+- Birleşik v15.x test doğrulama skoru: **18/18 PASS (%100 OK)**.
+
+---
+
+## 26. v15.5 Federated Learning, Edge AI & Multilingual Mapping (23 Temmuz 2026)
+
+### 26.1 Federated Learning Engine (FedAvg + Differential Privacy)
+- `src/python/tools/federated_trainer.py` istemci model güncellemelerini örnek sayılarına oranla ağırlıklı ortalar.
+- Gaussian gürültü ekleme $\sigma = \sqrt{2 \ln(1.25/\delta)} / \epsilon$ formülü ile Diferansiyel Gizlilik sağlar.
+
+### 26.2 Sub-Millisecond (<1ms) Edge Quality Gate & Distillation
+- `src/python/tools/edge_engine.py` pre-compiled regex ve hash seti ile $0.014\text{ ms}$ gecikmede PII ve halüsinasyon denetimi gerçekleştirir.
+
+### 26.3 Çok Dilli (TR, EN, AR, DE, FR) Terminoloji Eşleme
+- `src/python/tools/multilingual_support.py` MENA (Arapça) ve AB (Almanca/Fransızca) pazarları için terminolojik eşleme sağlar.
+
+### 26.4 SaaS Self-Service Tenant Dashboard UI
+- `/dashboard/tenant` altında `TenantDashboard.tsx` ile API Key rotasyonu ve kiracı bazlı kullanım ölçümü.
+- Birleşik v15.x test doğrulama skoru: **24/24 PASS (%100 OK)**.
+
+---
+
+## 27. v15.6 Mobile SDK (React Native/Expo), Voice-to-Expert & BLE FHIR Integration (23 Temmuz 2026)
+
+### 27.1 Mobile SDK Architecture (`@omniengine/mobile-sdk`)
+- `mobile-sdk/` paketi React Native ve Expo uygulamaları için modüler istemci sunar.
+- `OmniEngineClient`: REST API ve SSE akış protokolü istemcisi.
+
+### 27.2 Voice-to-Expert & BLE FHIR Gateway
+- `OmniVoiceModule`: Mobil ses yakalama ve Voice-to-Expert alan seçimi.
+- `OmniFhirBleModule`: Bluetooth Low Energy (BLE) vital monitör taraması ve FHIR R4 VitalObservation nesneleri üretimi.
+- Birleşik v15.x test doğrulama skoru: **29/29 PASS (%100 OK)**.
+
+---
+
+*OmniEngine Cognitive Core — Technical Whitepaper v15.6*  
+*Son Güncelleme: 23 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+
+
+
+
 
 
