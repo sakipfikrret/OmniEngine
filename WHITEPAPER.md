@@ -1,4 +1,4 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v14.4
+# OmniEngine Cognitive Core — Technical Whitepaper v14.5
 
 **Yerel Egemen AI · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability · Çoklu Ajan Orkestrasyonu v2 (Consensus) · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0 (839K+ Düğüm) · verify_claims.py İddia Doğrulama · Session Memory (Oturum Belleği) · NVD CVE + MITRE ATT&CK Cyber Zekası · Finance-Alpaca Entegrasyonu · PDF Öğrenme Modülü · Hibrit FAISS+RRF Semantik Retrieval · Tıbbi Görüntü Yorumlama (DICOM/JPEG) · FHIR R4/HL7 Tıbbi Cihaz Entegrasyonu · GraphRAG PathFinder & Co-Occurrence Auto-Linker · Yerel LLM Sentezleyici (Ollama/LM Studio/vLLM) · Otomatik SFT+DPO+FAISS Pipeline · Deterministik Uzman Yönlendirme · Bayesian Karar Motoru · 1.0B Parametre Hedefi**
 
@@ -6,11 +6,11 @@
 
 ## Yönetici Özeti
 
-OmniEngine v14.4, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v14.5, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
 Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v14.4'ün temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Cross-Encoder Reranking**, **Prometheus/Grafana Observability**, **Agent Orchestrator v2 (Konsensüs)**, **Multi-Tenant Veri İzolasyonu (Header & Prisma)**, **4-bit INT4 Model Sıkıştırma (167MB)**, **GraphRAG PathFinder (BFS/Dijkstra derinlik-3)**, **HoloDB Co-Occurrence Auto-Linker**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktadır. v11.1–v14.4 hattında elde edilen 25/25 AGI Progressive Eval başarısı korunurken, HoloDB v5.0 ve 1.015B MoE modeliyle yapılan 100K testlerde **%100.000 başarı oranı, 844.6 QPS ve 69.72 ms P99 gecikme** sonuçları elde edilmiştir.
+**v14.5'in temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **500K gerçek dünya eğitim verisi**, **HoloDB v5.0 (839K+ düğüm)**, **Hibrit FAISS+RRF semantik retrieval**, **Cross-Encoder Reranking**, **Prometheus/Grafana Observability**, **Agent Orchestrator v2 (Konsensüs)**, **Multi-Tenant Veri İzolasyonu (Header & Prisma)**, **4-bit INT4 Model Sıkıştırma (167MB)**, **GraphRAG PathFinder (BFS/Dijkstra derinlik-3)**, **HoloDB Co-Occurrence Auto-Linker**, **Tıbbi Görüntü Yorumlama (DICOM/XRay/CT/MRI)** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktadır. Buna ek olarak v14.5, kullanıcıya ulaşan yanıtın finansal sayısal sadakat, eksik veri yönetimi, güvenli ret ve yapı açısından davranışsal sözleşmesini 6 temsilî kabul senaryosunda doğrular. Bu test, geniş ölçekli benchmarklardan farklı olarak faktüel doğruluk iddiası değil, ürün yanıtının tutarlılığı için bir regresyon kapısıdır.
 
 ### v14.4 Doğrulama Özeti
 

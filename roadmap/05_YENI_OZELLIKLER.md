@@ -1,7 +1,7 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v14.4
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v15.1
 
-> **Versiyon:** v14.4 · **Güncelleme:** 18 Temmuz 2026  
-> **Kapsam:** Tamamlanan v14.4 ve gelecek dönem ileri özellikler yol haritası
+> **Versiyon:** v15.1 · **Güncelleme:** 22 Temmuz 2026  
+> **Kapsam:** Tamamlanan v15.1 (Calibrated Uncertainty, Multi-Agent Debate, Health Systems, Hibrit Veri Motoru v2.0) ve gelecek dönem özellikleri
 
 ---
 
@@ -9,31 +9,49 @@
 
 | Özellik | Değer | Efor | Öncelik | Durum |
 |:--|:--:|:--:|:--:|:--:|
-| Multi-Agent Konsultasyon | Yüksek | Orta | 🔴 Kritik | 🔄 Aktif |
+| Multi-Agent Konsultasyon | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.4) |
 | Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
 | Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
 | RAG 2.0 (hibrit arama) | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
 | Tıbbi Görüntü Yorumlama | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
 | Tıbbi Cihaz Entegrasyonu | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
-| **GraphRAG PathFinder** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
-| **HoloDB Co-Occurrence** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
-| **Yerel LLM Sentezleyici** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
-| **Veri Üretim Otomasyonu** | **Çok Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3)** |
-| **Evidence Drawer MVP** | **Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
-| **Auth/Tenant İzolasyonu** | **Yüksek** | **Düşük** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
-| **Gozlemlenebilirlik Panosu** | **Yüksek** | **Orta** | **🔴 Kritik** | **✅ Tamamlandı (v14.3.1)** |
-| Session Memory | Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.2) |
-| API Gateway | Orta | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.1) |
-| **Multi-tenant Middleware** | **Yüksek** | **Düşük** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
-| **GPTQ 4-bit Quantization** | **Çok Yüksek** | **Orta** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
-| **Agent Orchestrator v2** | **Çok Yüksek** | **Yüksek** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
-| **Cross-encoder Reranking** | **Yüksek** | **Orta** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
-| **Prometheus + Grafana** | **Orta** | **Düşük** | **🟠 Yüksek** | **✅ Tamamlandı (v14.4)** |
-| Legal Brief Generator | Orta | Yüksek | 🟡 Orta | 🔄 Aktif |
-| Voice-to-Expert | Orta | Yüksek | 🟡 Orta | 📋 Planlandı |
-| Multimodal (PDF/Excel) | Yüksek | Çok Yüksek | 🟡 Orta | 🔄 Aktif |
-| Mobile SDK | Orta | Çok Yüksek | 🟢 Düşük | 📋 Planlandı |
-| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma | 📋 Planlandı |
+| GraphRAG PathFinder | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
+| HoloDB Co-Occurrence | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
+| Yerel LLM Sentezleyici | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
+| Veri Üretim Otomasyonu | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
+| Evidence Drawer MVP | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
+| Auth/Tenant İzolasyonu | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
+| Gözlemlenebilirlik Panosu | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
+| Multi-Tenant Middleware | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
+| GPTQ 4-bit Quantization | Çok Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
+| Agent Orchestrator v2 | Çok Yüksek | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
+| Cross-encoder Reranking | Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
+| Prometheus + Grafana | Orta | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
+| Legal Brief Generator | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
+| Multimodal Extractor (PDF/Excel) | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
+| Voice-to-Expert STT + Domain Router | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
+| ERP/CRM Webhook Engine | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
+| On-Premise Installer Wizard | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
+| AI Explainability API | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.5) |
+| KVKK/GDPR Uyumluluk Sayfası | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
+| Vercel Production Deploy Config | Orta | Düşük | 🟡 Orta | ✅ Tamamlandı (v14.5) |
+| NLP Expert Trials (5 domain) | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.5) |
+| Calibrated Uncertainty | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
+| Multi-Agent Debate Protocol | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
+| Health Systems Gateway (DICOM/ICD-10) | Çok Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
+| Hibrit Veri Motoru v2.0 (Evol-Instruct) | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
+| Zero-Hallucination Quality Gate v2.0 | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
+| **Mobile SDK (React Native/Expo)** | **Çok Yüksek** | **Çok Yüksek** | **🔴 Kritik** | **📋 FAZ 4** |
+| **LDAP/AD SSO Entegrasyonu** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **📋 FAZ 4** |
+| **Mevzuat Otomatik Güncelleme** | **Yüksek** | **Orta** | **🟠 Yüksek** | **📋 FAZ 4** |
+| **DPO v2 Tercih Öğrenmesi** | **Yüksek** | **Yüksek** | **🟠 Yüksek** | **📋 FAZ 4** |
+| **Stripe Faturalandırma** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **📋 FAZ 4** |
+| **Federated Learning** | **Yüksek** | **Çok Yüksek** | **🟡 Orta** | **📋 FAZ 4** |
+| **Penetrasyon Testi Raporu** | **Yüksek** | **Orta** | **🟠 Yüksek** | **📋 FAZ 4** |
+| **OmniEngine Edge (Distil <4GB)** | **Çok Yüksek** | **Çok Yüksek** | **🟠 Yüksek** | **📋 FAZ 5** |
+| **OmniEngine Cloud (Hosted)** | **Çok Yüksek** | **Çok Yüksek** | **🔴 Kritik** | **📋 FAZ 5** |
+| **Arapça + Almanca Dil Desteği** | **Yüksek** | **Yüksek** | **🟠 Yüksek** | **📋 FAZ 5** |
+| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma | 📋 FAZ 5 |
 
 ---
 

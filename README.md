@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v14.4
+# 🧠 OmniEngine Cognitive Core — v14.5
 
 **Yerel Egemen AI · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability**  
 **Çoklu Ajan Orkestrasyonu v2 (Consensus) · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0**  
@@ -12,7 +12,7 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v14.4-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v14.5-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![Dataset](https://img.shields.io/badge/SFT_Veri-476K_Kayıt-f59e0b?style=flat-square)](./)
@@ -31,9 +31,9 @@
 
 ---
 
-## Güncel Gelişim Durumu — v14.4 (18 Temmuz 2026)
+## Güncel Gelişim Durumu — v14.5 (20 Temmuz 2026)
 
-OmniEngine **v14.4** ile; multi-tenant veri izolasyonu (Prisma / header bazlı), 4-bit INT4 model sıkıştırma (167MB), Cross-Encoder reranking (`ms-marco`), Prometheus / Grafana telemetri altyapısı ve 3-ajan çoğunluk oyu konsensüs mekanizmasına sahip orkestrasyon motoru v2 entegre edildi.
+OmniEngine **v14.5**, önceki platform katmanlarına ek olarak doğal dil yanıt davranışını ölçen bir kabul testi ve akış/JSON yanıt yolları arasında uzman yönlendirme eşitliği sunar. Bu sürümde finansal sayısal sadakat, eksik veri yönetimi, yanıt yapısı ve siber güvenlikte güvenli ret davranışı temsilî senaryolarla otomatik olarak doğrulanır.
 
 | Alan | Güncel durum |
 |:--|:--|
@@ -43,6 +43,7 @@ OmniEngine **v14.4** ile; multi-tenant veri izolasyonu (Prisma / header bazlı),
 | **Prometheus Observability (YENİ)**| `/api/metrics` scrape rotası, singleton registry, QPS/Latency/Connections metrikleri |
 | **Agent Orchestrator v2 (YENİ)**| 3-Ajan paralel çalıştırma + majority-vote (2/3 uzlaşı) ve FastAPI `/orchestrate` entegrasyonu |
 | **Multi-Tenant (YENİ)** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
+| **NLP Yanıt Kalitesi (YENİ)** | 6/6 kabul testi: sayısal sadakat, anlaşılır yapı, güvenli ret ve domain yönlendirme |
 | Tıbbi Görüntü | `vision_expert.py` — DICOM/JPEG/PNG, modalite tespiti, 57ms, `/analyze_image` API |
 | FHIR/HL7 Gateway | `fhir_device_gateway.py` — FHIR R4, HL7 v2.x, MQTT vital simülatörü, PACS URL |
 | HoloDB v5.0 | 839,481 düğüm, 6.39M kenar, 24,209,986 mmap binary indeksi |
@@ -73,6 +74,7 @@ OmniEngine **v14.4** ile; multi-tenant veri izolasyonu (Prisma / header bazlı),
 | 16 | [Kurulum ve Çalıştırma](#16-kurulum-ve-çalıştırma) | Adım adım başlatma rehberi |
 | 17 | [Proje Yapısı](#17-proje-yapısı) | Dosya haritası |
 | 18 | [Yol Haritası](#18-yol-haritası) | Geçmiş ve gelecek planlar |
+| 19 | [NLP Yanıt Kalitesi](#19-nlp-yanıt-kalitesi--v145) | Kullanıcıya ulaşan yanıt sözleşmesi ve kabul testi |
 
 ---
 
@@ -1300,8 +1302,40 @@ OmniGPT/
 
 ---
 
+## 19. NLP Yanıt Kalitesi — v14.5
+
+Kritik alanlarda yalnızca yanıt üretmek yeterli değildir. Kullanıcının verdiği veriler korunmalı, belirsizlik açıkça söylenmeli ve güvenlik sınırları anlaşılır bir dille ifade edilmelidir. v14.5 bu davranışları küçük, hızlı ve tekrarlanabilir bir kabul testiyle izler.
+
+```text
+Kullanıcı sorusu
+      │
+      ├─ Finans: oranları çıkar → sayıları doğrula → risk özeti
+      ├─ Siber: zararlı talebi ayıkla → güvenli alternatif sun
+      ├─ Tıp/Hukuk: desteklenen terimleri çıkar → yapılandırılmış ön değerlendirme
+      └─ SSE/JSON: aynı uzman yönlendirmesi → tutarlı sonuç
+```
+
+| Kontrol | Kabul kriteri | Kanıt |
+|:--|:--|:--|
+| Finansal sadakat | Girilen oranlar yanıtta korunur | `FIN-01` |
+| Eksik veri | Kritik değer eksikse hızlı, yönlendirici `ABSTAIN` | `FIN-02` |
+| Savunmacı siber yanıt | Zararlı talimat reddedilir; koruyucu alternatif verilir | `CYB-02` |
+| Tıbbi sayı çıkarma | Parametre yanındaki ilk sayısal değer kullanılır | `MED-01` |
+| Hukuki yapı | Eşleşen mevzuat ve sınırlandırma birlikte sunulur | `LEG-01` |
+| Akış eşitliği | SSE ile JSON yolu aynı finans/siber uzmanına gider | `stream/route.ts` |
+
+Çalıştırma ve ayrıntılı çıktı:
+
+```bash
+python src/python/tests/nlp_response_quality_eval.py
+```
+
+Son çalışma raporu: [NLP kalite raporu](./data/benchmark/nlp_response_quality_report.md)
+
+---
+
 *Non-Commercial Academic & Enterprise Evaluation License*  
-*OmniEngine Cognitive Core v14.1 — "The best intelligence is the one you fully control."*  
-*Son güncelleme: 15 Temmuz 2026*
+*OmniEngine Cognitive Core v14.5 — "The best intelligence is the one you fully control."*  
+*Son güncelleme: 20 Temmuz 2026*
 
 </div>
