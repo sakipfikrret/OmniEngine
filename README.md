@@ -1323,7 +1323,7 @@ Kullanıcı sorusu
 | Eksik veri | Kritik değer eksikse hızlı, yönlendirici `ABSTAIN` | `FIN-02` |
 | Savunmacı siber yanıt | Zararlı talimat reddedilir; koruyucu alternatif verilir | `CYB-02` |
 | Tıbbi sayı çıkarma | Parametre yanındaki ilk sayısal değer kullanılır | `MED-01` |
-| Hukuki yapı | Eşleşen mevzuat ve sınırlandırma birlikte sunulur | `LEG-01` |
+| Hukuki yapı | Eşleşen mevzuat me sınırlandırma birlikte sunulur | `LEG-01` |
 | Akış eşitliği | SSE ile JSON yolu aynı finans/siber uzmanına gider | `stream/route.ts` |
 
 Çalıştırma ve ayrıntılı çıktı:
@@ -1336,8 +1336,45 @@ Son çalışma raporu: [NLP kalite raporu](./data/benchmark/nlp_response_quality
 
 ---
 
+## 20. 🧬 Sağlık Sistemleri & Kurumsal SSO Entegrasyonları — v15.2
+
+v15.2 sürümü ile OmniEngine, kurumsal hastane ve kuruluş altyapılarına doğrudan entegrasyon için DICOM Web Canvas görüntüleyici, LDAP/Active Directory SSO adaptörü ve 1000 soruluk gerçek NLP pipeline benchmark süitini devreye almıştır.
+
+### 20.1 DICOM Web Canvas Görüntüleyici
+- **Web Canvas Engine**: `/holodb/health-systems` rotası altında HTML5 Canvas tabanlı sıfır-bağımlılık DICOM görüntüleyici bileşeni (`DicomViewer.tsx`).
+- **İnteraktif Kontroller**: Zoom (%25 - %400), Pan, Window/Level ön ayarları (Yumuşak Doku, Kemik, Akciğer, Beyin) ve manuel W/L kaydırıcıları.
+- **Tıbbi Metadata & HU Analizi**: DICOM etiketleri (Patient ID, Study Date, Modality, Rescale Slope/Intercept) ve piksel Hounsfield Unit (HU) canlı ölçüm hesaplaması.
+
+### 20.2 Kurumsal LDAP / Active Directory SSO Adaptörü
+- **SSO Protokolü**: `src/lib/auth_sso.ts` ve `/api/auth/sso` üzerinden kurumsal kimlik doğrulama.
+- **Rol Eşleştirme**: Active Directory grup üyeliklerinin otomatik yetki haritalaması (`Domain Admins` → `ADMIN`, `Medical Staff` → `DOCTOR`, `Legal Team` → `LEGAL`).
+- **Hava İzolasyonlu (Air-Gapped) Uyum**: İnternetsiz veya kısıtlı ağ ortamlarında yerel LDAP dizin sunucuları ile kesintisiz çalışma.
+
+### 20.3 1000-Soru Gerçek NLP Pipeline Benchmark Süiti
+- **Çoklu Uzman Konsensüsü**: `src/python/tests/nlp_benchmark_1000.py` test aracı, `OrchestratorV2` 3-ajan uzlaşısı ve `composer.py` HoloDB_v5 RAG chunk entegrasyonunu doğrudan çalıştırır.
+- **9 Uzmanlık Kategorisi (1000 Soru)**:
+  - 🩺 Tıp (Kardiyoloji, Farmakoloji, Acil) — 200 soru
+  - ⚖️ Hukuk (TCK, TBK, KVKK) — 150 soru
+  - 💰 Finans (Basel III, SPK, Risk) — 120 soru
+  - 🛡️ Siber Güvenlik (OWASP, CVE) — 130 soru
+  - 🔬 Tıp-Akademik (PubMed/BioASQ) — 100 soru
+  - 📜 Regülasyon (KVKK/GDPR/HIPAA) — 80 soru
+  - 🎭 Halüsinasyon Tuzakları — 100 soru
+  - 🔀 Çapraz Domain — 70 soru
+  - 🧬 Sağlık Sistemleri (DICOM/FHIR) — 50 soru
+- **Otomatik Raporlama**: Markdown (`nlp_benchmark_1000_report.md`) ve JSON çıktısı üretimi.
+
+### 20.4 v15.2 Birim Test Süiti
+```bash
+python -m unittest src/python/tests/test_v15_2_features.py
+# Sonuç: 5/5 PASS (100% OK)
+```
+
+---
+
 *Non-Commercial Academic & Enterprise Evaluation License*  
-*OmniEngine Cognitive Core v14.5 — "The best intelligence is the one you fully control."*  
-*Son güncelleme: 20 Temmuz 2026*
+*OmniEngine Cognitive Core v15.2 — "The best intelligence is the one you fully control."*  
+*Son güncelleme: 22 Temmuz 2026*
 
 </div>
+

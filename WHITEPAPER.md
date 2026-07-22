@@ -1478,6 +1478,25 @@ AI modellerini PhD seviyesinde uzmanlaştırmak için tasarlanmış gerçek + se
 
 ---
 
-*OmniEngine Cognitive Core — Technical Whitepaper v15.1*  
-*Güncelleme: 22 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+## 23. v15.2 Sağlık Bilişimi UI & Kurumsal SSO Entegrasyonları (22 Temmuz 2026)
+
+### 23.1 DICOM Web Canvas UI Motoru (`DicomViewer.tsx`)
+- HTML5 Canvas tabanlı sıfır-bağımlılık DICOM görüntüleme mimarisi.
+- Canlı Zoom/Pan, Window Width/Center (W/L) ön ayarları ve manuel kontrast/parlaklık manipülasyonu.
+- DICOM etiket dökümü (Patient ID, Study Date, Modality, Rescale Slope/Intercept) me Hounsfield Unit (HU) canlı piksel ölçüm sistemi.
+
+### 23.2 Kurumsal LDAP & Active Directory SSO Adaptörü (`auth_sso.ts`)
+- Kurumsal LDAP/AD kimlik doğrulama protokolü entegrasyonu.
+- Otomatik rol haritalama (`Domain Admins` → `ADMIN`, `Medical Staff` → `DOCTOR`, `Legal` → `LEGAL`).
+- Hava izolasyonlu (Air-Gapped) kurum içi yerel dizin sunucuları desteği.
+
+### 23.3 1000-Soru Gerçek NLP Pipeline Benchmark Süiti (`nlp_benchmark_1000.py`)
+- `OrchestratorV2` 3-ajan uzlaşısı me `composer.py` HoloDB_v5 RAG chunk entegrasyonu ile 9 uzmanlık alanında 1000 soruluk NLP pipeline doğrulaması.
+- `test_v15_2_features.py` ile 5/5 birim test %100 OK doğrulandı.
+
+---
+
+*OmniEngine Cognitive Core — Technical Whitepaper v15.2*  
+*Son Güncelleme: 22 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+
 

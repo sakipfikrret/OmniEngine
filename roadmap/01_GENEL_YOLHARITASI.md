@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2026–2030+)
 
-> **Versiyon:** v15.0 · **Güncelleme:** 22 Temmuz 2026
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | HoloDB v5.0 (Float32 FAISS + BM25 + Live Delta Hot-Reload + 3D UI) ✅ | Multi-Domain Simulation Engine v2.0 (Ameliyat/Hukuk/Finans/Siber 1,000 MC) ✅ | Real-time Regulation Sync ✅ | NLP Expert Trials ✅ | Agent Orchestrator v2 | GraphRAG PathFinder | Multi-Tenant | Voice-to-Expert | Legal Brief Generator | On-Premise Installer | Webhook Engine | KVKK Sayfası | Vercel Config | Explainability API
+> **Versiyon:** v15.2 · **Güncelleme:** 22 Temmuz 2026
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | HoloDB v5.0 (Float32 FAISS + BM25 + Live Delta Hot-Reload + 3D UI) ✅ | Multi-Domain Simulation Engine v2.0 (Ameliyat/Hukuk/Finans/Siber 1,000 MC) ✅ | DICOM Web Canvas Viewer UI ✅ | Kurumsal LDAP/AD SSO Adaptörü ✅ | 1000-Soru Gerçek NLP Benchmark Süiti ✅ | Agent Orchestrator v2 | GraphRAG PathFinder | Multi-Tenant | Voice-to-Expert | Legal Brief Generator | On-Premise Installer | Webhook Engine | Explainability API
 
 ---
 
@@ -14,7 +14,7 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 
 ---
 
-## 🏆 Mevcut Durum (v15.0 — Temmuz 2026)
+## 🏆 Mevcut Durum (v15.2 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
@@ -23,6 +23,9 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 | Veri Seti Boyutu | **500,000+ kayıt** (SFT 5 domain) | 500K ✅ |
 | HoloDB Veritabanı | **HoloDB v5.0 (34B Header + Float32 FAISS + BM25 + Live Append)** | v5.0 ✅ |
 | 3D Visualizer UI | **Interactive Canvas 3D Holographic Particle Matrix (`/holodb`)** | Production ✅ |
+| Sağlık Sistemleri UI | **DICOM Web Canvas Viewer & HU Measurement (`/holodb/health-systems`)** | Production ✅ |
+| Kurumsal SSO | **LDAP / Active Directory Adapter & Dynamic Role Mapping** | Active ✅ |
+| 1000-Soru NLP Benchmark | **nlp_benchmark_1000.py (9 Domain & OrchestratorV2 Consensus)** | Active ✅ |
 | Otomatik Simülasyon | **Multi-Domain Monte Carlo Engine v2.0 (1,000 Trial Ameliyat/Hukuk/Finans)** | Active ✅ |
 | Mevzuat Senkronizasyon | **Resmi Gazete RSS + Local Mevzuat Auto Sync (`regulation_sync.py`)** | Active ✅ |
 | Expert Modül Sayısı | **8 domain + Voice + Vision + Legal Brief + HoloDB v5** | Genişliyor ✅ |
@@ -36,6 +39,7 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 | On-Premise Sihirbazı | **Donanım teşhis + k8s manifest üretici** | ✅ |
 | Explainability API | **MoE → RAG → Quality Gate şeffaflık zinciri** | ✅ |
 | KVKK/GDPR Uyumu | **Cookie-free analytics + KVKK sayfası** | ✅ |
+
 
 ---
 
