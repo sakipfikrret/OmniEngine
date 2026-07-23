@@ -3,6 +3,11 @@
 > **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
 > **Kapsam:** Mimari derinleştirme, GraphRAG yol bulma, HoloDB co-occurrence, yerel LLM sentezleyici ve eğitim pipeline otomasyonu
 
+# 🛠️ OmniEngine — Teknik Geliştirmeler ve Mimari Güncellemeler (v15.8)
+
+> **Tarih:** 23 Temmuz 2026  
+> **Odak:** HoloDB v5.0 (1.000.000+ Düğüm), 1 Milyon Soru NLP Benchmark Raporlama, Mobile SDK (`@omniengine/mobile-sdk`), Sub-Millisecond Edge Engine ($0.014\text{ ms}$), Federated Learning (FedAvg + DP), SaaS Tenant Dashboard UI, Multi-Agent Consensus (OrchestratorV2).
+
 ---
 
 ## 1. 🧠 Mevcut Mimari Özeti

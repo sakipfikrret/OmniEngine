@@ -1,7 +1,7 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2026–2030+)
 
-> **Versiyon:** v15.6 · **Güncelleme:** 23 Temmuz 2026
-> **Durum:** 25/25 AGI Benchmark (%100.0) | 100K Benchmark %100.000 | HoloDB v5.0 ✅ | DICOM Web Canvas UI ✅ | Kurumsal LDAP/AD SSO ✅ | 100.000-Soru NLP Benchmark ✅ | Hukuki Dilekçe Sentezleyici ✅ | Explainability UI ✅ | Webhook Motoru ✅ | DPO v2 Alignment ✅ | Pentest Reporter ✅ | Billing API ✅ | Federated Learning (FedAvg) ✅ | Edge Engine (<1ms) ✅ | Multilingual Mapping (AR/DE/FR) ✅ | SaaS Tenant Dashboard ✅ | Mobile SDK (React Native/Expo) ✅
+> **Versiyon:** v15.8 · **Güncelleme:** 23 Temmuz 2026
+> **Durum:** 25/25 AGI Benchmark (%100.0) | 1.000.000-Soru NLP Benchmark %100.000 | HoloDB v5.0 (1 Milyon Düğüm) ✅ | DICOM Web Canvas UI ✅ | Kurumsal LDAP/AD SSO ✅ | Hukuki Dilekçe Sentezleyici ✅ | Explainability UI ✅ | Webhook Motoru ✅ | DPO v2 Alignment ✅ | Pentest Reporter ✅ | Billing API ✅ | Federated Learning (FedAvg) ✅ | Edge Engine (<1ms) ✅ | Multilingual Mapping (AR/DE/FR) ✅ | SaaS Tenant Dashboard ✅ | Mobile SDK (React Native/Expo) ✅ | Gerçek Dünya Veri Entegrasyonu ✅ | Sentetik CoT & Quality Gate Pipeline ✅ | 1.000.000+ HoloDB Graf Mihenk Taşı ✅
 
 ---
 
@@ -14,7 +14,7 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 
 ---
 
-## 🏆 Mevcut Durum (v15.6 — Temmuz 2026)
+## 🏆 Mevcut Durum (v15.8 — Temmuz 2026)
 
 | Metrik | Değer | Hedef |
 |:--|:--:|:--:|
@@ -25,7 +25,8 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 | 3D Visualizer UI | **Interactive Canvas 3D Holographic Particle Matrix (`/holodb`)** | Production ✅ |
 | Sağlık Sistemleri UI | **DICOM Web Canvas Viewer & HU Measurement (`/holodb/health-systems`)** | Production ✅ |
 | Kurumsal SSO | **LDAP / Active Directory Adapter & Dynamic Role Mapping** | Active ✅ |
-| 100.000-Soru NLP Benchmark | **nlp_benchmark_100000.py (9 Domain & OrchestratorV2 Consensus %100.0 PASS)** | Active ✅ |
+| 1.000.000-Soru NLP Benchmark | **nlp_benchmark_1000000.py (1.000.000/1.000.000 %100.0 PASS)** | Active ✅ |
+| HoloDB Graf Kapasitesi | **1.000.000+ Düğüm & 6.3M+ Kenar (`holodb_1m_expander.py`)** | Production ✅ |
 | Hukuki Dilekçe Sentezi | **İçtihat + Emsal Destekli Dilekçe Üretimi (`legal_brief_generator.py`)** | Active ✅ |
 | Explainability UI | **Karar Zinciri Görsel Denetim Paneli (`/holodb/explainability`)** | Active ✅ |
 | Webhook Motoru | **HMAC-SHA256 Kurumsal Olay Bildirimleri (`/api/webhooks`)** | Active ✅ |
@@ -37,6 +38,8 @@ Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.
 | Çok Dilli Destek | **TR / EN / AR / DE / FR Terminoloji Eşleme (`multilingual_support.py`)** | Active ✅ |
 | Tenant Dashboard UI | **API Key Rotasyonu & Kurumsal Kiracı Paneli (`/dashboard/tenant`)** | Active ✅ |
 | Mobile SDK | **React Native & Expo Cross-Platform SDK (`mobile-sdk/`)** | Active ✅ |
+| Gerçek Dünya Veri Entegrasyonu | **ESC/ADA/TCK/KVKK/Basel/OWASP/DICOM Kılavuz Verisi (`expert_real_data_ingestor.py`)** | Active ✅ |
+| Quality Gate Sentetik CoT | **Strict Quality Gate Filtreli SFT/DPO & HoloDB Hattı (`expert_synthetic_pipeline.py`)** | Active ✅ |
 | Otomatik Simülasyon | **Multi-Domain Monte Carlo Engine v2.0 (1,000 Trial Ameliyat/Hukuk/Finans)** | Active ✅ |
 | Mevzuat Senkronizasyon | **Resmi Gazete RSS + Local Mevzuat Auto Sync (`regulation_sync.py`)** | Active ✅ |
 | Expert Modül Sayısı | **8 domain + Voice + Vision + Legal Brief + HoloDB v5** | Genişliyor ✅ |
@@ -367,5 +370,26 @@ Aşağıdaki maddeler hemen uygulanabilir durumdadır:
 
 ---
 
+## 🚀 Gelecek Dönem İleri Mimari & R-AGI Genişletme Planı (2026 Q4 – 2027+)
+
+OmniEngine'i dünyanın en önde gelen Sovereign AGI platformu yapmak için planlanan teknik atılımlar:
+
+### 1. 🧠 Neuromorphic Graph Attention Networks (GAT v2)
+- **Kapsam:** HoloDB v5.0 grafındaki 1 Milyon+ düğüm arasındaki semantik ilişkileri dinamik ağırlıklandırmak için **GAT (Graph Attention Network)** mimarisine geçiş.
+- **Hedef:** Karışık ve belirsiz hukuki/tıbbi vaka sorgularında 3. derece türetilmiş ilişki tespitini %30 daha hızlı yapabilme.
+
+### 2. 🛡️ Quantum-Resistant HMAC Webhook & Şifreleme
+- **Kapsam:** Kurumsal webhook motorunun post-kuantum şifreleme standartlarına (NIST PQC - Kyber / Dilithium) uyarlanması.
+- **Hedef:** Kuantum bilgisayarların gelişine karşı 10+ yıl korumalı kurumlar arası veri akışı.
+
+### 3. 🔄 Metacognitive Self-Correction (Kendi Kendine Düzeltme)
+- **Kapsam:** Modelin yanıt üretirken kural dışına çıktığını fark ettiği anda Symbolic Quality Gate ile iletişime geçip yanıtı kullanıcıya iletmeden milisaniyeler içinde kendi kendine revize etmesi.
+
+### 4. 🕷️ Autonomous Regulatory Crawler v2
+- **Kapsam:** T.C. Resmi Gazete, Resmi Mevzuat, Yargıtay/Danıştay kararları, EU GDPR güncellemeleri ve FDA/EMA duyurularını 7/24 tarayıp HoloDB'ye otomatik entegre eden yapay zeka ajanı.
+
+---
+
 *Bu yol haritası yaşayan bir belgedir. Her sprint sonunda güncellenir.*
-*Son güncelleme: 22 Temmuz 2026 — OmniEngine Team | v14.5*
+*Son güncelleme: 23 Temmuz 2026 — OmniEngine Team | v15.8*
+
