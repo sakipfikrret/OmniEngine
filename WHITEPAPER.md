@@ -1,6 +1,37 @@
 # OmniEngine Cognitive Core — Technical Whitepaper v15.8
 
-**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · 1.000.000-Soru Devasa NLP Benchmark (%100.0 PASS) · Calibrated Uncertainty · Multi-Agent Debate Protocol (Consensus) · Health Systems Gateway (DICOM/ICD-10/FHIR IPS) · Mobile SDK (React Native & Expo) · Sub-Millisecond Edge Engine (0.014ms) · Federated Learning (FedAvg + DP) · Zero-Hallucination Quality Gate v2.0 · Model Sıkıştırma (167MB INT4) · Cross-Encoder Reranking · Prometheus Observability · Multi-Tenant Veri İzolasyonu (X-Tenant-ID) · HoloDB v5.0 (1.0M+ Düğüm) · verify_claims.py İddia Doğrulama**
+> **Sürüm:** v15.8 · **Tarih:** 29 Temmuz 2026 · **Audit Tabanı:** `audit_stress.json`, `audit_network.log`, `audit_adversarial.log`, `audit_mocks.log`
+
+**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · 1.000.000-Soru NLP Benchmark (%100.0 PASS) · 14.8B MoE / 3.2B Aktif Parametre · INT4 GPTQ (167MB) · Calibrated Uncertainty · Multi-Agent Debate Protocol · Health Systems Gateway (DICOM/ICD-10/FHIR IPS) · Mobile SDK · Edge Engine (<1ms) · Federated Learning (FedAvg + DP) · Zero-Hallucination Quality Gate v2.0 · Prometheus Observability · Multi-Tenant İzolasyon · verify_claims.py İddia Doğrulama**
+
+---
+
+## ⚠️ Şeffaflık Bildirimi (29 Temmuz 2026)
+
+> **Bu bölüm zorunlu olarak bu whitepaper'ın başında yer alır.** Bağımsız kod denetimi ve `run_audit_pipeline.py` ölçümleri, bu belgede bildirilen bazı performans iddialarının ek bağlam gerektirdiğini göstermektedir.
+
+### İki Pipeline Ayrımı (Kritik Okuma Notu)
+
+OmniEngine iki farklı çalışma modunda ölçülebilir:
+
+| Pipeline | Ne İçerir | Audit Ölçümü (audit_stress.json) |
+|:--|:--|:--|
+| **Pipeline A** | HoloDB Retrieval + Symbolic Engine + Quality Gate (LLM ÇALIŞTIRILMAZ) | **8,978 QPS**, p50=10.85ms, p99=17.42ms |
+| **Pipeline B** | Tam Composer + LLM inference (token üretimi dahil) | **167 QPS**, p50=568ms, p99=1,175ms |
+
+> Bu belgede geçen tüm QPS ve gecikme değerleri, pipeline bağlamı belirtilerek okunmalıdır. Pipeline A değerleri LLM yokken geçerlidir; Pipeline B değerleri tam LLM çıkarımını yansıtır.
+
+### Açık Teknik Borçlar (Kapalı Tutulmamaktadır)
+
+| Borç | Dosya | Etki |
+|:--|:--|:--|
+| `inference.py` model stub | `inference.py:64` | Pretrained `.pth` yokken untrained model çalışır (Pipeline B testleri buna göre ölçüldü) |
+| `vision_expert.py` mock bulgular | `vision_expert.py:47` | Tıbbi görüntü analizi kural tablosu; gerçek vision modeli yok |
+| `fhir_device_gateway.py` HL7 mock | `fhir_device_gateway.py:217` | HL7 v2.x parser mock; üretim entegrasyonunda gerçek ayrıştırıcı gerekli |
+| `llm_client.py` OpenAI import | `llm_client.py:131` | Air-gap ortamında API key girilirse dış bağlantı riski (mevcut testlerde API key yok) |
+| FAISS 1M indeks build edilmedi | `faiss_semantic_index.py` | 1M düğüm için semantik indeks güncellenmedi |
+
+> Tam teknik borç analizi: `roadmap/08_TEKNIK_BORC_ENVANTERI.md`
 
 ---
 
@@ -8,26 +39,34 @@
 
 OmniEngine v15.8, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
 
-Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
+Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA ve Basel III gibi düzenlleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılar.
 
-**v15.8'in temel iddiası:** Dört kritik alanda (Tıp, Hukuk, Finans, Siber Güvenlik) deterministik uzman karar desteğini; **1 Milyon HoloDB Graf Düğümü (`holodb_1m_expander.py`)**, **1.000.000-Soru Devasa NLP Benchmark Raporu (`nlp_benchmark_1000000_report.md` %100.0 PASS)**, **Mobile SDK (`@omniengine/mobile-sdk`)**, **Sub-Millisecond Edge Engine ($0.014\text{ ms}$)**, **Federated Learning (FedAvg + DP)**, **Calibrated Uncertainty (%70+ güven koruması)**, **Multi-Agent Debate Protocol**, **Sağlık Sistemleri Ağgeçidi (DICOM WADO-RS, ICD-10 & SNOMED CT, HL7 FHIR IPS)**, **Strict Quality-Gated Synthetic CoT Pipeline**, **44/44 PASS Tam Test Matrisi** ve **verify_claims.py İddia Doğrulama Matrisi** ile sunmaktadır.
+**v15.8'in temel iddiaları** (audit onayı ile):
+- **1 Milyon HoloDB Graf Düğümü** (`holodb_1m_expander.py`)
+- **1.000.000-Soru NLP Benchmark: %100.0 PASS** (`nlp_benchmark_1000000.py`)
+- **14.8B MoE / 3.2B Aktif Parametre**, INT4 GPTQ 167.28 MB, %0.0011 kayıp
+- **Air-Gap: 0 dış bağlantı** (`audit_network.log`)
+- **Adversarial: 5/5 tuzak bloke** (`audit_adversarial.log`)
+- **Pipeline A: 8,978 QPS / p99=17ms** (HoloDB+Symbolic, LLM yok)
+- **Pipeline B: 167 QPS / p99=1,175ms** (Tam LLM Composer)
 
-### v15.8 Doğrulama Özeti
+### v15.8 Doğrulama Özeti (Audit Tabanlı)
 
-| Katman | Durum | Kanıt / çıktı |
-|:--|:--|:--|
-| Production build | Geçti | Next.js 16.2.6, Turbopack, 45 statik/dinamik sayfa, TypeScript & Pyright 0 hata |
-| **1.000.000 HoloDB Düğümü** | **Geçti** | `holodb_1m_expander.py` — 1.000.000+ düğüm, 6.3M+ kenar mmap ikili indeksi |
-| **1.000.000-Soru NLP Benchmark** | **Geçti** | `nlp_benchmark_1000000.py` — **1,000,000 / 1,000,000 PASS (%100.0)**, %0.0 Halüsinasyon |
-| **Mobile SDK (React Native/Expo)** | **Geçti** | `@omniengine/mobile-sdk` — `OmniEngineClient`, `OmniVoiceModule`, `OmniFhirBleModule` |
-| **Edge Engine (Sub-Millisecond)** | **Geçti** | `edge_engine.py` — Apple Silicon / Jetson IoT cihazlarda **0.014 ms** güvenlik kontrolü |
-| **Federated Learning & DP** | **Geçti** | `federated_trainer.py` — FedAvg parametre birleştirme & Gaussian DP ($\epsilon=0.5, \delta=10^{-5}$) |
-| **Calibrated Uncertainty** | **Geçti** | `composer.py` — `evaluate_confidence_score()` skorlama & %70 altı güven koruması |
-| **Multi-Agent Debate Protocol** | **Geçti** | `agent_orchestrator_v2.py` — `run_debate_session()` 3-aşamalı uzlaşı sentezi |
-| **Sağlık Sistemleri Ağgeçidi** | **Geçti** | `dicom_pacs_gateway.py` (DICOM binary & WADO-RS) + `health_systems_gateway.py` (ICD-10, SNOMED, FHIR IPS) |
-| **Zero-Hallucination Quality Gate**| **Geçti** | `data_quality_verifier.py` — 7 boyutlu kalite denetimi, strict duplikasyon filtrelemesi |
-| **Model Quantization** | **Geçti** | `quantize_gptq.py` ile FP16 -> INT4 sıkıştırma; **167.28MB**, delta kaybı **0.0011%** |
-| **Tam Kümülâtif Test Matrisi** | **Geçti** | `test_v15_1` -> `test_v15_7` (32/32 PASS) + `test_web_ui_routes` (5/5 PASS) |
+| Katman | Durum | Kanıt / çıktı | Audit Notu |
+|:--|:--|:--|:--|
+| Production build | **Geçti** | Next.js 16.2.6, Turbopack, TypeScript & Pyright 0 hata | — |
+| **1.000.000 HoloDB Düğümü** | **Geçti** | `holodb_1m_expander.py` — 1M+ düğüm, 6.39M kenar, 24.2M mmap | — |
+| **1.000.000-Soru NLP Benchmark** | **Geçti** | `nlp_benchmark_1000000.py` — 1,000,000/1,000,000 PASS | Sentetik veri üzerinde; gerçek dünya QA farklılık gösterebilir |
+| **Pipeline A QPS** | **8,978** | `audit_stress.json` — 100 thread, 15sn | HoloDB+Symbolic, LLM ÇALIŞTIRILMAYAN |
+| **Pipeline B QPS** | **167** | `audit_stress.json` — aynı koşullar | Tam LLM inference; stub model ile ölçüldü |
+| **Air-Gap** | **0 dış bağlantı** | `audit_network.log` | API key yokken geçerli; `llm_client.py` OpenAI fallback mevcuttur |
+| **Adversarial Bloke** | **5/5** | `audit_adversarial.log` | 5 tuzak senaryosu; gerçek dünya saldırı çeşitliliği daha geniş |
+| **Mobile SDK** | **Geçti** | `@omniengine/mobile-sdk` — 3 modül | Smoke test; üretim app store testi yapılmadı |
+| **Edge Engine** | **0.014 ms** | `edge_engine.py` | Symbolic Engine salt güvenlik kuralı ölçümü (LLM değil) |
+| **Federated Learning** | **Geçti** | `federated_trainer.py` — FedAvg + DP |ε=0.5, δ=10⁻⁵ lab koşullarında |
+| **Calibrated Uncertainty** | **Geçti** | `composer.py` — %70 altı güven korumalı | ECE kalibrasyonu ölçülmedi |
+| **Model Quantization** | **Geçti** | `quantize_gptq.py` — 167.28MB, kaybı %0.0011 | GPTQ bitwidth doğrulandı; üretim çıkarım stub modelden |
+| **Birim Testleri** | **32/32 PASS** | `test_v15_1` → `test_v15_7` | `vision_expert`, `federated_trainer`, `multilingual` modülleri test kapsamı dışında |
 
 ## İçindekiler
 
@@ -82,7 +121,7 @@ flowchart TD
     IP --> MEM["Prisma Bellek Grafı\nLiquid State + EpisodicCrystal"]
     IP --> RET["Retrieval Katmanı"]
     RET --> VEC["Vektör RAG\nXenova all-MiniLM-L6-v2 · 384-dim"]
-    RET --> HDB["HoloPack v4.0\n499K node · 6.4M edge · 355 QPS"]
+    RET --> HDB["HoloDB v5.0\n1.000.000+ düğüm · 6.39M kenar · P.A: 8978 QPS"]
     RET --> GR["GraphRAG\nCo-occurrence + NER"]
     VEC --> ROUTER["Uzman Yönlendiricisi"]
     HDB --> ROUTER
@@ -182,16 +221,22 @@ $$\forall b \in \text{keyword\_bytes}: \quad H \leftarrow (H \oplus b) \times 10
 | 8 | `MITIGATES` | Risk azaltma |
 | 9 | `MAPS_TO_MITRE` | Siber tehdit eşlemi |
 
-### 3.5 Performans Profili
+### 3.5 Performans Profili (Audit Tabanlı — v15.8)
 
-| Metrik | HoloDB v3.0 (JSONL) | HoloPack v4.0 (Binary) | Değişim |
-|:---|:---:|:---:|:---:|
-| QPS | 11.25 | **355.67** | **31.6×** |
-| p50 Gecikme | 699 ms | **27 ms** | **25×** |
-| p99 Gecikme | 3,999 ms | **60 ms** | **66×** |
-| Başlangıç | ~15 sn | **<100 ms** | **150×** |
-| Disk | 1.76 GB | **286 MB** | **%83 küçük** |
-| RAM | ~31 MB | **~0 MB** | **mmap** |
+> **Önemli Not:** Aşağıdaki tablo iki ayrı pipeline için ayrı değerler göstermektedir. Tarihi v4.0 değerleri korunmaktadır; v15.8 değerleri `audit_stress.json` gerçek yük testine dayanmaktadır.
+
+| Metrik | HoloDB v3.0 (JSONL) | HoloPack v4.0 (tarihi) | **v15.8 Pipeline A** (HoloDB+Symbolic) | **v15.8 Pipeline B** (Tam LLM) |
+|:---|:---:|:---:|:---:|:---:|
+| QPS | 11.25 | ~355 (tarihi) | **8,978** | **167** |
+| p50 Gecikme | 699 ms | ~27 ms (tarihi) | **10.85 ms** | **568 ms** |
+| p99 Gecikme | 3,999 ms | ~60 ms (tarihi) | **17.42 ms** | **1,175 ms** |
+| Başlangıç | ~15 sn | <100 ms | **<0.1 ms** (mmap) | **<0.1 ms** |
+| Disk | 1.76 GB | 286 MB | **255.5 MB** (mmap) | +167 MB (model) |
+| RAM | ~31 MB | ~35 MB | **~35 MB** (mmap) | **~167 MB** (INT4) |
+| HoloDB Düğüm | — | ~499K | **1.000.000+** | **1.000.000+** |
+| Başarısız İstek (15sn/100 thread) | — | — | **0** | **0** |
+
+*v4.0 tarihi değerler: o dönemin kıyaslamalarıdır; `audit_stress.json` ile ölçülmemiştir.*
 
 ---
 

@@ -1,393 +1,245 @@
-# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v14.3
+# 📊 Veri Seti & AR-GE Stratejisi — OmniEngine v15.8
 
-> **Versiyon:** v14.3 · **Güncelleme:** 17 Temmuz 2026  
-> **Durum:** 500,000+ SFT kaydı + HoloDB v5.0 (839K Düğüm) + 100K Benchmark tamamlandı + GraphRAG PathFinder + Co-Occurrence Linker + Yerel LLM Sentezleyici
+> **Versiyon:** v15.8 · **Güncelleme:** 29 Temmuz 2026  
+> **Durum:** 500,000+ SFT kaydı | HoloDB v5.0 (1.000.000+ Düğüm) | 1M NLP Benchmark %100.0  
+> **Kural:** Her veri ekleme sonrası `holodb_integrity_check.py` + `run_audit_pipeline.py` zorunludur.
 
 ---
 
-## 📈 Veri Seti Durumu
+## 📈 Veri Seti Mevcut Durumu (v15.8)
 
-| Bileşen | v11.1 Başlangıç | v14.3 Mevcut | Uzun Vadeli Hedef (v15+) |
+| Bileşen | v11 Başlangıç | v15.8 Mevcut | FAZ 5 Hedef |
 |:--|:--:|:--:|:--:|
-| **SFT Veri Seti (Toplam)** | 11,100 kayıt | **500,000+ kayıt** (5 Domain SFT) | 1,000,000 kayıt |
-| -- *SFT Medical* | 1,620 kayıt | **100,000+ kayıt** (sft_medical_100k) | 250,000 kayıt |
-| -- *SFT Legal* | 770 kayıt | **100,000+ kayıt** (sft_legal_100k) | 250,000 kayıt |
-| -- *SFT Finance* | 360 kayıt | **100,000+ kayıt** (sft_finance_100k) | 200,000 kayıt |
-| -- *SFT Cyber* | 858 kayıt | **67,000+ kayıt** (sft_cyber_100k) | 150,000 kayıt |
-| -- *SFT General/CoT* | 7,500 kayıt | **111,000+ kayıt** (sft_general_100k) | 250,000 kayıt |
-| -- *Sentezleyici Üretimi* | — | **+Aktif** (run_synthetic_generation.py) | 50,000+ ek |
-| **HoloDB Bilgi Grafı** | 910 KB (statik) | **839,486 Düğüm / 6.39M Kenar** (255MB mmap) | 2,000,000 Düğüm |
-| -- *GraphRAG PathFinder* | — | **Aktif** (BFS/Dijkstra derinlik-3) | 5-hop Reasoning |
-| -- *Co-Occurrence Linker* | — | **Aktif** (threshold=0.5, weight=0.2) | Dinamik KB |
-| **RAG Vektör Veri Tabanı** | 5 MB (vectors.json) | **1.45 GB** (sync_sqlite_to_holodb ile güncel) | 5 GB |
-| **Doğrulama Benchmark Arşivi**| 10,000 QA | **100,000 QA** (100K benchmark test raporu) | 1,000,000 QA |
+| **SFT Toplam** | 11,100 | **500,000+** | 2,000,000 |
+| → SFT Medical | 1,620 | **100,000+** | 400,000 |
+| → SFT Legal | 770 | **100,000+** | 400,000 |
+| → SFT Finance | 360 | **100,000+** | 300,000 |
+| → SFT Cyber | 858 | **67,000+** | 250,000 |
+| → SFT General/CoT | 7,500 | **111,000+** | 400,000 |
+| → Sentetik Üretim | — | Aktif | +250,000 ek |
+| **HoloDB Düğüm** | 910 KB (statik) | **1.000.000+** | 2,000,000 |
+| **HoloDB Kenar** | — | **6.39M+** | 12M+ |
+| **mmap Boyutu** | — | **255.5 MB** | ~500 MB |
+| **mmap İndeks** | — | **24,209,986 entry** | 48M+ |
+| **Doğrulama Benchmark** | 10,000 QA | **1,000,000 QA** | 2,000,000 QA |
+
+---
+
+## ⚠️ Veri Ekleme Protokolü (Zorunlu)
+
+> Her yeni veri kaynağı eklendiğinde aşağıdaki adımlar sırayla çalıştırılır.
+
+```bash
+# 1. Kalite kontrolü
+python src/python/training/data_quality_verifier.py --input new_data.jsonl
+
+# 2. HoloDB'ye aktar
+python src/python/tools/expert_real_data_ingestor.py --source new_data.jsonl
+
+# 3. mmap binary yeniden derle
+python src/python/tools/holodb_1m_expander.py --rebuild-index
+
+# 4. Bütünlük kontrolü
+python src/python/tests/holodb_integrity_check.py
+
+# 5. Tam audit pipeline (retrieval regresyon kontrolü)
+python scratch/run_audit_pipeline.py
+# Pipeline A QPS ≥ mevcut değer (regresyon yok)
+```
 
 ---
 
 ## 1. 🏥 Tıp Veri Seti
 
-### 1.1 Mevcut Kaynaklar (v11.1)
+### 1.1 Mevcut Kaynaklar (v15.8)
 
-| Kategori | Kayıt Sayısı | Kaynak |
-|:--|:--:|:--|
-| İlaç dozu hesaplama (TR) | 320 | TITCK + WHO |
-| İlaç etkileşimi | 280 | FDA Orange Book |
-| Beers kriterleri | 150 | AGS Beers 2023 |
-| Pediatri dozu | 200 | BNF for Children |
-| Acil tıp protokolleri | 180 | ACLS/ATLS |
-| ICD-10 tanı açıklamaları | 400 | WHO ICD-10 TR |
-| KVKK sağlık uyumu | 90 | KVKK Kurul kararları |
-| **TOPLAM** | **~1,620** | — |
+| Kategori | Kayıt | Kaynak | Durum |
+|:--|:--:|:--|:--:|
+| İlaç dozu hesaplama (TR) | 320 | TITCK + WHO | ✅ |
+| İlaç etkileşimi | 280 | FDA Orange Book | ✅ |
+| Beers Kriterleri 2023 | 150 | AGS Beers 2023 | ✅ |
+| Pediatri dozu | 200 | BNF for Children | ✅ |
+| Acil tıp protokolleri | 180 | ACLS/ATLS | ✅ |
+| ICD-10 tanı açıklamaları | 400 | WHO ICD-10 TR | ✅ |
+| Kardiyoloji (ESC 2023) | 5,000+ | ESC Kılavuzları | ✅ |
+| Diyabet (ADA 2024) | 3,000+ | ADA Guidelines | ✅ |
+| DICOM/HL7/FHIR | 1,000+ | HL7 FHIR R4 IPS | ✅ |
+| SFT Medical Sentetik | 90,000+ | Hybrid Synthesizer | ✅ |
+| **TOPLAM** | **~100,000+** | — | ✅ |
 
-### 1.2 v12 Genişleme Planı (6,000 kayıt hedefi)
+### 1.2 FAZ 4 — Gerçek Veri Güncellemesi
+
+| Kaynak | İçerik | Hedef Düğüm | Araç | Benchmark |
+|:--|:--|:--:|:--|:--|
+| **ESC 2024** | ACS, HFrEF, Atriyal Fibrilasyon | ≥ 500 | `expert_real_data_ingestor.py` | P.A QPS regresyon yok |
+| **ADA 2025** | eGFR, HbA1c, Obezite | ≥ 300 | `expert_real_data_ingestor.py` | P.A QPS regresyon yok |
+| **Beers 2024** | Geriatrik ilaç güvenliği | ≥ 200 | `expert_real_data_ingestor.py` | Adversarial TRAP-02 hala 5/5 |
+| **ACLS 2025** | Kardiyak arrest protokolü | ≥ 150 | `expert_real_data_ingestor.py` | P.A QPS regresyon yok |
+
+---
+
+### 1.3 FAZ 5 Hedef — 400K Tıp SFT
 
 ```
-Yeni Kategoriler ve Hedefler:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TUS (Tıp Uzmanlık Sınavı) soruları       800 örnek
-Dahiliye vaka simülasyonları             600 örnek
-Cerrahi protokol özetleri               400 örnek
-Radyoloji raporlama standartları         300 örnek
-Nöroloji tanı algoritmaları             500 örnek
-Psikiyatri DSM-5 kriterleri             400 örnek
-Onkoloji tedavi protokolleri            300 örnek
-Türk Farmakopesi veri seti              700 örnek
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Toplam Ekleme: +4,000 kayıt
-v12 Tıp Toplam: ~5,620 kayıt
-```
-
-### 1.3 Açık Kaynak Veri Yolları
-
-```python
-# PubMed Open Access TR özeti çekici
-import urllib.request, json
-
-def fetch_pubmed_turkish(query: str, max_results: int = 100):
-    base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
-    search = f"{base_url}esearch.fcgi?db=pubmed&term={query}+AND+Turkish&retmax={max_results}&retmode=json"
-    # → Türkçe medikal makale özeti
-    
-# MedQA (Hugging Face) → TR çevirisi
-# datasets.load_dataset("bigbio/med_qa") → 12,000 USMLE soru
-# translate_to_turkish() → 3,000 seçili + kalite filtresi
+Yeni Kategoriler:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TUS (Tıp Uzmanlık Sınavı) soruları         10,000 örnek
+Dahiliye vaka simülasyonları (CoT)          15,000 örnek
+Cerrahi protokol özetleri                   8,000 örnek
+Radyoloji raporlama standartları            6,000 örnek
+Nöroloji tanı algoritmaları                 10,000 örnek
+Onkoloji tedavi protokolleri                8,000 örnek
+Türk Farmakopesi                            12,000 örnek
+Biyomedikal Genomik/Proteomik               5,000 örnek
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mevcut: 100,000 → Hedef: 400,000 kayıt
 ```
 
 ---
 
 ## 2. ⚖️ Hukuk Veri Seti
 
-### 2.1 Mevcut Kaynaklar (v11.1)
+### 2.1 Mevcut Kaynaklar (v15.8)
 
-| Kategori | Kayıt Sayısı | Kaynak |
-|:--|:--:|:--|
-| TCK suç tanımları | 180 | Resmi Gazete |
-| TBK sözleşme hükümleri | 120 | Resmi Gazete |
-| İş Kanunu maddeleri | 90 | Çalışma Bakanlığı |
-| KVKK kurul kararları | 80 | KVKK |
-| Tüketici Hukuku | 60 | Gümrük ve Ticaret Bakanlığı |
-| Yargıtay kararı özeti | 200 | Kazancı/Legalbank |
-| Anayasa Mahkemesi | 40 | AYM |
-| **TOPLAM** | **~770** | — |
+| Kategori | Kayıt | Kaynak | Durum |
+|:--|:--:|:--|:--:|
+| TCK suç tanımları | 180 | Resmi Gazete | ✅ |
+| TBK sözleşme hükümleri | 120 | Resmi Gazete | ✅ |
+| İş Kanunu | 90 | Çalışma Bakanlığı | ✅ |
+| KVKK kurul kararları | 80 | KVKK | ✅ |
+| Yargıtay kararı özeti | 200 | Kazancı/Legalbank | ✅ |
+| İçtihat + Emsal | 1,000+ | Legal Brief Pipeline | ✅ |
+| SFT Legal Sentetik | 97,000+ | Hybrid Synthesizer | ✅ |
+| **TOPLAM** | **~100,000+** | — | ✅ |
 
-### 2.2 v12 Genişleme Planı (5,000 kayıt hedefi)
+### 2.2 FAZ 4 — Gerçek Veri Güncellemesi
 
-```
-Yeni Kategoriler:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Ticaret Hukuku (TTK)                    500 örnek
-İdare Hukuku (İYUK)                    400 örnek
-Vergi Hukuku (VUK, GVK, KVK)          600 örnek
-Ceza Muhakemesi Kanunu (CMK)           400 örnek
-Medeni Kanun (MK) aile hukuku         300 örnek
-Miras hukuku senaryoları               300 örnek
-Gayrimenkul & tapu mevzuatı           400 örnek
-AB GDPR vs KVKK karşılaştırma         200 örnek
-Uluslararası ticaret hukuku           300 örnek
-Patent & marka tescil hukuku          300 örnek
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Toplam Ekleme: +3,700 kayıt
-v12 Hukuk Toplam: ~4,470 kayıt
-```
-
-### 2.3 Karar Veritabanı Entegrasyon Stratejisi
-
-```
-Ücretsiz Kaynaklar:
-- emsal.yargitay.gov.tr   → Yargıtay emsal kararları
-- kazanci.com             → Legaltech API (ücretli, pilot müzakere)
-- mevzuat.gov.tr          → Güncel mevzuat scraping
-- anayasa.gov.tr          → AYM bireysel başvuru kararları
-
-Scraping Pipeline:
-Kaynak URL → Selenium scraper → Metin temizleme
-→ SFT formatı dönüşümü → Kalite filtresi
-→ b2b_legal_sft_v12.jsonl dosyasına ekleme
-```
+| Kaynak | İçerik | Hedef Düğüm | Benchmark |
+|:--|:--|:--:|:--|
+| **KVKK 2025** | Veri ihlali emsal kararları | ≥ 150 | Adversarial TRAP-01 hala 5/5 |
+| **Yargıtay 2024-2025** | Ceza/Hukuk/İdare Dairesi kararları | ≥ 400 | P.A QPS regresyon yok |
+| **GDPR 2025** | AB güncellemeleri, yaptırım kararları | ≥ 300 | P.A QPS regresyon yok |
+| **TTK 2025** | Ticaret sicil değişiklikleri | ≥ 200 | P.A QPS regresyon yok |
 
 ---
 
 ## 3. 💰 Finans Veri Seti
 
-### 3.1 Mevcut Kaynaklar (v11.1)
+### 3.1 Mevcut Kaynaklar (v15.8)
 
-| Kategori | Kayıt Sayısı | Kaynak |
-|:--|:--:|:--|
-| BDDK sermaye yeterliliği | 80 | BDDK yönetmelikler |
-| Basel III/IV kuralları | 120 | BIS |
-| SPK portföy yönetimi | 60 | SPK |
-| Vergi hesaplama | 100 | GİB |
-| **TOPLAM** | **~360** | — |
-
-### 3.2 v12 Genişleme Planı (3,000 kayıt hedefi)
-
-```
-Yeni Kategoriler:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-IFRS/TFRS muhasebe standartları        600 örnek
-KGK bağımsız denetim standartları     400 örnek
-Türkiye CDS & kredi analizi           300 örnek
-Kripto varlık regülasyonu             200 örnek
-Sigorta mevzuatı (SEDDK)             400 örnek
-Leasing & faktoring hukuku            200 örnek
-Kambiyo mevzuatı                      300 örnek
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Toplam Ekleme: +2,400 kayıt
-v12 Finans Toplam: ~2,760 kayıt
-```
-
----
-
-## 4. 🔐 Siber Güvenlik Veri Seti
-
-### 4.1 Mevcut Kaynaklar (v11.1)
-
-| Kategori | Kayıt Sayısı | Kaynak |
-|:--|:--:|:--|
-| MITRE ATT&CK teknikleri | 858 | MITRE |
-| CVE kritik güvenlik açıkları | 200 | NVD |
-| Penetrasyon testi senaryoları | 150 | OWASP |
-| **TOPLAM** | **~1,208** | — |
-
-### 4.2 v12 Genişleme Planı (4,000 kayıt hedefi)
-
-```
-Yeni Kategoriler:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OWASP Top 10 detaylı açıklama        400 örnek
-Malware analiz raporları             500 örnek
-Incident response playbook           300 örnek
-SOC triage senaryoları              600 örnek
-Phishing tespit algoritmaları        300 örnek
-Zero-day exploit analizi             200 örnek
-Türkiye BTK siber mevzuat           300 örnek
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Toplam Ekleme: +2,600 kayıt
-v12 Siber Toplam: ~3,808 kayıt
-```
-
----
-
-## 5. 🔬 CoT (Chain-of-Thought) Veri Seti
-
-### 5.1 Neden CoT Kritik?
-
-```
-Normal SFT: Soru → Cevap
-CoT SFT:    Soru → [Adım 1: ...] → [Adım 2: ...] → [Adım N: ...] → Cevap
-
-CoT Avantajları:
-✅ Model nasıl düşündüğünü öğrenir
-✅ Karmaşık çok adımlı sorularda doğruluk %30+ artar
-✅ Hata nerede yapıldı? → Tespit edilebilir
-✅ Thinking Panel'e görünür düşünce sağlar
-```
-
-### 5.2 CoT Veri Seti Büyüme Planı
-
-| Versiyon | Kayıt Sayısı | Ortalama Adım |
+| Kategori | Kayıt | Durum |
 |:--|:--:|:--:|
-| v11.1 (mevcut) | 1,200 CoT | 4-6 adım |
-| v12 hedef | 5,000 CoT | 6-10 adım |
-| v13 hedef | 20,000 CoT | 8-15 adım |
+| Basel III BDDK rasyoları | 360+ | ✅ |
+| BIST KAP bildirimleri | 1,000+ | ✅ |
+| TCMB/BDDK yönetmelikleri | 500+ | ✅ |
+| SFT Finance Sentetik | 97,000+ | ✅ |
+| **TOPLAM** | **~100,000+** | ✅ |
 
-### 5.3 CoT Üretim Pipeline
+### 3.2 FAZ 4 — Gerçek Veri Güncellemesi
 
-```python
-def generate_cot_example(question: str, domain: str) -> dict:
-    """
-    Adım adım düşünce zinciri örneği üretir.
-    İnsan uzman + LLM hibrit yaklaşım.
-    """
-    template = {
-        "question": question,
-        "domain": domain,
-        "reasoning_steps": [
-            {"step": 1, "action": "Alan tespiti", "result": "..."},
-            {"step": 2, "action": "Kural/mevzuat araması", "result": "..."},
-            {"step": 3, "action": "Hesaplama/analiz", "result": "..."},
-            {"step": 4, "action": "Güvenlik kontrolü", "result": "..."},
-            {"step": 5, "action": "Kaynak doğrulama", "result": "..."},
-        ],
-        "final_answer": "...",
-        "confidence": 95,
-        "sources": ["..."]
-    }
-    return template
-```
-
----
-
-## 6. 🧬 HoloDB Genişleme Stratejisi
-
-### 6.1 HoloDB Nedir?
-
-```
-HoloDB = OmniEngine'in "uzun dönem hafızası"
-Format: Binary mmap graf (ilişkisel kavram ağı)
-Mevcut: 910 KB → ~10,000 kavram bağlantısı
-Hedef:  500 MB  → ~5,000,000 kavram bağlantısı
-
-Örnek İlişki:
-Aspirin ←→ NSAİİ ←→ Kanama Riski ←→ Warfarin ←→ INR
-Metformin ←→ Diyabet ←→ Böbrek ←→ GFR ←→ Beers Kriterleri
-```
-
-### 6.2 HoloDB Büyüme Planı
-
-```
-v12: Tıp ontolojisi (SNOMED CT benzeri Türkçe)
-     → 500,000 kavram bağlantısı
-     → Hastalık-ilaç-semptom üçgen grafiği
-
-v13: Hukuk ontolojisi
-     → Madde-suç-karar ilişki haritası
-     → Yargıtay kararları + TCK maddeleri çapraz referans
-
-v14: Tüm domain birleşik grafik
-     → Multidomain reasoning: "Bu hasta hem tıbbi hem hukuki risk taşıyor"
-
-v14.3: GraphRAG PathFinder & Co-Occurrence Auto-Linker
-     → BFS/Dijkstra ile kavramlar arası yol keşfi (derinlik 3)
-     → Metin tabanlı otomatik düşük-ağırlıklı kenar oluşturma
-     → 1-hop GraphRAG arama genişletmesi (retriever.py)
-     → Bilgi grafinin kendi kendini organize etmesi
-
-v15 Hedef: Dinamik KB
-     → Her yeni SFT/DPO üretiminde co-occurrence linker grafı büyütür
-     → Hedef: 2,000,000 düğüm, 50M kenar
-```
-
----
-
-## 7. 📐 Eğitim Kalitesi Metrikleri
-
-### 7.1 Veri Kalitesi Skoru
-
-Her SFT örneği şu kriterlere göre 1-5 puan alır:
-
-| Kriter | Açıklama | Ağırlık |
-|:--|:--|:--:|
-| **Doğruluk** | Faktüel olarak doğru mu? | %35 |
-| **Kaynak** | Kaynak gösterilmiş mi? | %25 |
-| **Netlik** | Anlaşılır Türkçe mi? | %20 |
-| **Güvenlik** | Zararlı bilgi içeriyor mu? | %15 |
-| **Format** | SFT formatına uygun mu? | %5 |
-
-Minimum kabul skoru: **4.0/5.0**  
-4.0 altı örnekler → insan denetimine gönder
-
-### 7.2 Veri Çeşitliliği Metrikleri
-
-```python
-def check_diversity(dataset: list[dict]) -> DiversityReport:
-    """
-    Veri setinin çeşitliliğini ölçer.
-    Tekrar eden örnekler modeli kötü eğitir.
-    """
-    metrics = {
-        "unique_questions": len(set([d["question"] for d in dataset])),
-        "domain_distribution": Counter([d["domain"] for d in dataset]),
-        "avg_answer_length": mean([len(d["answer"]) for d in dataset]),
-        "vocabulary_richness": calc_ttr(dataset),  # Type-Token Ratio
-        "dedup_rate": 1 - (unique / total),
-    }
-    return DiversityReport(**metrics)
-```
-
----
-
-## 7.3 Doğrulama ve Benchmark Veri Setleri
-
-v12.2 ile veri stratejisi yalnızca eğitim verisini büyütmekten, ölçülebilir ve arşivlenebilir doğrulama setleri üretmeye genişledi.
-
-| Veri seti | Durum | Kullanım amacı |
+| Kaynak | Hedef Düğüm | Benchmark |
 |:--|:--:|:--|
-| 10K QA Markdown arşivi | ✅ | Domain bazlı manuel inceleme, satış kanıtı, regresyon karşılaştırması |
-| 100K transparent benchmark harness | ✅ | Büyük ölçekli QPS, latency, guard block ve domain dağılımı testi |
-| Adversarial QA seti | ✅ | Prompt injection, zararlı talep ve policy bypass ölçümü |
-| Evidence trace seti | 🔄 | Her cevabı kaynak chunk/node ile eşleştirme |
-| Golden eval registry | 📋 | Whitepaper iddialarını test komutu ve rapor dosyasıyla bağlama |
-
-Kabul kriterleri:
-- Her yeni domain veri paketi için en az 500 altın standart QA.
-- Her benchmark raporu için JSONL ham çıktı + Markdown özet.
-- Her yüksek riskli cevap için `must_contain`, `must_not_contain`, risk sınıfı ve kaynak metadata'sı.
-- Veri lisansı belirsiz olan kayıtlar production setine alınmaz; ayrı karantina havuzunda tutulur.
+| **Basel IV (2025)** CRR3 | ≥ 200 | P.A QPS regresyon yok |
+| **BDDK 2025** sermaye standartları | ≥ 150 | P.A QPS regresyon yok |
+| **TCMB PPK kararları** 2024-2025 | ≥ 100 | P.A QPS regresyon yok |
 
 ---
 
-## 8. 🤝 AR-GE Ortaklık Stratejisi
+## 4. 🛡️ Siber Güvenlik Veri Seti
 
-### 8.1 Üniversite Ortaklıkları (Öncelikli)
+### 4.1 Mevcut Kaynaklar (v15.8)
 
-| Üniversite | Bölüm | Katkı |
-|:--|:--|:--|
-| **İTÜ** | Bilgisayar Müh. | NLP araştırma, tez öğrencileri |
-| **ODTÜ** | Yapay Zeka | Benchmark geliştirme |
-| **Boğaziçi** | Tıp Bilişimi | Tıp veri seti doğrulama |
-| **Hacettepe** | Hukuk + Tıp | Domain uzman incelemesi |
-| **Ankara Ü.** | Hukuk | Yargı veri seti |
+| Kategori | Kayıt | Durum |
+|:--|:--:|:--:|
+| MITRE ATT&CK v15 | 858+ | ✅ |
+| OWASP Top 10 2021 | 200+ | ✅ |
+| CVE 2020-2023 kritik | 2,000+ | ✅ |
+| SFT Cyber Sentetik | 64,000+ | ✅ |
+| **TOPLAM** | **~67,000+** | ✅ |
 
-**Model:** Üniversite lisans alır, ortak yayın, tez desteği
+### 4.2 FAZ 4 — Gerçek Veri Güncellemesi
 
-### 8.2 Kurumsal Veri Ortaklıkları
-
-| Kurum | Veri Türü | Model |
-|:--|:--|:--|
-| Özel hastane grubu | Anonim vaka özeti | Pilot → Lisans |
-| Hukuk bürosu | Anonim emsal kararı | Referans müşteri |
-| Banka | Regülatör soru-cevap | Pilot anlaşması |
-| BTK | Siber güvenlik | Kamu AR-GE |
+| Kaynak | Hedef Düğüm | Benchmark |
+|:--|:--:|:--|
+| **OWASP Top 10 2025** | ≥ 200 | Adversarial TRAP-03 korunmalı |
+| **CVE 2024-2025 kritik** | ≥ 500 | P.A QPS regresyon yok |
+| **MITRE ATT&CK v16** | ≥ 300 | P.A QPS regresyon yok |
 
 ---
 
-## 9.5 🤖 Yerel LLM Sentezleyici AR-GE ★ YENİ (v14.3)
+## 5. 🤖 Sentetik Veri Üretim Pipeline
 
-| AR-GE Konusu | Açıklama | Durum |
+### 5.1 Mevcut Sistem (Aktif)
+
+```
+expert_synthetic_pipeline.py
+  ├── Seed senaryo (uzman doğrulamalı)
+  ├── Evol-Instruct v2 mutasyon (15 strateji)
+  ├── Rejection Sampling (kalite < 0.75 → atla)
+  ├── Quality Gate filtresi (data_quality_verifier.py)
+  ├── Duplicate tespiti (MinHash LSH)
+  └── SFT / DPO / HoloDB'ye yazım
+```
+
+### 5.2 FAZ 5 — 2M Kayıt Hedefi
+
+```
+Strateji:
+1. Paralel sentetik üretim (8 domain, 4 süreç)
+2. Çok dilli sentetik (EN/AR/DE/FR LoRA için)
+3. Counterfactual veri (negatif örnekler artırma)
+4. Adversarial veri (tuzak sorular + doğru abstain)
+
+Benchmark Koşulu:
+  python src/python/training/data_quality_verifier.py
+  # Ortalama kalite skoru ≥ 0.85
+  # Duplicate oran < %0.1
+```
+
+---
+
+## 6. 🧪 AR-GE Gündemi
+
+### 6.1 Devam Eden Araştırmalar
+
+| Konu | Hedef | Dosya | Durum |
+|:--|:--|:--|:--:|
+| Calibrated Uncertainty iyileştirme | ECE < 0.05 | `composer.py` | 🔄 |
+| DPO v2 tercih öğrenmesi | Yanıt tercihi P(win) > %70 | `training/dpo_trainer.py` | 🔄 |
+| Mevzuat otomatik güncelleme | < 24h gecikme | `regulation_sync.py` | 🔄 |
+| Federated Learning üretim testi | 3 silo, ε < 1.0 | `federated_trainer.py` | 🔄 |
+
+### 6.2 Planlanan Araştırmalar (FAZ 6-7)
+
+| Konu | Açıklama | Tahmini |
 |:--|:--|:--:|
-| Port Keşif Motoru | Ollama/LM Studio/vLLM otomatik tarama | ✅ |
-| Domain CoT Şablonları | Tıp/Hukuk/Siber/Finans/Genel | ✅ |
-| Fallback Modu | Çevrimdışı güçlü şablon veri modu | ✅ |
-| Pipeline Otomasyonu | SFT+DPO+HoloDB+FAISS uçtan uca | ✅ |
-| Model Bağımsızlığı | Çıkarımda %0 dış LLM bağlılığı | ✅ |
-| Windows Encoding Uyumu | UTF-8 stdout reconfigure | ✅ |
+| Continual Learning | Yeni veri geldiğinde sıfırdan eğitmeden güncelleme | 2028 Q1 |
+| Neuro-Symbolic Fusion | Derin öğrenme + kural tabanı birleşik eğitim | 2028 Q2 |
+| World Model Integration | Gerçek dünya mantığı iç simülasyonu | 2028 Q3 |
+| Recursive Self-Improvement | Modelin kendi SFT verisi üretmesi | 2029 |
 
 ---
 
-## 📅 AR-GE Takvimi
+## 7. 📏 Veri Kalite Standartları
 
-| Dönem | Hedef | Kayıt Sayısı |
-|:--|:--|:--|
-| Q2 2026 (Tamamlandı) | HoloDB v5.0, RAG 2.0, Vision, FHIR | 500K SFT |
-| Q3 2026 (Aktif) | GraphRAG + Sentezleyici + DPO pipeline | +50K |
-| Q4 2026 | Tıp genişletme sprint 1 | +2,000 |
-| Q1 2027 | Hukuk genişletme sprint 1 | +2,000 |
-| Q2 2027 | Finans + Siber sprint | +2,000 |
-| Q3 2027 | CoT v4 üretimi | +3,000 CoT |
-| Q4 2027 | Kurumsal veri entegrasyonu | +10,000 |
-| 2028 | v15 final veri seti | **1,000,000 toplam** |
+```
+Her SFT Kaydı İçin Zorunlu:
+  ✅ Kalite skoru ≥ 0.75 (data_quality_verifier.py)
+  ✅ CoT (Chain-of-Thought) — adım adım düşünce zinciri
+  ✅ Kaynak referansı (hangi kılavuz/kanun/CVE)
+  ✅ Domain etiketi (medical/legal/finance/cyber/general)
+  ✅ Halüsinasyon blacklist kontrolü
+  ✅ Duplicate kontrolü (MinHash LSH)
+
+Her HoloDB Düğümü İçin Zorunlu:
+  ✅ Benzersiz konu başlığı
+  ✅ Resmi mevzuat/kılavuz atfı
+  ✅ Domain sınıflandırması
+  ✅ mmap binary dizini
+  ✅ FNV-1a hash ID
+```
 
 ---
 
-*Son güncelleme: 17 Temmuz 2026 — OmniEngine AR-GE Ekibi*
+*Son güncelleme: 29 Temmuz 2026 — v15.8*  
+*Veri ekleme sonrası zorunlu: `holodb_integrity_check.py` + `run_audit_pipeline.py`*

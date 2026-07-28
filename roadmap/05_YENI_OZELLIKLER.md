@@ -1,393 +1,213 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v15.1
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v15.8
 
-> **Versiyon:** v15.1 · **Güncelleme:** 22 Temmuz 2026  
-> **Kapsam:** Tamamlanan v15.1 (Calibrated Uncertainty, Multi-Agent Debate, Health Systems, Hibrit Veri Motoru v2.0) ve gelecek dönem özellikleri
-
----
-
-## 📋 Öncelik Matrisi
-
-| Özellik | Değer | Efor | Öncelik | Durum |
-|:--|:--:|:--:|:--:|:--:|
-| Multi-Agent Konsultasyon | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.4) |
-| Streaming Token Üretimi | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
-| Confidence Score Bandı | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v12.2) |
-| RAG 2.0 (hibrit arama) | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
-| Tıbbi Görüntü Yorumlama | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
-| Tıbbi Cihaz Entegrasyonu | Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v14.1) |
-| GraphRAG PathFinder | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
-| HoloDB Co-Occurrence | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
-| Yerel LLM Sentezleyici | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
-| Veri Üretim Otomasyonu | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3) |
-| Evidence Drawer MVP | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
-| Auth/Tenant İzolasyonu | Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
-| Gözlemlenebilirlik Panosu | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v14.3.1) |
-| Multi-Tenant Middleware | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
-| GPTQ 4-bit Quantization | Çok Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
-| Agent Orchestrator v2 | Çok Yüksek | Yüksek | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
-| Cross-encoder Reranking | Yüksek | Orta | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
-| Prometheus + Grafana | Orta | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.4) |
-| Legal Brief Generator | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
-| Multimodal Extractor (PDF/Excel) | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
-| Voice-to-Expert STT + Domain Router | Yüksek | Orta | 🟡 Orta | ✅ Tamamlandı (v14.5) |
-| ERP/CRM Webhook Engine | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
-| On-Premise Installer Wizard | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
-| AI Explainability API | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.5) |
-| KVKK/GDPR Uyumluluk Sayfası | Yüksek | Düşük | 🟠 Yüksek | ✅ Tamamlandı (v14.5) |
-| Vercel Production Deploy Config | Orta | Düşük | 🟡 Orta | ✅ Tamamlandı (v14.5) |
-| NLP Expert Trials (5 domain) | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v14.5) |
-| Calibrated Uncertainty | Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
-| Multi-Agent Debate Protocol | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
-| Health Systems Gateway (DICOM/ICD-10) | Çok Yüksek | Yüksek | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
-| Hibrit Veri Motoru v2.0 (Evol-Instruct) | Çok Yüksek | Orta | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
-| Zero-Hallucination Quality Gate v2.0 | Çok Yüksek | Düşük | 🔴 Kritik | ✅ Tamamlandı (v15.1) |
-| **Mobile SDK (React Native/Expo)** | **Çok Yüksek** | **Çok Yüksek** | **🔴 Kritik** | **📋 FAZ 4** |
-| **LDAP/AD SSO Entegrasyonu** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **📋 FAZ 4** |
-| **Mevzuat Otomatik Güncelleme** | **Yüksek** | **Orta** | **🟠 Yüksek** | **📋 FAZ 4** |
-| **DPO v2 Tercih Öğrenmesi** | **Yüksek** | **Yüksek** | **🟠 Yüksek** | **📋 FAZ 4** |
-| **Stripe Faturalandırma** | **Çok Yüksek** | **Orta** | **🔴 Kritik** | **📋 FAZ 4** |
-| **Federated Learning** | **Yüksek** | **Çok Yüksek** | **🟡 Orta** | **📋 FAZ 4** |
-| **Penetrasyon Testi Raporu** | **Yüksek** | **Orta** | **🟠 Yüksek** | **📋 FAZ 4** |
-| **OmniEngine Edge (Distil <4GB)** | **Çok Yüksek** | **Çok Yüksek** | **🟠 Yüksek** | **📋 FAZ 5** |
-| **OmniEngine Cloud (Hosted)** | **Çok Yüksek** | **Çok Yüksek** | **🔴 Kritik** | **📋 FAZ 5** |
-| **Arapça + Almanca Dil Desteği** | **Yüksek** | **Yüksek** | **🟠 Yüksek** | **📋 FAZ 5** |
-| Federated Learning | Yüksek | Çok Yüksek | 🟢 Araştırma | 📋 FAZ 5 |
+> **Versiyon:** v15.8 · **Güncelleme:** 29 Temmuz 2026  
+> **Audit Temelli:** Her yeni özellik için giriş/çıkış benchmark zorunludur.  
+> **Mevcut Baseline:** P.A QPS=8978, P.B QPS=167, Air-Gap=0, Adversarial=5/5
 
 ---
 
-## 🔴 KRİTİK — v12/v14 (Tamamlandı ✅)
+## 📋 Tam Öncelik Matrisi (v15.8)
 
-### 1. Multi-Agent Konsultasyon Modu
-... (aktif geliştirme devam ediyor) ...
+| Özellik | Değer | Efor | Durum | Benchmark Kapısı |
+|:--|:--:|:--:|:--:|:--|
+| inference.py Stub Giderimi | Kritik | Orta | 🔴 FAZ 4 — Acil | P.B QPS artışı ölçülmeli |
+| Speculative Decoding | Kritik | Orta | 🔴 FAZ 4 | P.B p50 < 400ms |
+| KV-Cache | Kritik | Düşük | 🔴 FAZ 4 | Tekrarlı sorgu p50 < 200ms |
+| 10 Adversarial Tuzak (5→10) | Kritik | Düşük | 🔴 FAZ 4 | 10/10 bloke |
+| HoloDB ESC 2024/OWASP 2025 Güncelleme | Yüksek | Orta | 🟠 FAZ 4 | P.A QPS regresyon yok |
+| Streaming First Token < 100ms | Yüksek | Düşük | 🟠 FAZ 4 | Manuel UX testi |
+| Benchmark Canlı Metrikleri UI | Yüksek | Orta | 🟠 FAZ 4 | Sayfa < 2s yükleme |
+| Adversarial Test Paneli UI | Yüksek | Orta | 🟠 FAZ 4 | HTTP 200 OK |
+| Pipeline Karşılaştırma UI | Yüksek | Düşük | 🟠 FAZ 4 | HTTP 200 OK |
+| LoRA 8→16 Uzman | Çok Yüksek | Çok Yüksek | 🔵 FAZ 5 | NLP %99.9+ PASS |
+| 2M SFT Eğitim Verisi | Çok Yüksek | Yüksek | 🔵 FAZ 5 | Kalite skoru ≥ 0.85 |
+| Çok Dilli (EN/AR/DE/FR) | Yüksek | Yüksek | 🔵 FAZ 5 | Dil başına QA testi |
+| Edge Distilasyon (<4GB RAM) | Yüksek | Çok Yüksek | 🔵 FAZ 5 | Edge QPS > 50 |
+| GAT v2 Graph Attention | Çok Yüksek | Yüksek | 🟣 FAZ 6 | Retrieval +%10 |
+| Post-Kuantum Güvenlik (PQC) | Yüksek | Yüksek | 🟣 FAZ 6 | FIPS 203/204 uyum |
+| Metacognitive Self-Correction | Yüksek | Orta | 🟣 FAZ 6 | Adversarial +%5 |
+| Autonomous Regulatory Crawler v2 | Yüksek | Orta | 🟣 FAZ 6 | Düğüm < 24h güncelleme |
+| Continual Learning | Kritik | Çok Yüksek | ⭐ FAZ 7 | Eski domain kaybı < %1 |
 
-### 2. Streaming Token Üretimi ✅ v12.2 SSE MVP tamamlandı
+### ✅ Tamamlanan Özellikler
 
-### 3. Confidence Score Bandı (Güven Göstergesi) ✅ v12.2 MVP tamamlandı
-
-### 4. RAG 2.0 — Hibrit Arama ✅ v14.1 Semantik + Anahtar Kelime RRF tamamlandı
-**Mevcut:** BM25 keyword search → LLM yanıt  
-**Yeni (v14.1):** Dense (FAISS semantic) + Sparse (BM25 keyword) + RRF (Reciprocal Rank Fusion)  
-
-```
-Kullanıcı Sorusu
-       │
-       ├── Dense Retrieval (FAISS + all-MiniLM-L6-v2)
-       │       └── Top-K semantik benzer pasaj
-       │
-       ├── BM25 Sparse Retrieval (inverted index)
-       │       └── Top-K keyword eşleşmesi
-       │
-       └── RRF (Reciprocal Rank Fusion) Birleştirme
-               └── Top-3 en alakalı hibrit pasaj → LLM
-```
-**Sonuç:** Bilgi getirme doğruluğu %35 arttı, halüsinasyon oranı %0'da sabitlendi.
-
----
-
-### 4b. RAG 3.0 — GraphRAG 1-hop Takviye ★ YENİ v14.3 ✅
-**Eklenen:** Hibrit RAG sonuçlarından çıkan kavramların HoloDB'deki 1-hop komşuları ek bağlam olarak LLM'e gönderilir.
-
-```
-Hibrit RAG Sonuçları (Top-3 pasaj)
-         │
-         ▼
-Kavram Çıkarma (anahtar terimler)
-         │
-         ▼
-HoloDB 1-hop Graph Genişletme
-  (Her kavramın komşuları → ek bağlam)
-         │
-         ▼
-Zenginleşmiş Bağlam → LLM
-```
-**Kazanım:** Model, direkt eşleşmenin ötesinde ilişkisel bağlamla yanıt üretir.
-
----
-
-### 5. GraphRAG PathFinder (HoloDB) ★ YENİ v14.3 ✅
-
-**Ne?** HoloDB bilgi grafi üzerinde iki kavram arasındaki ilişkisel yolu BFS/Dijkstra ile bulan anlamsal yol keşif motoru (`holo_db_writer.py :: find_semantic_path()`).
-
-```python
-# Örnek: Metformin ile Böbrek yetmezliği arasındaki ilişki
-path = db.find_semantic_path(”Metformin”, ”Böbrek yetmezliği”, max_depth=3)
-# Sonuç: [Metformin] -[KONTRAENDİKE]-> [GFR düşükünde dikkat] -» [Böbrek yetmezliği]
-```
-
-**Kullanım Senaryoları:**
-- Multi-hop klinik reasoning: “Bu ilacı neden vermemeli?” → Grafta yol bul, açıkla
-- Hukuki neden zinciri: “Bu suç hangi maddeyi ihlal ediyor?”
-- Finansal risk propagasyonu: “Bu risk neden daha büyük bir probleme yöl açıyor?”
+| Özellik | Versiyon | Dosya |
+|:--|:--:|:--|
+| Multi-Agent Konsultasyon | v14.4 | `agent_orchestrator_v2.py` |
+| RAG 2.0 (FAISS + BM25 + RRF) | v14.1 | `retriever.py` |
+| GraphRAG PathFinder (BFS/Dijkstra) | v14.3 | `graph_rag.py` |
+| HoloDB Co-Occurrence Auto-Linker | v14.3 | `graph_rag.py` |
+| GPTQ INT4 Quantization (167MB) | v14.4 | `quantize_gptq.py` |
+| Agent Orchestrator v2 (3 ajan, 2/3 oy) | v14.4 | `agent_orchestrator_v2.py` |
+| Cross-Encoder Reranking | v14.4 | `retriever.py` |
+| Legal Brief Generator | v14.5 | `legal_brief_generator.py` |
+| Multimodal PDF/Excel/CSV | v14.5 | `pdf_extractor.py` |
+| Voice-to-Expert STT | v14.5 | `server.py` |
+| ERP/CRM Webhook Engine (HMAC-SHA256) | v14.5 | `webhooks/route.ts` |
+| AI Explainability API | v14.5 | `api/explainability` |
+| Calibrated Uncertainty | v15.1 | `composer.py` |
+| Multi-Agent Debate Protocol | v15.1 | `agent_orchestrator_v2.py` |
+| Health Systems Gateway (DICOM/FHIR) | v15.1 | `health_systems_gateway.py` |
+| Zero-Hallucination Quality Gate v2.0 | v15.1 | `quality_gate.py` |
+| Mobile SDK (React Native/Expo) | v15.2 | `mobile-sdk/` |
+| LDAP/AD SSO Entegrasyonu | v15.3 | `auth_sso.ts` |
+| Federated Learning (FedAvg + DP) | v15.4 | `federated_trainer.py` |
+| Edge Engine (<1ms, 0.014ms) | v15.5 | `edge_engine.py` |
+| Pentest Reporter | v15.6 | `pentest_reporter.py` |
+| Billing API (Stripe-like) | v15.6 | `api/billing` |
+| Çok Dilli (TR/EN/AR/DE/FR mapping) | v15.7 | `multilingual_support.py` |
+| HoloDB 1M Düğüm | v15.8 | `holodb_1m_expander.py` |
+| 1M NLP Benchmark | v15.8 | `nlp_benchmark_1000000.py` |
 
 ---
 
-### 6. HoloDB Co-Occurrence Auto-Linker ★ YENİ v14.3 ✅
+## 🔴 FAZ 4 — Kritik Yeni Özellikler
 
-**Ne?** Üretilen veya yüklenen metin içindeki bilinen kavramları otomatik olarak düşük ağırlıklı `CO_OCCURRENCE` kenarları ile birleştiren ve bilgi grafiının kendi kendini organize etmesini sağlayan motor (`holo_db_writer.py :: auto_link_cooccurrence()`).
+### 1. inference.py Stub Giderimi ← EN KRİTİK
 
-```
-Metin: “Metformin kullanan hastalarda Böbrek yetmezliği riski vardır.”
+**Problem:** `audit_mocks.log` — `inference.py:3-5` açıkça `fake/stub model` olarak işaretli. Pretrained `.pth` olmadan tüm Pipeline B testleri fallback modeliyle ölçülüyor.
 
-Mevcut Düğümler: Metformin, Böbrek yetmezliği
-Kurulan Kenar: Metformin --[CO_OCCURRENCE, ağ=0.2]--> Böbrek yetmezliği
+**Çözüm:**
+- `model_cache/omni_v15_8_int4.pth` dosyası yüklenmeli
+- `inference.py` gerçek model yükleme kodu ile güncellenmeli
+- `audit_mocks.log`: runtime stub satır sayısı → **0**
 
-Birikim: Her yeni metinle grafin yoğunluğu artar → Otomatik öğrenen kural olmadan gelişen KB
-```
-
----
-
-### 7. Yerel LLM Sentezleyici + Eğitim Otomasyonu ★ YENİ v14.3 ✅
-**Ne?** Radyoloji ve klinik görüntüleri (XRay, CT, MRI, Ultrasound) yorumlama motoru (`vision_expert.py`).  
-**API Endpoint:** `POST /analyze_image`  
-**Pipeline:**  
-- DICOM (.dcm) veya JPEG/PNG/BMP yükleme  
-- Dosya adı, tag veya histogram analiziyle otomatik modalite tespiti  
-- Kural motoru ile bulguların çıkarılması  
-- Florence-2-base VLM adaptörü üzerinden derin öğrenme tanımı (opsiyonel)  
-- Klinisyen ve hasta için özel hazırlanmış iki farklı dil formatında raporlama.  
+**Giriş Benchmark:** `python scratch/run_audit_pipeline.py` (baseline al)  
+**Çıkış Benchmark:** `python scratch/run_audit_pipeline.py` (stub = 0, P.B QPS artışı ölç)
 
 ---
 
-### 9. Tıbbi Cihaz Entegrasyonu (FHIR/HL7/MQTT) ✅ v14.1 tamamlandı
-**Ne?** Hastane cihazlarından ve vital monitörlerden gelen canlı veya yapısal veriyi analiz etme motoru (`fhir_device_gateway.py`).  
-**API Endpointleri:** `/fhir_observation`, `/vital_simulate`, `/vital_status`  
-**Desteklenen Standartlar:**  
-- **FHIR R4:** LOINC kodlarıyla Observation ve Bundle ayrıştırma + üretme.  
-- **HL7 v2.x:** PID ve OBX segmentli ORU^R01 mesaj parser'ı.  
-- **MQTT / IoT:** Thread-safe vital simülatörü (fizyolojik gürültü ve kritik anomaliler üretebilir).  
-- **PACS:** WADO-RS ve QIDO-RS DICOMweb URL üreteci.  
-- **Trend Analizi:** Regresyon eğrisiyle vital parametre değişim hızı ve ciddiyet analizi.
+### 2. Speculative Decoding (Pipeline B Hızlandırma)
+
+**Hedef:** P.B p50: 568ms → < 350ms  
+**Dosya:** `src/python/inference.py`  
+**Yöntem:** Draft model (300M param) + Ana model (3.2B) doğrulama döngüsü
+
+**Giriş Benchmark:** P.B p50=568ms  
+**Çıkış Benchmark:** P.B p50 < 400ms
 
 ---
 
-## 🟠 YÜKSEK ÖNCELİK — v12-v14 (Aktif 🔄)
+### 3. KV-Cache Aktivasyonu
 
-### 7. Session Context Manager (Konuşma Hafızası)
-... (aktif) ...
+**Hedef:** Tekrarlı sorgu p50 < 200ms  
+**Dosya:** `src/python/inference.py`, `src/python/composer.py`  
+**Yöntem:** TTL tabanlı key-value cache, prompt hash üzerinden
 
-### 8. Multimodal Girdi (PDF / Excel / Görüntü)
-**Ne?** Kullanıcı dosya yükler → AI analiz eder.  
-**Durum:** PDF Öğrenme (v14.0) ve Tıbbi Görüntü Analizi (v14.1) tamamlandı. Excel ve Word (DOCX) analizi geliştirilmektedir.
-                 │
-│ TALEP VE SONUÇ: ...                          │
-└──────────────────────────────────────────────┘
+**Giriş Benchmark:** Tekrarlı sorgu P.B p50=568ms  
+**Çıkış Benchmark:** Tekrarlı sorgu P.B p50 < 200ms
+
+---
+
+### 4. Adversarial Tuzak Genişletme (5 → 10)
+
+**Hedef:** `audit_adversarial.log` 10/10 bloke  
+**Dosya:** `scratch/run_audit_pipeline.py`  
+**Yeni tuzaklar:** Finansal halüsinasyon, sahte CVE, çocuk doz aşımı, spekülatif finans, var olmayan mahkeme kararı
+
+**Giriş Benchmark:** 5/5  
+**Çıkış Benchmark:** 10/10
+
+---
+
+### 5. HoloDB Gerçek Veri Güncelleme
+
+**Hedef:** Yeni kılavuz/mevzuat verileri HoloDB'ye eklenir  
+**Kaynakar:** ESC 2024, ADA 2025, OWASP 2025, KVKK 2025, Basel IV  
+**Dosya:** `expert_real_data_ingestor.py`, `holodb_1m_expander.py`
+
+**Giriş Benchmark:** P.A QPS=8978  
+**Çıkış Benchmark:** P.A QPS ≥ 8978 (regresyon yok), yeni düğümler doğrulama
+
+---
+
+## 🔵 FAZ 5 — Yüksek Değerli Yeni Özellikler
+
+### 6. LoRA Adapter Yığını Genişletme (8 → 16 Uzman)
+
+**Hedef:** 14.8B → 30B parametre kapasitesi  
+**Yeni domainler:** Eğitim AI, Mühendislik AI, Etik AI, Biyomedikal AI  
+**Dosya:** `training/sft_trainer.py`, `inference.py`, `expert_router.py`
+
+**Çıkış Benchmark:**
+```bash
+python src/python/tests/nlp_benchmark_100000.py
+# %99.9+ PASS, Pipeline A/B regresyon yok
 ```
 
 ---
 
-### 8. Multimodal Girdi (PDF / Excel / Görüntü)
+### 7. Çok Dilli Genişleme (EN/AR/DE/FR)
 
-**Ne?** Kullanıcı dosya yükler → AI analiz eder.
+**Dosya:** `multilingual_support.py`, domain LoRA adaptörleri  
+**Eğitim:** Dil başına 3K-100K QA verisi  
 
-**Desteklenecek Formatlar:**
-| Format | Kullanım Senaryosu |
-|:--|:--|
-| PDF | Sözleşme analizi, mahkeme kararı özeti |
-| Excel | Finansal veri analizi, ilaç stok raporu |
-| Görüntü (PNG/JPG) | Reçete OCR, röntgen açıklaması (beta) |
-| Word (DOCX) | Hukuki metin düzenleme, madde analizi |
-
-**Pipeline:**
-```
-Dosya Yükleme → OCR/Parser → Chunk → Embed → RAG → LLM Yanıt
+**Çıkış Benchmark:**
+```bash
+python src/python/tests/nlp_benchmark_1000.py --lang all
+# Her dil için ayrı rapor
 ```
 
 ---
 
-### 9. Voice-to-Expert (Sesli Sorgulama)
+### 8. Edge Distilasyon (<4GB RAM)
 
-**Ne?** Kullanıcı sesli soru sorar → AI sesli yanıt verir.
+**Hedef:** Ana model (167MB INT4 + 35MB mmap) → Edge model (<4GB toplam RAM)  
+**Dosya:** `tools/edge_engine.py`, yeni `tools/edge_distil.py`  
+**Desteklenen donanım:** Apple M2/M3, NVIDIA Jetson, CPU-only
 
-**Özellikle:** Ameliyathanede eldiven giyen cerrahın soru sorması, sahada hukuk danışmanlığı.
-
-**Stack:**
-```
-Whisper (STT, Türkçe optimize) → OmniEngine → TTS (Türkçe ses)
-Latency hedefi: < 3 saniye uçtan uca
-```
-
----
-
-## 🟢 ARAŞTIRMA — v14+ (2027 Q3+)
-
-### 10. Federated Learning
-
-**Ne?** Hastane/banka kendi verisini dışarı göndermeden modeli eğitir.
-
-**Nasıl:**
-```
-Hastane A → Yerel model güncelleme (gradient)
-Hastane B → Yerel model güncelleme (gradient)
-Banka C   → Yerel model güncelleme (gradient)
-         ↓
-     Merkez: Sadece gradientleri toplar, veriyi görmez
-         ↓
-     Güncellenmiş global model → herkese gönder
-```
-
-**Yasal Avantaj:** KVKK ve GDPR açısından en güvenli seçenek.
-
----
-
-### 11. Recursive Self-Improvement
-
-**Ne?** Model kendi eğitim verilerini üretir ve kendini eğitir.
-
-```
-1. Model → Soru üretir
-2. Model → O soruyu yanıtlar
-3. Symbolic Gate → Yanıtı doğrular
-4. Geçen yanıtlar → Yeni SFT verisi olur
-5. Model → Bu veriyle yeniden eğitilir
-6. Döngü devam eder
-```
-
-**Risk:** Önyargı birikmesi (bias amplification)  
-**Önlem:** İnsan denetimi ve çeşitlilik metrikleri
-
----
-
-### 12. Explainability Dashboard
-
-**Ne?** Her kararın neden verildiğini görsel olarak açıklar.
-
-```
-┌────────────────────────────────────────────────┐
-│ Karar Analizi: "Metformin güvenli mi?"         │
-│                                                │
-│ Adım 1: Domain Tespiti                         │
-│   → Medical router: %97 güven                 │
-│                                                │
-│ Adım 2: HoloDB Araması                         │
-│   → 3 kavram bulundu: metformin, renal, GFR   │
-│   → Beers kriterleri: "dikkat" seviyesi        │
-│                                                │
-│ Adım 3: Kalite Kapısı                          │
-│   → Doz aralığı: ONAYLANMIŞ                   │
-│   → Yan etki uyarısı: EKLENDİ                 │
-│                                                │
-│ Adım 4: Güven Hesabı                           │
-│   → Evidence: 3 kaynak • Confidence: 94/100   │
-└────────────────────────────────────────────────┘
+**Çıkış Benchmark:**
+```bash
+python tools/edge_benchmark.py
+# Edge QPS > 50, p99 < 100ms, RAM < 4GB
 ```
 
 ---
 
-## 🌍 Platform Genişlemesi
+## 🟣 FAZ 6 — İleri Mimari Özellikleri
 
-### Çok Dilli Destek Yol Haritası
+### 9. Graph Attention Network (GAT v2)
 
-| Dil | v11.1 | v12 | v13 |
-|:--|:--:|:--:|:--:|
-| Türkçe | ✅ %100 | ✅ %100 | ✅ %100 |
-| İngilizce | %70 | %90 | %99 |
-| Arapça | ❌ | %50 | %80 |
-| Almanca | ❌ | ❌ | %60 |
-| Fransızca | ❌ | ❌ | %60 |
+**Hedef:** 1M düğüm dinamik semantik ağırlıklandırma  
+**Dosya:** `src/python/graph_rag.py`  
+**Beklenti:** Retrieval kalitesi +%10, 3. derece yol bulma %30 hızlanma
 
-### Sektörel Genişleme
-
-| Yeni Domain | v12 | v13 | Öncelik |
-|:--|:--:|:--:|:--|
-| Eğitim (pedagoji AI) | 📋 | ✅ | Orta |
-| Mühendislik (inşaat/makine) | 📋 | ✅ | Orta |
-| Tarım (bitki hastalıkları) | ❌ | 📋 | Düşük |
-| Psikoloji / Ruh Sağlığı | 📋 | ✅ | Yüksek |
-| Gümrük & Ticaret Hukuku | 📋 | ✅ | Yüksek |
-| Patent & Fikri Mülkiyet | ❌ | 📋 | Orta |
-
----
-
-## 🚀 v14.4 — Sonraki Sürüm Özellikleri (Planlandı)
-
-### 1. 🔒 Multi-Tenant Filtre Middleware
-
-Tüm API rotalarına `X-Tenant-ID` header desteği eklenir. Her veritabanı sorgusu `tenantId` anahtar sözcüğüyle otomatik filtreler.
-
-```typescript
-// src/lib/tenant.ts
-export function getTenantId(req: Request): string {
-  return req.headers.get('X-Tenant-ID') ?? 'default-tenant';
-}
-
-// Prisma sorgusu örneği:
-await prisma.conversation.findMany({
-  where: { tenantId: getTenantId(req) }
-});
-```
-
-**Kabul Kriteri:** `/api/chat`, `/api/memory`, `/api/history` rotaları yanlış tenant verisi döndermüyor.
-
----
-
-### 2. ⚡ GPTQ 4-bit Quantization
-
-`HOLO_AGI_FINAL.pth` modeli 4-bit GPTQ ile sıkıştırılır. Boyut ~700MB → <400MB, doğruluk kaybı <%5.
-
-```python
-# src/python/tools/quantize_gptq.py
-from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
-
-quantize_config = BaseQuantizeConfig(
-    bits=4, group_size=128, desc_act=True
-)
-model = AutoGPTQForCausalLM.from_pretrained(
-    "models/HOLO_AGI_FINAL.pth", quantize_config
-)
-model.quantize(calibration_data)  # 128 kalibrasyon örneği
-model.save_quantized("models/HOLO_AGI_GPTQ")
-```
-
-**Fayda:** Mobil ve edge cihazlara däğitim mümkün hale gelir.
-
----
-
-### 3. 🤖 Agent Orchestrator v2
-
-3 uzman ajandan bir&apos;i birincil, diğerleri denetimci şeklinde çalışır. Çoğunluk oyu mekanizması ile halusinasyon olasılığı azaltılır.
-
-```
-Soru
-  |═════════════════════════════════════════════════════|
-  |           |                    |
-Ajana-1    Ajana-2             Ajana-3
-(Birincil)  (Denetimci A)   (Denetimci B)
-  |═════════════════════════════════════════════════════|
-             Çoğunluk Oyu (2/3 eşleşmesi)
-                       |
-                   Final Yanıt
+**Çıkış Benchmark:**
+```bash
+python src/python/tests/graph_quality_test.py
+# Retrieval kalitesi ≥ mevcut + %10
 ```
 
 ---
 
-### 4. 📡 Prometheus + Grafana Metrik Entegrasyonu
+### 10. Post-Kuantum Güvenlik (NIST PQC)
 
-`/metrics` endpoint (`prom-client` veya Python `prometheus_client`) ile:
-- `engine_request_total` — toplam istek sayıcısı
-- `engine_latency_ms` — histogram (P50, P95, P99)
-- `engine_qps` — anlık QPS gauge
-- `engine_guard_block_total` — engellenen soru sayıcısı
+**Hedef:** FIPS 203 (Kyber-768) + FIPS 204 (Dilithium-3) uyumu  
+**Dosya:** `src/lib/crypto.ts`, `tools/audit_trail.py`, `webhooks/route.ts`
 
 ---
 
-### 5. 🔎 Cross-Encoder Reranking
+### 11. Metacognitive Self-Correction
 
-Mevcut hibrit arama (FAISS + BM25 → top-10) üstüne Cross-Encoder eklenecek:
+**Hedef:** Yanıt üretim döngüsünde Quality Gate erken uyarı + kendi kendine revizyon  
+**Dosya:** `src/python/composer.py`  
+**Limit:** Max 2 revizyon, toplam süre < 1.5× orijinal
 
-```python
-# src/python/retriever.py eki
-from sentence_transformers import CrossEncoder
-
-ce_model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
-
-def rerank(query: str, candidates: list[str]) -> list[str]:
-    scores = ce_model.predict([(query, c) for c in candidates])
-    ranked = sorted(zip(scores, candidates), reverse=True)
-    return [doc for _, doc in ranked[:3]]  # top-3
+**Çıkış Benchmark:**
+```bash
+python scratch/run_audit_pipeline.py
+# Adversarial bloke oranı ≥ mevcut + %5
 ```
 
-**Beklenen Kazanım:** Retrieval Precision@3 %12 artacak.
+---
+
+### 12. Autonomous Regulatory Crawler v2
+
+**Hedef:** T.C. Resmi Gazete, Yargıtay, EU GDPR, FDA/EMA 7/24 izleme  
+**Dosya:** `tools/regulation_sync.py` (genişletme)  
+**Ölçüm:** Yeni düğüm HoloDB'ye < 24 saat içinde eklenmeli
 
 ---
 
-*Son güncelleme: 18 Temmuz 2026 — OmniEngine Ürün Ekibi*
+*Son güncelleme: 29 Temmuz 2026 — v15.8*  
+*Her özellik için zorunlu benchmark: `python scratch/run_audit_pipeline.py`*
