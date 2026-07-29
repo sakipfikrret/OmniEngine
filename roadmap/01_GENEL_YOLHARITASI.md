@@ -13,6 +13,21 @@
 OmniEngine; sağlık, hukuk, finans ve siber güvenlik alanlarında **sıfır halüsinasyon** garantisi veren, tamamen yerel çalışan, kurumsal düzeyde bir AI platformdur.  
 Hedef: **Kurumsal B2B pazarında yüksek değerlemeli sovereign AI lideri olmak.**
 
+## 📁 Yol Haritası Klasör Endeksi
+
+| Dosya | Açıklama |
+|:--|:--|
+| [01_GENEL_YOLHARITASI.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/01_GENEL_YOLHARITASI.md) | Genel vizyon, faza göre plan ve audit temelli metrikler |
+| [02_TEKNIK_GELISTIRMELER.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/02_TEKNIK_GELISTIRMELER.md) | Mimari detaylar, eğitim metodolojisi ve sprint şablonu |
+| [03_UXUI_ARAYUZ.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/03_UXUI_ARAYUZ.md) | Tasarım sistemi, canlı metrik paneli ve UX sprintleri |
+| [04_SATIS_SUNUM_STRATEJISI.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/04_SATIS_SUNUM_STRATEJISI.md) | Sektörel satış stratejileri ve audit onaylı demolar |
+| [05_YENI_OZELLIKLER.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/05_YENI_OZELLIKLER.md) | Öncelik matrisi ve yeni özellik geliştirme planları |
+| [06_VERI_SETI_VE_ARGE.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/06_VERI_SETI_VE_ARGE.md) | 1M Düğüm HoloDB, SFT veri seti ve AR-GE hedefleri |
+| [07_LANSMAN_VE_PAZARLAMA_KIT.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/07_LANSMAN_VE_PAZARLAMA_KIT.md) | Lansman metinleri, sosyal medya ve CTO bilgi notu |
+| [08_TEKNIK_BORC_ENVANTERI.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/08_TEKNIK_BORC_ENVANTERI.md) | 17 adet teknik borç maddesi ve giderim takvimi |
+| [09_DUNSUNSEL_VE_TANISAL_MOTORLAR.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/09_DUNSUNSEL_VE_TANISAL_MOTORLAR.md) | Düşünsel (Reasoning) ve Tanısal (Diagnostic) motor geliştirme mimarisi |
+| [10_GOREV_LISTESI_VE_PLANLAMA.md](file:///c:/Users/fikre/Desktop/OmniGPT/roadmap/10_GOREV_LISTESI_VE_PLANLAMA.md) | **[YENİ]** Master Görev Listesi, Uygulama Takvimi, Bağımlılık Şeması ve Kabul Kriterleri |
+
 ---
 
 ## ⚡ Audit Onaylı Gerçek Performans Metrikleri (29 Temmuz 2026)

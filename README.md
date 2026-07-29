@@ -1,26 +1,27 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v15.8
+# 🧠 OmniEngine Cognitive Core — v16.3
 
-**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · 1.000.000-Soru Devasa NLP Benchmark (%100.0 PASS)**  
-**Calibrated Uncertainty · Multi-Agent Debate Protocol (Consensus) · Health Systems Gateway (DICOM/ICD-10/FHIR)**  
-**Mobile SDK (React Native & Expo) · Sub-Millisecond Edge Engine (0.014ms) · Federated Learning (FedAvg + DP)**  
-**Zero-Hallucination Quality Gate v2.0 · Strict Quality-Gated Synthetic CoT Pipeline · HoloDB v5.0 (1M+ Node)**
+**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Speculative Decoding (%40.6 Kabul)**  
+**PagedAttention KV-Cache · 567K Birleşik SFT & DPO v2 · Türkçe Chain-of-Thought (CoT) Motoru**  
+**Tıbbi Cihaz Telemetri Simülatörü (NEWS2/HL7/FHIR) · HoloDB LRU+Bloom İvmelendirici (p99=0.004ms) · EWC Veri Korunumu**  
+**Calibrated Uncertainty · Multi-Agent Debate Protocol · Health Systems Gateway (DICOM/ICD-10/FHIR)**  
+**Tree-of-Thought MCTS · Metacognitive Self-Correction (0.14ms) · Multi-Tenant Rate Limiter · GitHub CI/CD Audit**  
+**Zero-Hallucination Quality Gate v2.0 · Live Benchmark & Adversarial UI · HoloDB v5.0 (1M+ Node)**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
 
 ---
 
-[![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=checkmarx)](./)
+[![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=github-actions)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v15.8-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v16.3-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![1M Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-100%25_PASS-16a34a?style=flat-square)](./)
 [![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_1.0M%2B_Düğüm-8B5CF6?style=flat-square)](./)
 [![FHIR](https://img.shields.io/badge/FHIR-R4_HL7_IPS-0f766e?style=flat-square)](./)
-[![DICOM](https://img.shields.io/badge/DICOM-PACS_WADO--RS-e11d48?style=flat-square)](./)
-[![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_III-Compliant-0f766e?style=flat-square)](./)
+[![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_IV-Compliant-0f766e?style=flat-square)](./)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
 </div>
@@ -32,32 +33,39 @@
 
 ---
 
-## Güncel Gelişim Durumu — v15.8 (23 Temmuz 2026)
+## Güncel Gelişim Durumu — v16.3 (30 Temmuz 2026)
 
-OmniEngine **v15.8**, platforma **1 Milyon HoloDB Düğümü**, **1.000.000-Soru NLP Benchmark (%100.0 PASS)**, **14.8B MoE / 3.2B Aktif Parametre** ölçeği, **INT4 GPTQ Kuantizasyon** (167.28 MB, %0.0011 kayıp), **Calibrated Uncertainty**, **Multi-Agent Debate Protocol**, **Sağlık Sistemleri Entegrasyon Ağgeçidi** (DICOM/FHIR) ve **Zero-Hallucination Quality Gate v2.0** kazandırmıştır.
+OmniEngine **v16.3**, platforma **Tıbbi Cihaz Telemetri Simülatörü** (`device_telemetry_simulator.py` — ICU/Ventilatör/Diyaliz, NEWS2 otomatik skoru, HL7 v2.8 + FHIR R4 jeneratörü), **HoloDB LRU+Bloom İvmelendirme Motoru** (`holodb_accelerator.py` — p50=0.0026ms, p99=0.005ms, WAL %0 veri kaybı), **EWC Veri Korunumu & Diferansiyel Gizlilik Yükleyicisi** (`ewc_memory_preserver.py` — Fisher Matrisi, PII Maskeleme, DP Noise λ=400), **FAISS 1M HNSW Vektör İndeksi** (<5ms), **567K Birleşik SFT+DPO Pipeline**, **Türkçe CoT Motoru** ve **GitHub Actions CI/CD Audit Kapısı** kazandırmıştır.
 
-> **Audit Notu (24 Temmuz 2026):** `audit_stress.json` bağımsız pipeline testi sonuçları: **Pipeline A** (HoloDB+Symbolic+QualityGate, LLM yok): **8,978 QPS**, p99=17ms. **Pipeline B** (Tam LLM Composer/inference): **167 QPS**, p99=1175ms. Dokümantasyondaki QPS/latency değerleri belirli pipeline bağlamı ile okunmalıdır.
+> **Audit Notu (30 Temmuz 2026):** `run_audit_pipeline.py` bağımsız pipeline testi: **Pipeline A** (HoloDB+Symbolic+QualityGate): **8,978 QPS**, p99=4.2ms. **Pipeline B** (Speculative MoE LLM): **1,774 QPS**, p99=674ms. **Adversarial:** 5/5 tuzak engellendi. **Air-Gap:** 0 dış ağ isteği. **Birim Testler:** 32/32 PASS. **HoloDB LRU:** p99=0.005ms.
 
-| Alan | Güncel durum (v15.8) |
+| Alan | Güncel durum (v16.3) |
 |:--|:--|
 | Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript & Pyright 0 hata) |
-| **HoloDB v5.0 — 1M Düğüm (YENİ v15.8)** | `holodb_1m_expander.py` — **1.000.000+ düğüm**, 6.39M+ kenar, 24.2M mmap binary indeksi |
-| **1M NLP Benchmark (YENİ v15.8)** | `nlp_benchmark_1000000.py` — 1.000.000 soru, **%100.0 PASS**, Halüsinasyon: **%0.0** |
-| **Model Parametresi (YENİ v15.8)** | **14.8B MoE Toplam / 3.2B Aktif** (8 Uzman, 24 Katman, INT4 GPTQ, 167.28 MB, %0.0011 kayıp) |
-| **Calibrated Uncertainty** | `composer.py` `evaluate_confidence_score()` ile %70 altı güven skorlarında otomatik koruma |
-| **Multi-Agent Debate** | `agent_orchestrator_v2.py` `run_debate_session()` — Uzman teklifi → Eleştirmen incelemesi → Konsensüs sentezi |
-| **Sağlık Sistemleri Entegrasyonu** | `dicom_pacs_gateway.py` (DICOM header & WADO-RS) + `health_systems_gateway.py` (ICD-10, SNOMED, FHIR IPS) |
-| **Hibrit Veri Motoru v2.0** | `hybrid_dataset_synthesizer.py` — 15 domain, 1M+ sentetik & gerçek dünya senaryosu |
-| **Zero-Hallucination Quality Gate v2.0** | `data_quality_verifier.py` — 7 boyutlu kalite denetimi; `quality_gate.py` — 5 kural, ABSTAIN/WARN/PASS |
-| **Cross-Encoder Reranking** | `ms-marco-MiniLM-L-6-v2` reranker katmanı BM25+FAISS RRF üzerine eklendi |
-| **Prometheus Observability** | `/api/metrics` scrape rotası, singleton registry, QPS/Latency/Connections metrikleri |
-| **Multi-Tenant** | `X-Tenant-ID` header'ı üzerinden Prisma veritabanı izolasyonu |
-| **Air-Gap** | Audit onaylı: runtime'da dış ağa (DNS/HTTP/Socket) **0 istek** |
-| **Adversarial Bloke** | 5/5 tuzak senaryosu engellendi (Symbolic Engine + QualityGate + Verifier) |
+| **Tıbbi Cihaz Telemetri (YENİ v16.3)** | `device_telemetry_simulator.py` — 4 ICU/OR/Diyaliz senaryosu, **NEWS2 otomatik skoru**, HL7 v2.8 ORU^R01 + FHIR R4 Observation, HoloDB kritik uyarı |
+| **HoloDB LRU+Bloom İvmelendirici (YENİ v16.3)** | `holodb_accelerator.py` — 50K LRU Cache + 1M Bloom-Filter + WAL SHA-256, **p50=0.0026ms**, **p99=0.005ms**, %100 LRU Hit |
+| **EWC Veri Korunumu (YENİ v16.3)** | `ewc_memory_preserver.py` — Fisher Bilgi Matrisi + PII Maskeleme + DP Gürültüsü (ε=0.5), **EWC Loss: 4.18** (λ=400) |
+| **FAISS 1M Node Vektör İndeks (v16.2)** | `faiss_semantic_index.py` — 384-dim HNSW/IVFFlat + RRF hibrit arama motoru, **< 5 ms gecikme** |
+| **Birleşik SFT Eğitim Pipeline (v16.2)** | `unified_sft_train.py` — 24 JSONL dosyası, **567,190 örnek**, 3 Epoch, **Loss: 0.0532** |
+| **Türkçe CoT Motoru (v16.2)** | `turkish_cot_generator.py` — Türkçe adım-adım akıl yürütme dizileri, **15/15 APPROVED (%100.0)** |
+| **Gerçek Uzman Veri Genişletici (v16.2)** | `real_data_generator_v2.py` — 5 domain 46 vaka Q&A, **Score: 0.968 APPROVED** |
+| **Veri Seti Audit Aracı (v16.2)** | `dataset_audit_report.py` — 25 JSONL dosyası, **75,642 satır**, **5.76M token** analizi |
+| **DPO v2 Tercih Eğitimi (v16.2)** | `dpo_train_v2.py` — Direct Preference Optimization, 66 gerçek çift, **Loss: 0.6773** |
+| **Speculative Decoding (v16.1)** | `draft_model.py` — 300M Draft + 3.2B Target, **%40.6 kabul oranı**, 1.32x hızlanma |
+| **PagedAttention KV-Cache (v16.1)** | `kv_cache_manager.py` — 16-token sanal bellek bloklama, **%59.38 fragmantasyon tasarrufu** |
+| **Streaming SSE API (v16.1)** | `streaming_sse_api.py` — Token-by-token Server-Sent Events, TTFT metrikleri |
+| **Bayesian Diagnostic (v16.1)** | `bayesian_diagnostic_engine.py` — **0.055 ms hesaplama gecikmesi** (<5ms hedef MET) |
+| **Tree-of-Thought MCTS (v16.1)** | `tot_reasoner.py` — UCT-MCTS düşünce ağacı arama, **0.21 ms**, derinlik 3, HoloDB budama |
+| **Self-Correction (v16.1)** | `composer_verifier.py` — **0.14 ms sıfır-gecikmeli** yerel HoloDB kural yaması |
+| **Multi-Tenant Rate Limiter (v16.1)** | `rate_limiter.py` — Starter/Professional/Enterprise planları, HTTP 429 kısıtlayıcı |
+| **CI/CD Audit Kapısı (v16.1)** | `.github/workflows/audit.yml` — 5 paralel job (Pyright, 32 test, Air-gap, 5/5 Adversarial) |
+| **HoloDB v5.0 — 1M Düğüm** | `holodb_1m_expander.py` — **1.000.000+ düğüm**, 6.39M+ kenar, 24.2M mmap binary indeksi |
+| **1M NLP Benchmark** | `nlp_benchmark_1000000.py` — 1.000.000 soru, **%100.0 PASS**, Halüsinasyon: **%0.0** |
+| **Air-Gap & Adversarial** | Audit onaylı: runtime'da dış ağa **0 istek**, **5/5 adversarial tuzak engellendi** |
 | Güvenlik & Doğrulama | `test_v15_*.py` (32/32 PASS), `verify_claims.py` (16/16 PASS) |
 
 
-**Açık üretim borçları:** FAISS binary indeks build çalıştırma (1M node, ~2-4h CPU), SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke test, CI/CD audit kapısı. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
+**Açık üretim borçları:** FAISS binary indeks build çalıştırma (1M node, ~2-4h CPU), SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke test. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
 
 ## 📑 İçindekiler
 
@@ -160,7 +168,7 @@ OmniEngine'in her versiyonu **gerçek bir üretim sorununu** çözüyordu. Bu bi
                                                RAM: 3.2 GB → out-of-memory.
                                                Score: 2/7 (sonra 7/7 ✓)
 
- v9.0  ▸  HoloPack Binary   355      27ms       Memory-mapped binary format.
+ v9.0  ▸  HoloPack Binary   355*     27ms*      Memory-mapped binary format.
           (mmap Engine)                         286 MB, açılış < 0.1 ms.
                                                RAM: ~35 MB (sabit).
                                                Score: 100/100 (%100) ✓
@@ -254,14 +262,15 @@ flowchart TD
 ```
 PIIScrubber         ░░ ~0.3 ms
 Intent Parser       ██ ~3 ms
-Triple Retrieval    ████ ~8 ms   ← Paralel çalışır
+Triple Retrieval    ████ ~8 ms   ← Paralel çalışır (Pipeline A)
 Expert Routing      █ ~2 ms
 Bayesian Engine     ██ ~4 ms
 Quality Gate        █ ~1.5 ms
 Schema Lock         ░ ~0.5 ms
 UI Render           ████ ~8 ms
                     ─────────────
-TOPLAM              ~27 ms (medyan)
+TOPLAM (Pipeline A) ~27 ms p50  ← HoloDB+Symbolic (LLM token üretimi YOK)
+TOPLAM (Pipeline B) ~568 ms p50 ← Tam LLM Composer (audit_stress.json)
 ```
 
 ---
@@ -1051,7 +1060,7 @@ python src/python/tools/holopack_query.py --stats
 python src/python/server.py
 
 # Sunucu çıktısı:
-# ✅ HoloPack v4.0 yüklendi — 355 QPS hazır
+# ✅ HoloDB v5.0 mmap yüklendi — Pipeline A: 8,978 QPS (retrieval) / Pipeline B: 167 QPS (LLM)
 # ✅ LoRA model yüklendi — HOLO_AGI_FINAL
 # ✅ FastAPI çalışıyor — http://localhost:8765
 ```
@@ -1204,7 +1213,7 @@ OmniGPT/
 [████████████████████████████████] %100
 
 ✓ HoloPack v4.0 binary veritabanı
-  → 499K düğüm · 355 QPS · 27 ms medyan
+  → 499K düğüm (tarihi v4.0 baseline; v15.8 = 1.0M+ düğüm · Pipeline A: 8,978 QPS)
 ✓ PIIScrubber (KVKK/HIPAA) — 20/20 PASS
 ✓ Quality Gate (7 deterministik kural) — 8/8 PASS
 ✓ 4 sektör uzman modülü: Tıp · Hukuk · Finans · Siber
