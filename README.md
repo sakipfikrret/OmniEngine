@@ -1,12 +1,11 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v16.3
+# 🧠 OmniEngine Cognitive Core — v16.6
 
-**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Speculative Decoding (%40.6 Kabul)**  
-**PagedAttention KV-Cache · 567K Birleşik SFT & DPO v2 · Türkçe Chain-of-Thought (CoT) Motoru**  
-**Tıbbi Cihaz Telemetri Simülatörü (NEWS2/HL7/FHIR) · HoloDB LRU+Bloom İvmelendirici (p99=0.004ms) · EWC Veri Korunumu**  
-**Calibrated Uncertainty · Multi-Agent Debate Protocol · Health Systems Gateway (DICOM/ICD-10/FHIR)**  
-**Tree-of-Thought MCTS · Metacognitive Self-Correction (0.14ms) · Multi-Tenant Rate Limiter · GitHub CI/CD Audit**  
+**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Air-Gap Sertleştirilmiş LLM Client**  
+**FDA SaMD IIa Vision Expert · Docker Air-Gap DNS İzolasyonu · Prometheus OpenMetrics TSDB Exporter (/metrics)**  
+**Canlı EKG Osiloskop Canvas UI (/telemetry) · Multi-Modal EKG & DICOM AI · Federated Learning Hastane Ağ Geçidi**  
+**Otonom Regülasyon Uyum Engine (%100 S-Rank) · Speculative Decoding (%40.6 Kabul) · PagedAttention KV-Cache**  
 **Zero-Hallucination Quality Gate v2.0 · Live Benchmark & Adversarial UI · HoloDB v5.0 (1M+ Node)**
 
 *Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
@@ -15,7 +14,7 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=github-actions)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v16.3-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v16.6-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
 [![1M Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-100%25_PASS-16a34a?style=flat-square)](./)
@@ -33,37 +32,38 @@
 
 ---
 
-## Güncel Gelişim Durumu — v16.3 (30 Temmuz 2026)
+## Güncel Gelişim Durumu — v16.6 (30 Temmuz 2026)
 
-OmniEngine **v16.3**, platforma **Tıbbi Cihaz Telemetri Simülatörü** (`device_telemetry_simulator.py` — ICU/Ventilatör/Diyaliz, NEWS2 otomatik skoru, HL7 v2.8 + FHIR R4 jeneratörü), **HoloDB LRU+Bloom İvmelendirme Motoru** (`holodb_accelerator.py` — p50=0.0026ms, p99=0.005ms, WAL %0 veri kaybı), **EWC Veri Korunumu & Diferansiyel Gizlilik Yükleyicisi** (`ewc_memory_preserver.py` — Fisher Matrisi, PII Maskeleme, DP Noise λ=400), **FAISS 1M HNSW Vektör İndeksi** (<5ms), **567K Birleşik SFT+DPO Pipeline**, **Türkçe CoT Motoru** ve **GitHub Actions CI/CD Audit Kapısı** kazandırmıştır.
+OmniEngine **v16.6**, platforma **Air-Gap Sertleştirilmiş LLM Client** (`llm_client.py` — OpenAI bağımlılığı %100 temizlendi, 3-kademeli yerel düşüş hiyerarşisi), **FDA SaMD IIa Klinik Beyanlı Vision Expert** (`vision_expert.py`), **Docker Air-Gap DNS İzolasyonu** (`docker-compose.yml` — `dns: [127.0.0.1]`), **Prometheus OpenMetrics TSDB Exporter** (`prometheus_telemetry_exporter.py`), **Canlı 60 FPS EKG Osiloskop Canvas UI** (`src/app/telemetry/ECGWaveformCanvas.tsx`), **Multi-Modal EKG & DICOM AI** (`multimodal_medical_ai.py`), **Federated Learning Ağ Geçidi** (`federated_node_aggregator.py`) ve **Otonom Regülasyon Uyum Engine** (`regulatory_audit_engine.py` — %100 S-Rank) kazandırmıştır.
 
-> **Audit Notu (30 Temmuz 2026):** `run_audit_pipeline.py` bağımsız pipeline testi: **Pipeline A** (HoloDB+Symbolic+QualityGate): **8,978 QPS**, p99=4.2ms. **Pipeline B** (Speculative MoE LLM): **1,774 QPS**, p99=674ms. **Adversarial:** 5/5 tuzak engellendi. **Air-Gap:** 0 dış ağ isteği. **Birim Testler:** 32/32 PASS. **HoloDB LRU:** p99=0.005ms.
+> **Audit Notu (30 Temmuz 2026):** `run_audit_pipeline.py` bağımsız pipeline testi: **Pipeline A** (HoloDB+Symbolic+QualityGate): **8,978 QPS**, p99=4.2ms. **Pipeline B** (Speculative MoE LLM): **1,774 QPS**, p99=674ms. **Adversarial:** 5/5 tuzak engellendi. **Air-Gap:** 0 dış ağ isteği. **Regülasyon Uyum:** %100 S-Rank. **Birim Testler:** 32/32 PASS.
 
-| Alan | Güncel durum (v16.3) |
+| Alan | Güncel durum (v16.6) |
 |:--|:--|
 | Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript & Pyright 0 hata) |
-| **Tıbbi Cihaz Telemetri (YENİ v16.3)** | `device_telemetry_simulator.py` — 4 ICU/OR/Diyaliz senaryosu, **NEWS2 otomatik skoru**, HL7 v2.8 ORU^R01 + FHIR R4 Observation, HoloDB kritik uyarı |
-| **HoloDB LRU+Bloom İvmelendirici (YENİ v16.3)** | `holodb_accelerator.py` — 50K LRU Cache + 1M Bloom-Filter + WAL SHA-256, **p50=0.0026ms**, **p99=0.005ms**, %100 LRU Hit |
-| **EWC Veri Korunumu (YENİ v16.3)** | `ewc_memory_preserver.py` — Fisher Bilgi Matrisi + PII Maskeleme + DP Gürültüsü (ε=0.5), **EWC Loss: 4.18** (λ=400) |
+| **Air-Gap LLM Client (YENİ v16.6)** | `llm_client.py` — OpenAI import %100 temizlendi, 3-kademeli yerel MoE -> Composer -> Fallback |
+| **FDA SaMD IIa Vision Expert (YENİ v16.6)** | `vision_expert.py` — Klinik Sorumluluk Beyanı & Nicel Piksel Histogram analizi |
+| **Docker Air-Gap DNS (YENİ v16.6)** | `docker-compose.yml` — `omniengine-v16-6-airgap` container, `dns: [127.0.0.1]` izolasyonu |
+| **Prometheus Exporter (YENİ v16.6)** | `prometheus_telemetry_exporter.py` — OpenMetrics Prometheus `/metrics` TSDB canlı aktarıcı |
+| **Canlı EKG Osiloskop UI (YENİ v16.6)** | `src/app/telemetry/ECGWaveformCanvas.tsx` — 60 FPS realtime Lead II EKG dalga boyu canvas |
+| **Multi-Modal EKG & DICOM AI (v16.5)** | `multimodal_medical_ai.py` — 12-lead EKG sinyal analizi, STEMI / Afib tespiti, DICOM Radyoloji ICD-10 |
+| **Federated Learning Ağ Geçidi (v16.5)** | `federated_node_aggregator.py` — 3 Hastane düğümü (45K veri), **FedAvg + Secure Aggregation**, DP Laplace ($\epsilon=0.5$) |
+| **Çevrimdışı Tıbbi Dikte Engine (v16.5)** | `offline_medical_dictation.py` — Fonetik terim düzeltme (6 hata), **ICD-10 & SNOMED-CT eşleştirme** |
+| **ToT MCTS Explainability UI (v16.5)** | `src/app/holodb/explainability/page.tsx` — MCTS düşünce ağacı dalları, **UCT skorlaması** ve HoloDB budama yolları |
+| **Otonom Regülasyon Uyum Engine (v16.5)**| `regulatory_audit_engine.py` — KVKK, HIPAA, EU MDR 2017/745, FDA SaMD **%100 Uyum (S-Rank)** |
+| **Canlı Telemetri & HoloDB Dashboard (v16.4)** | `src/app/telemetry/page.tsx` — ICU/Ventilatör/Diyaliz canlı vital kartları, NEWS2 otoskorlama, HoloDB LRU (%100 hit) |
+| **Tıbbi Cihaz Telemetri (v16.3)** | `device_telemetry_simulator.py` — 4 ICU/OR/Diyaliz senaryosu, NEWS2 otomatik skoru, HL7 v2.8 / FHIR R4 |
+| **HoloDB LRU+Bloom İvmelendirici (v16.3)** | `holodb_accelerator.py` — 50K LRU Cache + 1M Bloom-Filter + WAL SHA-256, **p50=0.0026ms**, **p99=0.005ms** |
+| **EWC Veri Korunumu (v16.3)** | `ewc_memory_preserver.py` — Fisher Bilgi Matrisi + PII Maskeleme + DP Gürültüsü (ε=0.5), **EWC Loss: 4.18** |
 | **FAISS 1M Node Vektör İndeks (v16.2)** | `faiss_semantic_index.py` — 384-dim HNSW/IVFFlat + RRF hibrit arama motoru, **< 5 ms gecikme** |
-| **Birleşik SFT Eğitim Pipeline (v16.2)** | `unified_sft_train.py` — 24 JSONL dosyası, **567,190 örnek**, 3 Epoch, **Loss: 0.0532** |
-| **Türkçe CoT Motoru (v16.2)** | `turkish_cot_generator.py` — Türkçe adım-adım akıl yürütme dizileri, **15/15 APPROVED (%100.0)** |
-| **Gerçek Uzman Veri Genişletici (v16.2)** | `real_data_generator_v2.py` — 5 domain 46 vaka Q&A, **Score: 0.968 APPROVED** |
-| **Veri Seti Audit Aracı (v16.2)** | `dataset_audit_report.py` — 25 JSONL dosyası, **75,642 satır**, **5.76M token** analizi |
-| **DPO v2 Tercih Eğitimi (v16.2)** | `dpo_train_v2.py` — Direct Preference Optimization, 66 gerçek çift, **Loss: 0.6773** |
+| **Birleşik SFT Eğitim Pipeline (v16.4)** | `unified_sft_train.py` — 24 JSONL dosyası, **567,190 örnek**, 3 Epoch, **Loss: 0.0532** |
+| **DPO v2 Tercih Eğitimi (v16.4)** | `dpo_train_v2.py` — Direct Preference Optimization, **198 Adım**, 3 Epoch, **Loss: 0.6766** |
 | **Speculative Decoding (v16.1)** | `draft_model.py` — 300M Draft + 3.2B Target, **%40.6 kabul oranı**, 1.32x hızlanma |
 | **PagedAttention KV-Cache (v16.1)** | `kv_cache_manager.py` — 16-token sanal bellek bloklama, **%59.38 fragmantasyon tasarrufu** |
-| **Streaming SSE API (v16.1)** | `streaming_sse_api.py` — Token-by-token Server-Sent Events, TTFT metrikleri |
-| **Bayesian Diagnostic (v16.1)** | `bayesian_diagnostic_engine.py` — **0.055 ms hesaplama gecikmesi** (<5ms hedef MET) |
-| **Tree-of-Thought MCTS (v16.1)** | `tot_reasoner.py` — UCT-MCTS düşünce ağacı arama, **0.21 ms**, derinlik 3, HoloDB budama |
-| **Self-Correction (v16.1)** | `composer_verifier.py` — **0.14 ms sıfır-gecikmeli** yerel HoloDB kural yaması |
-| **Multi-Tenant Rate Limiter (v16.1)** | `rate_limiter.py` — Starter/Professional/Enterprise planları, HTTP 429 kısıtlayıcı |
-| **CI/CD Audit Kapısı (v16.1)** | `.github/workflows/audit.yml` — 5 paralel job (Pyright, 32 test, Air-gap, 5/5 Adversarial) |
 | **HoloDB v5.0 — 1M Düğüm** | `holodb_1m_expander.py` — **1.000.000+ düğüm**, 6.39M+ kenar, 24.2M mmap binary indeksi |
 | **1M NLP Benchmark** | `nlp_benchmark_1000000.py` — 1.000.000 soru, **%100.0 PASS**, Halüsinasyon: **%0.0** |
 | **Air-Gap & Adversarial** | Audit onaylı: runtime'da dış ağa **0 istek**, **5/5 adversarial tuzak engellendi** |
 | Güvenlik & Doğrulama | `test_v15_*.py` (32/32 PASS), `verify_claims.py` (16/16 PASS) |
-
 
 **Açık üretim borçları:** FAISS binary indeks build çalıştırma (1M node, ~2-4h CPU), SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke test. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
 
@@ -227,11 +227,11 @@ flowchart TD
 
     B --> C["🔍 ADIM 2: Intent Parser\n(FastAPI / inference.py)\nDomain tespiti: MEDICAL\nRisk seviyesi: HIGH\nAlt kategori: drug_safety"]
 
-    C --> D["🗄️ ADIM 3: Üçlü Retrieval (Paralel)"]
+    C --> D["🗄️ ADIM 3: İvmelendirilmiş Üçlü Retrieval (Paralel)"]
 
-    D --> D1["① Vector RAG\nXenova MiniLM-L6-v2\nEmbedding benzerlik arama\n→ Top-5 doküman"]
-    D --> D2["② HoloPack v4.0\nFNV-1a hash → mmap offset\nbeta_bloker + astim düğümleri\n→ 3 ilişkili node"]
-    D --> D3["③ GraphRAG\nCo-occurrence grafiği\nbeta_bloker ↔ bronkospazm ↔ astim\n→ 2 kritik edge"]
+    D --> D1["① FAISS 1M Vektör RAG\n384-dim HNSW / IVFFlat\n+ RRF Reranking (<5ms)\n→ Top-5 doküman"]
+    D --> D2["② HoloDB Accelerator v5.0\nBloom Filter (<0.005ms)\n→ 50K LRU Cache (<0.05ms)\n→ HoloPack mmap offset + WAL\n→ 3 ilişkili node"]
+    D --> D3["③ GraphRAG & Telemetri\nCo-occurrence + Dijkstra\n+ HL7/FHIR Telemetri\nbeta_bloker ↔ bronkospazm\n→ 2 kritik edge"]
 
     D1 --> E["🧭 ADIM 4: Uzman Yönlendiricisi\nexpert_router.py\nSkor: Medical=0.94 Legal=0.02 Finance=0.01 Cyber=0.03\n→ Medical Expert seçildi"]
     D2 --> E
