@@ -65,6 +65,8 @@ OmniEngine **v16.6**, platforma **Air-Gap Sertleştirilmiş LLM Client** (`llm_c
 | **Air-Gap & Adversarial** | Audit onaylı: runtime'da dış ağa **0 istek**, **5/5 adversarial tuzak engellendi** |
 | Güvenlik & Doğrulama | `test_v15_*.py` (32/32 PASS), `verify_claims.py` (16/16 PASS) |
 
+> 📄 **Kurucu & Proje Yönetici Özeti (One-Pager):** Fikret ve AR-GE ekibinin vizyonunu, mimari detaylarını ve klinik/kurumsal yeteneklerini içeren kapsamlı özet için [`ONE_PAGER.md`](./ONE_PAGER.md) dosyasına göz atabilirsiniz.
+
 **Açık üretim borçları:** FAISS binary indeks build çalıştırma (1M node, ~2-4h CPU), SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke test. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
 
 ## 📑 İçindekiler
