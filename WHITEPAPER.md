@@ -1,6 +1,6 @@
-# OmniEngine Cognitive Core — Technical Whitepaper v16.6
+# OmniEngine Cognitive Core — Technical Whitepaper v17.0
 
-> **Sürüm:** v16.6 · **Tarih:** 30 Temmuz 2026 · **Audit Tabanı:** `audit_stress.json`, `audit_network.log`, `audit_adversarial.log`, `holodb_accelerator_report.json`, `ewc_test_report.json`, `regulatory_compliance_report.json`
+> **Sürüm:** v17.0 · **Tarih:** 4 Ağustos 2026 · **Mimari:** HoloDB v6.0 (HDB6 42-Byte Header + GAT v2 Graph Attention) · **Titan Protocol:** v8.2 (10/10 Adversarial Audit PASS) · **Audit Tabanı:** `audit_stress.json`, `audit_network.log`, `adversarial_audit_v2.json`, `holodb_accelerator_report.json`, `ewc_test_report.json`, `regulatory_compliance_report.json`
 
 **Yerel-öncelikli araştırma platformu · HoloDB/FAISS prototipleri · Air-gap için sertleştirilmiş yerel LLM istemcisi · telemetri, sinyal ve görüntü ön-analizi · kontrol-eşleme ve gözlemlenebilirlik bileşenleri**
 

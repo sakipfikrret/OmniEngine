@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🧠 OmniEngine Cognitive Core — v16.6
+# 🧠 OmniEngine Cognitive Core — v17.0
 
-**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Air-Gap Sertleştirilmiş LLM Client**  
+**Yerel Egemen AI · HoloDB v6.0 (HDB6 42-Byte Header + GAT v2 Graph Attention) · FAISS 2M HNSW Vektör İndeksi (<0.65ms) · 2M SFT Veri Hattı**  
 **Araştırma amaçlı klinik görüntü ön-analizi · Docker Air-Gap DNS izolasyonu · Prometheus OpenMetrics exporter (/metrics)**  
 **Canlı EKG Osiloskop Canvas UI (/telemetry) · Multi-Modal EKG & DICOM AI · Federated Learning Hastane Ağ Geçidi**  
 **Regülasyon kontrol-eşleme motoru · Speculative Decoding (%40.6 kabul; repo içi ölçüm) · PagedAttention KV-Cache**  
-**Zero-Hallucination Quality Gate v2.0 · Live Benchmark & Adversarial UI · HoloDB v5.0 (1M+ Node)**
+**Titan Protocol v8.2 Deterministik Halüsinasyon Engelleyici & Kalite Kapısı · 10-Tuzak Adversarial Audit (%100 BLOKE) · HoloDB v6.0 (HDB6 GAT v2)**
 
 *Yerel çalışmayı hedefleyen; tıbbi, hukuki, finansal ve siber güvenlik senaryoları için araştırma ve prototipleme platformu.*
 
@@ -14,10 +14,11 @@
 
 [![Build](https://img.shields.io/badge/Build-Passing-16a34a?style=flat-square&logo=github-actions)](./)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
-[![Version](https://img.shields.io/badge/Version-v16.6-FFB800?style=flat-square)](./)
+[![Version](https://img.shields.io/badge/Version-v17.0-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
 [![Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-repo__içi-4D9EFF?style=flat-square)](./nlp_benchmark_1000000_report.md)
-[![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_1.0M%2B_Düğüm-8B5CF6?style=flat-square)](./)
+[![HoloDB](https://img.shields.io/badge/HoloDB-v6.0_HDB6_GAT_v2-8B5CF6?style=flat-square)](./)
+
 [![FHIR](https://img.shields.io/badge/FHIR-R4_HL7_IPS-0f766e?style=flat-square)](./)
 [![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_MDR-kontrol__eşleme-0f766e?style=flat-square)](./data/regulatory_compliance_report.json)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
