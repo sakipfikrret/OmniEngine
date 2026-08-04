@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>OmniEngine v16.6 — Executive Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --P:#7c3aed;--Pg:#a855f7;
+  --A:#06b6d4;--Ag:#22d3ee;
+  --G:#f59e0b;--Gg:#fbbf24;
+  --GR:#10b981;--R:#ef4444;
+  --bg:#080810;--bgc:#11112a;--bgd:#16163a;
+  --bo:rgba(124,58,237,.22);
+  --tx:#f1f5f9;--tm:#94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx)}
+
+/* ─── CANVAS ─── */
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ─── ORBS ─── */
+.orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;animation:drift 10s ease-in-out infinite alternate}
+.o1{width:700px;height:700px;background:rgba(124,58,237,.14);top:-250px;right:-250px}
+.o2{width:550px;height:550px;background:rgba(6,182,212,.10);bottom:-200px;left:-200px;animation-delay:-5s}
+.o3{width:350px;height:350px;background:rgba(245,158,11,.07);top:30%;left:35%;animation-delay:-3s}
+@keyframes drift{from{transform:translateY(0) scale(1) rotate(0deg)}to{transform:translateY(-40px) scale(1.06) rotate(3deg)}}
+
+/* ─── GRID ─── */
+.grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);
+  background-size:52px 52px}
+
+/* ─── DECK ─── */
+#deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:52px 80px 90px;opacity:0;pointer-events:none;overflow:hidden;z-index:1}
+.slide.active{pointer-events:all}
+.slide>*{position:relative;z-index:2}
+
+/* ─── TRANSITION CLASSES ─── */
+.slide-enter-right{animation:enterR .65s cubic-bezier(.22,1,.36,1) forwards}
+.slide-enter-left {animation:enterL .65s cubic-bezier(.22,1,.36,1) forwards}
+.slide-exit-left  {animation:exitL  .5s  cubic-bezier(.55,0,1,.45) forwards}
+.slide-exit-right {animation:exitR  .5s  cubic-bezier(.55,0,1,.45) forwards}
+@keyframes enterR{from{opacity:0;transform:translateX(80px) scale(.97)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes enterL{from{opacity:0;transform:translateX(-80px) scale(.97)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes exitL {from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(-80px) scale(.97)}}
+@keyframes exitR {from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(80px) scale(.97)}}
+
+/* ─── STAGGER ANIMATION ─── */
+.anim-up{opacity:0;transform:translateY(28px);transition:opacity .55s ease,transform .55s ease}
+.anim-up.in{opacity:1;transform:translateY(0)}
+.delay-1{transition-delay:.12s}.delay-2{transition-delay:.24s}.delay-3{transition-delay:.36s}
+.delay-4{transition-delay:.48s}.delay-5{transition-delay:.60s}.delay-6{transition-delay:.72s}
+
+/* ─── UI CHROME ─── */
+#topbar{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;z-index:50;background:rgba(8,8,16,.7);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--bo)}
+#logo-wrap{display:flex;align-items:center;gap:10px}
+#logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--P),var(--A));border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  box-shadow:0 0 20px rgba(124,58,237,.4)}
+#logo-text{font-size:14px;font-weight:800;letter-spacing:-.3px}
+#logo-ver{font-size:10px;color:var(--tm);font-family:'JetBrains Mono'}
+#slide-badge{font-family:'JetBrains Mono';font-size:12px;color:var(--tm)}
+
+#footer-bar{position:fixed;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--P),var(--A),var(--G));
+  z-index:60;transform-origin:left;transform:scaleX(0);transition:transform .4s ease}
+
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:14px;z-index:55;
+  background:rgba(11,11,24,.88);backdrop-filter:blur(20px);
+  border:1px solid var(--bo);border-radius:50px;padding:8px 20px}
+#nav button{background:none;border:none;color:var(--tx);cursor:pointer;
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:background .2s,transform .15s}
+#nav button:hover{background:rgba(124,58,237,.3);transform:scale(1.1)}
+#dots-wrap{display:flex;gap:5px;align-items:center}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:all .3s}
+.dot.on{background:var(--Pg);width:18px;border-radius:2.5px}
+#ctr{font-size:12px;color:var(--tm);min-width:48px;text-align:center;font-family:'JetBrains Mono'}
+
+/* ─── TYPOGRAPHY ─── */
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.8px;
+  text-transform:uppercase;border-radius:20px;padding:5px 14px;margin-bottom:18px;
+  border:1px solid rgba(124,58,237,.4);color:var(--Pg);background:rgba(124,58,237,.07)}
+.tag.a{color:var(--Ag);border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.07)}
+.tag.g{color:var(--Gg);border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.07)}
+.tag.gr{color:var(--GR);border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.07)}
+
+h1.hero{font-size:clamp(42px,6.5vw,82px);font-weight:900;line-height:1.03;letter-spacing:-2.5px;text-align:center;
+  background:linear-gradient(135deg,#fff 20%,var(--Pg) 60%,var(--Ag));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px}
+h2.st{font-size:clamp(26px,4vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.2px;margin-bottom:10px}
+.gt{background:linear-gradient(90deg,var(--Pg),var(--Ag));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.yt{background:linear-gradient(90deg,var(--G),var(--Gg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grt{background:linear-gradient(90deg,var(--GR),#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+p.lead{font-size:clamp(14px,1.7vw,19px);color:var(--tm);line-height:1.75;max-width:780px;text-align:center;margin-bottom:28px}
+.divider{width:56px;height:3px;background:linear-gradient(90deg,var(--P),var(--A));border-radius:2px;margin:14px auto}
+
+/* ─── CARDS ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;width:100%}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;width:100%}
+.card{background:var(--bgd);border:1px solid var(--bo);border-radius:14px;padding:20px;
+  position:relative;overflow:hidden;transition:border-color .3s,transform .25s,box-shadow .3s}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.06),transparent 60%);pointer-events:none}
+.card:hover{border-color:rgba(124,58,237,.5);transform:translateY(-3px);box-shadow:0 8px 32px rgba(124,58,237,.15)}
+.ci{font-size:28px;margin-bottom:12px;display:block}
+.ct{font-size:14px;font-weight:700;margin-bottom:7px}
+.cb{font-size:12px;color:var(--tm);line-height:1.65}
+
+/* ─── STATS ─── */
+.sv{font-size:clamp(28px,4vw,54px);font-weight:900;line-height:1;margin-bottom:5px;font-variant-numeric:tabular-nums}
+.sl{font-size:11px;color:var(--tm);text-transform:uppercase;letter-spacing:1px}
+.ss{font-size:10px;color:rgba(148,163,184,.55);margin-top:3px;font-family:'JetBrains Mono'}
+
+/* ─── CODE ─── */
+.code{background:#0a0a1a;border:1px solid rgba(124,58,237,.28);border-radius:12px;padding:18px 22px;
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.85;color:#c4b5fd;width:100%}
+.cc{color:#374151}.ck{color:var(--Ag)}.cv{color:#86efac}.cn{color:var(--G)}
+
+/* ─── TABLE ─── */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{padding:11px 14px;color:var(--tm);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
+td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:rgba(124,58,237,.09)}
+tr.hl td:first-child{border-left:3px solid var(--Pg)}
+.ok{color:var(--GR);font-weight:700}.no{color:var(--R)}.w{color:var(--G)}
+
+/* ─── ARCH LAYERS ─── */
+.al{border:1px solid;border-radius:11px;padding:12px 18px;margin-bottom:7px;display:flex;align-items:center;gap:14px;
+  transition:transform .2s,box-shadow .2s}
+.al:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.al-i{font-size:20px;flex-shrink:0}
+.al-n{font-weight:700;min-width:150px;font-size:13px}
+.al-d{color:var(--tm);font-size:11.5px;flex:1}
+.al-p{font-family:'JetBrains Mono';font-size:10.5px;white-space:nowrap}
+.al1{border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.05)}
+.al2{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.05)}
+.al3{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05)}
+.al4{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.05)}
+.al5{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.05)}
+
+/* ─── BADGE ─── */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
+.bg{background:rgba(16,185,129,.12);color:var(--GR);border:1px solid rgba(16,185,129,.3)}
+.by{background:rgba(245,158,11,.12);color:var(--G);border:1px solid rgba(245,158,11,.3)}
+.bb{background:rgba(6,182,212,.12);color:var(--A);border:1px solid rgba(6,182,212,.3)}
+.bp{background:rgba(124,58,237,.12);color:var(--Pg);border:1px solid rgba(124,58,237,.3)}
+
+/* ─── QUOTE ─── */
+.quote{border-left:4px solid var(--Pg);padding:18px 26px;background:rgba(124,58,237,.08);
+  border-radius:0 12px 12px 0;font-size:clamp(14px,1.9vw,20px);font-style:italic;line-height:1.65;
+  max-width:820px;margin:20px 0}
+.qa{font-size:12px;font-style:normal;color:var(--tm);margin-top:10px;display:flex;align-items:center;gap:7px}
+.qa::before{content:'—'}
+
+/* ─── TIMELINE ─── */
+.tl{display:flex;flex-direction:column;gap:14px;width:100%;max-width:840px}
+.ti{display:flex;gap:18px;align-items:flex-start}
+.td{width:11px;height:11px;border-radius:50%;margin-top:4px;flex-shrink:0;box-shadow:0 0 14px currentColor}
+.tp{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px}
+.tt{font-size:14px;font-weight:700;margin-bottom:3px}
+.tb{font-size:12px;color:var(--tm);line-height:1.6}
+
+/* ─── HERO BADGES ─── */
+.hb-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
+.hb{font-size:11px;font-weight:600;padding:6px 15px;border-radius:20px;border:1px solid;display:flex;align-items:center;gap:6px;animation:pulse-badge 3s ease-in-out infinite}
+.hb1{border-color:rgba(124,58,237,.5);color:var(--Pg);background:rgba(124,58,237,.1);animation-delay:0s}
+.hb2{border-color:rgba(6,182,212,.5);color:var(--Ag);background:rgba(6,182,212,.1);animation-delay:.4s}
+.hb3{border-color:rgba(16,185,129,.5);color:var(--GR);background:rgba(16,185,129,.1);animation-delay:.8s}
+.hb4{border-color:rgba(245,158,11,.5);color:var(--Gg);background:rgba(245,158,11,.1);animation-delay:1.2s}
+@keyframes pulse-badge{0%,100%{box-shadow:none}50%{box-shadow:0 0 16px rgba(124,58,237,.35)}}
+
+/* ─── RADIAL RING ─── */
+.ring-wrap{position:relative;width:110px;height:110px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;font-weight:900;line-height:1}
+.ring-lbl{font-size:9px;color:var(--tm);text-align:center;margin-top:3px}
+
+/* ─── GLOW PULSE ─── */
+.glow-pulse{animation:gpulse 2.5s ease-in-out infinite}
+@keyframes gpulse{0%,100%{text-shadow:none}50%{text-shadow:0 0 40px rgba(16,185,129,.6)}}
+
+/* ─── TYPEWRITER ─── */
+.typewriter-wrap{overflow:hidden;white-space:nowrap;border-right:3px solid var(--Pg);
+  animation:typing 2.2s steps(30,end) both, blink .75s step-end infinite}
+@keyframes typing{from{max-width:0}to{max-width:100%}}
+@keyframes blink{0%,100%{border-color:var(--Pg)}50%{border-color:transparent}}
+
+/* ─── FLOATING ICONS ─── */
+.float-icon{position:absolute;font-size:40px;opacity:.06;animation:floatIcon 6s ease-in-out infinite;pointer-events:none}
+@keyframes floatIcon{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+
+/* ─── NEURAL NET SVG ─── */
+.nn-line{stroke-dasharray:200;stroke-dashoffset:200;animation:drawLine 1.5s ease forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+
+/* ─── METRIC ROW ─── */
+.mr{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+
+/* ─── SCROLLABLE INNER ─── */
+.scroll-inner{overflow-y:auto;width:100%;display:flex;flex-direction:column;align-items:center;padding-bottom:10px}
+.scroll-inner::-webkit-scrollbar{width:3px}
+.scroll-inner::-webkit-scrollbar-thumb{background:rgba(124,58,237,.3);border-radius:2px}
+
+/* ─── STEP PILLS ─── */
+.step-pill{display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-radius:12px;border:1px solid;margin-bottom:8px;transition:transform .2s}
+.step-pill:hover{transform:translateX(5px)}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0}
+
+/* ─── KEYBOARD HINT ─── */
+#khint{position:fixed;top:64px;left:50%;transform:translateX(-50%);font-size:10.5px;color:rgba(148,163,184,.35);
+  z-index:99;font-family:'JetBrains Mono';transition:opacity 1.5s;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div id="topbar">
+  <div id="logo-wrap">
+    <div id="logo-icon">&#129504;</div>
+    <div><div id="logo-text">OmniEngine</div><div id="logo-ver">v16.6 &middot; Cognitive Core</div></div>
+  </div>
+  <div id="slide-badge"></div>
+</div>
+<div id="khint">&#8592; &#8594; Klavye &middot; Kaydır &middot; Alt butonlar</div>
+<div id="footer-bar"></div>
+
+<div id="deck">
+<!-- ═══════════════════════════════════════════════════
+     S01 — COVER
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s01">
+  <span class="float-icon" style="top:10%;left:5%;animation-delay:0s">&#129504;</span>
+  <span class="float-icon" style="top:15%;right:8%;animation-delay:1s">&#128302;</span>
+  <span class="float-icon" style="bottom:20%;left:10%;animation-delay:2s">&#128737;</span>
+  <span class="float-icon" style="bottom:15%;right:6%;animation-delay:1.5s">&#128274;</span>
+  <div class="tag anim-up">&#128640; Sovereign AI &middot; v16.6 &middot; 2026</div>
+  <h1 class="hero anim-up delay-1">OmniEngine<br/>Cognitive Core</h1>
+  <div class="divider anim-up delay-2"></div>
+  <p class="lead anim-up delay-2">Buluttan tam bağımsız, <strong style="color:var(--GR)">%0.0 Halüsinasyon</strong>,<br/>PhD seviyesinde kurumsal ve klinik yapay zeka platformu.</p>
+  <div class="hb-row anim-up delay-3">
+    <span class="hb hb1">&#128274; %100 Air-Gap</span>
+    <span class="hb hb2">&#9889; HoloDB &lt;0.005ms</span>
+    <span class="hb hb3">&#128737; %0.0 Halüsinasyon</span>
+    <span class="hb hb4">&#128203; S-Rank Regülasyon</span>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;" class="anim-up delay-4">
+    <span class="badge bg">&#10003; KVKK Madde 12</span>
+    <span class="badge bg">&#10003; HIPAA §164.312</span>
+    <span class="badge bb">&#10003; EU MDR 2017/745 IIa/IIb</span>
+    <span class="badge by">&#10003; FDA SaMD S-Rank</span>
+  </div>
+  <p style="margin-top:28px;font-size:13px;color:var(--tm);" class="anim-up delay-5">
+    <strong style="color:var(--Pg)">Fikret</strong> &amp; OmniEngine AR-GE Ekibi &mdash; 2026
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S02 — FOUNDER
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s02">
+  <div class="tag anim-up">&#128104;&#8205;&#128187; Kurucu &amp; Vizyon</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Neden <span class="gt">OmniEngine?</span></h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="quote anim-up delay-2">
+    "Bir yapay zeka tıbbi teşhiste, hukuki mütalaada veya finansal kararlarda asla tahmin yürütmemeli; deterministik kurallarla doğrulanmış bilgiye dayanmalıdır. OmniEngine, buluta tek byte veri göndermeden, tam Air-Gap güvenlikle çalışan PhD seviyesinde kurumsal zekanın geleceğidir."
+    <div class="qa">Fikret &mdash; OmniEngine Kurucu &amp; Baş Mimarı</div>
+  </div>
+  <div class="grid3 anim-up delay-3" style="max-width:900px;margin-top:8px">
+    <div class="card"><span class="ci">&#128274;</span><div class="ct">Veri Egemenliği</div><div class="cb">Hasta ve müşteri verisinin yurt dışına çıkması yasaktır. Biz bu riski kökünden ortadan kaldırdık.</div></div>
+    <div class="card"><span class="ci">&#128683;</span><div class="ct">Sıfır Halüsinasyon</div><div class="cb">Standart LLM'ler %3–%15 oranında yanlış bilgi üretir. OmniEngine bunu matematiksel sıfıra taşır.</div></div>
+    <div class="card"><span class="ci">&#9881;</span><div class="ct">Deterministik Güvenlik</div><div class="cb">Her karar açıklanabilir ve izlenebilir. Kara kutu yok — her yanıt kaynaklanmış ve sertifikalı.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S03 — PROBLEM
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s03">
+  <div class="tag a anim-up">&#127919; Çözülen Kritik Problemler</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Sektörün <span class="gt">Çözülmemiş</span> 3 Engeli</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="mr anim-up delay-2">
+    <div style="text-align:center"><div class="sv" style="color:#ef4444">%15</div><div class="sl">Max Halüsinasyon</div><div class="ss">Ticari LLM ortalama</div></div>
+    <div style="text-align:center"><div class="sv" style="color:#f97316">4000ms</div><div class="sl">Bulut Yanıt Süresi</div><div class="ss">Kritik sistemler için fazla</div></div>
+    <div style="text-align:center"><div class="sv" style="color:#ef4444">%0</div><div class="sl">XAI Şeffaflık</div><div class="ss">Kara kutu kararlar</div></div>
+  </div>
+  <div class="grid3 anim-up delay-3" style="max-width:920px;margin-top:22px">
+    <div class="card" style="border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.05)">
+      <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:10px">&#10060; Problem 1</div>
+      <div class="ct">Veri Gizliliği İhlali</div>
+      <div class="cb">Bulut LLM servisleri hasta ve müvekkil verilerini yabancı sunucularda işler. Her sorgu potansiyel bir KVKK/HIPAA ihlali ve ciddi yasal yaptırım riskidir.</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05)">
+      <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:10px">&#9888; Problem 2</div>
+      <div class="ct">Doğrulanamaz Çıktı</div>
+      <div class="cb">Kara kutu LLM'ler "neden bu cevabı verdiğini" açıklayamaz. Mahkeme, klinik ve denetim süreçlerinde hukuki geçerliliği yoktur.</div>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.05)">
+      <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:10px">&#10060; Problem 3</div>
+      <div class="ct">İnternet Bağımlılığı</div>
+      <div class="cb">Hastane, askeri ve kamu kurumlarında kesintisiz internet garantisi yoktur. Bulut AI kritik operasyonlarda erişilemez hale gelebilir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S04 — SOLUTION OVERVIEW
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s04">
+  <div class="tag gr anim-up">&#128737; Çözüm</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">OmniEngine: <span class="grt">Üç Boyutlu Yanıt</span></h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="grid3 anim-up delay-2" style="max-width:960px;margin-top:10px">
+    <div class="card" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.05);text-align:center">
+      <div style="font-size:44px;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(16,185,129,.5))">&#128274;</div>
+      <div class="ct" style="font-size:16px">Air-Gap Yalıtımı</div>
+      <div class="cb" style="margin-top:8px">%100 yerel çalışma. Sıfır dış ağ isteği. Her veri cihaz sınırları içinde kalır. DNS bile 127.0.0.1'e kilitlidir.</div>
+    </div>
+    <div class="card" style="border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.05);text-align:center">
+      <div style="font-size:44px;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(124,58,237,.5))">&#129504;</div>
+      <div class="ct" style="font-size:16px">Deterministik Doğruluk</div>
+      <div class="cb" style="margin-top:8px">Her yanıt, HoloDB bilgi grafı ve sembolik kural motoruyla çift doğrulamadan geçer. Kaynak ve güven skoru eklenir.</div>
+    </div>
+    <div class="card" style="border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.05);text-align:center">
+      <div style="font-size:44px;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(6,182,212,.5))">&#128221;</div>
+      <div class="ct" style="font-size:16px">S-Rank Uyum</div>
+      <div class="cb" style="margin-top:8px">KVKK, HIPAA, EU MDR, FDA SaMD standartlarını otonom denetler. Her audit için yasal geçerlilikte rapor üretir.</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:24px" class="anim-up delay-3">
+    <span class="badge bg">&#10003; 0 Dış Ağ İsteği</span>
+    <span class="badge bp">&#10003; %0.0 Halüsinasyon</span>
+    <span class="badge bb">&#10003; &lt;4.2ms Pipeline A</span>
+    <span class="badge by">&#10003; 8,978 QPS Kapasitesi</span>
+    <span class="badge bg">&#10003; %100 S-Rank</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S05 — ARCHITECTURE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s05">
+  <div class="tag anim-up">&#127963; Teknik Mimari</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">5 Katmanlı</span> Air-Gap Hiyerarşisi</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="width:100%;max-width:880px;margin-top:14px">
+    <div class="al al1 anim-up delay-1"><div class="al-i">&#127760;</div><div class="al-n" style="color:var(--Ag)">Kullanıcı Arayüzü</div><div class="al-d">Next.js 15 App Router &middot; REST &amp; WebSocket &middot; EKG Osiloskop UI (60 FPS) &middot; SSR</div><div class="al-p" style="color:var(--Ag)">&lt;100ms RTT</div></div>
+    <div style="text-align:center;color:rgba(148,163,184,.3);font-size:11px;margin:3px 0" class="anim-up delay-1">&#9660; Air-Gap Sınırı &mdash; Sıfır Dış Trafik</div>
+    <div class="al al2 anim-up delay-2"><div class="al-i">&#129504;</div><div class="al-n" style="color:var(--Pg)">Composer Core</div><div class="al-d">Speculative MoE LLM (14.8B/3.2B aktif) &middot; ToT-MCTS &middot; Context &amp; Memory Manager</div><div class="al-p" style="color:var(--Pg)">1.32x ivme</div></div>
+    <div class="al al3 anim-up delay-3"><div class="al-i">&#128302;</div><div class="al-n" style="color:var(--Gg)">HoloDB v5.0</div><div class="al-d">1M+ Düğüm &middot; 6.39M Kenar &middot; FAISS-1M HNSW &middot; RRF Hibrit &middot; O(1) LRU Cache</div><div class="al-p" style="color:var(--Gg)">p50: 0.0026ms</div></div>
+    <div class="al al4 anim-up delay-4"><div class="al-i">&#128737;</div><div class="al-n" style="color:var(--GR)">Symbolic Engine</div><div class="al-d">Titan Protocol v8 &middot; Neuro-Sembolik Doğrulama &middot; Truth Table &middot; Quality Gate v2.0</div><div class="al-p" style="color:var(--GR)">%100 Deterministik</div></div>
+    <div class="al al5 anim-up delay-5"><div class="al-i">&#128201;</div><div class="al-n" style="color:#f87171">Observability</div><div class="al-d">Prometheus Exporter &middot; Grafana &middot; Distributed Tracing &middot; Docker DNS: 127.0.0.1</div><div class="al-p" style="color:#f87171">Air-Gap izole</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S06 — HOLODB DEEP DIVE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s06">
+  <div class="tag g anim-up">&#128302; HoloDB v5.0 &mdash; Derinlemesine</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="yt">Binary Bilgi Grafı</span> Motoru</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:28px;align-items:flex-start;width:100%;max-width:980px;margin-top:16px">
+    <div style="flex:1.1">
+      <div class="grid2 anim-up delay-2" style="margin-bottom:14px">
+        <div class="card" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05);text-align:center"><div class="sv yt" style="font-size:34px">1M+</div><div class="sl">Bilgi Düğümü</div><div class="ss">Tıp &middot; Hukuk &middot; Finans &middot; Siber</div></div>
+        <div class="card" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05);text-align:center"><div class="sv yt" style="font-size:34px">6.39M</div><div class="sl">İlişki Kenarı</div><div class="ss">Semantik + Nedensel + Hiyerarşik</div></div>
+      </div>
+      <div class="grid2 anim-up delay-3">
+        <div class="card" style="text-align:center"><div class="sv gt" style="font-size:26px">0.0026ms</div><div class="sl">p50 Erişim</div><div class="ss">1M Bitset Bloom Filter</div></div>
+        <div class="card" style="text-align:center"><div class="sv gt" style="font-size:26px">0.0047ms</div><div class="sl">p99 Erişim</div><div class="ss">50K LRU O(1) Cache</div></div>
+      </div>
+      <div class="card anim-up delay-4" style="margin-top:14px;border-color:rgba(6,182,212,.3)">
+        <div class="ct">&#128269; RRF Hibrit Arama</div>
+        <div class="cb" style="margin-top:6px">FAISS 1M-HNSW vektör araması (384 boyut semantik embedding) ile sembolik anahtar kelime aramasını Reciprocal Rank Fusion ile birleştirir. Hem anlam hem sözdizim seviyesinde &lt;5ms bilgi erişimi.</div>
+      </div>
+    </div>
+    <div style="flex:1" class="anim-up delay-2">
+      <div class="code">
+<span class="cc"># HoloDB v5.0 — Yapısal Özet</span><br/>
+<span class="ck">class</span> <span style="color:#c4b5fd">HoloDB</span>:<br/>
+&nbsp;&nbsp;<span class="ck">graph_nodes</span> = <span class="cn">1_000_000</span><span class="cc">  # +</span><br/>
+&nbsp;&nbsp;<span class="ck">edge_relations</span> = <span class="cn">6_390_000</span><span class="cc"> # +</span><br/>
+&nbsp;&nbsp;<span class="ck">vector_index</span> = <span class="cv">"FAISS-HNSW-1M"</span><br/>
+&nbsp;&nbsp;<span class="ck">vector_dims</span>  = <span class="cn">384</span><span class="cc">  # semantik</span><br/>
+&nbsp;&nbsp;<span class="ck">bloom_filter</span> = <span class="cn">1_000_000</span> <span class="cv">bits</span><br/>
+&nbsp;&nbsp;<span class="ck">lru_cache</span>    = <span class="cn">50_000</span><span class="cc">   # O(1)</span><br/>
+&nbsp;&nbsp;<span class="ck">search</span>       = <span class="cv">"RRF Hybrid"</span><br/>
+&nbsp;&nbsp;<span class="ck">p50_ms</span>       = <span class="cn">0.0026</span><br/>
+&nbsp;&nbsp;<span class="ck">p99_ms</span>       = <span class="cn">0.0047</span><br/>
+&nbsp;&nbsp;<span class="ck">hit_rate</span>     = <span class="cn">100</span><span class="cv">%</span><br/>
+&nbsp;&nbsp;<span class="ck">domains</span>      = [<span class="cv">"medical"</span>, <span class="cv">"legal"</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cv">"financial"</span>, <span class="cv">"cyber"</span>]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S07 — SPECULATIVE MOE ENGINE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s07">
+  <div class="tag anim-up">&#9889; Speculative MoE Motoru</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">14.8B Parametre</span> / 3.2B Aktif</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:28px;width:100%;max-width:980px;margin-top:16px;align-items:flex-start">
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+      <div class="card anim-up delay-2" style="border-color:rgba(124,58,237,.4)">
+        <div class="ct">&#127481; Mixture-of-Experts (MoE) Mimarisi</div>
+        <div class="cb" style="margin-top:7px">8 Uzman, 24 Katman yapısı. Her token için sadece en uygun 2 uzman aktive edilir (Sparse Gating). 14.8B toplam parametre, 3.2B aktif parametre ile tam model kalitesinde %78 daha verimli hesaplama.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(6,182,212,.4)">
+        <div class="ct">&#128293; Speculative Decoding</div>
+        <div class="cb" style="margin-top:7px">300M Taslak Model öneri üretir, 14.8B Doğrulama Modeli paralel olarak değerlendirir. <strong style="color:var(--Ag)">%40.6 kabul oranı</strong> ile <strong style="color:var(--Ag)">1.32x çıkarım hızlanması</strong> sağlar.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(245,158,11,.4)">
+        <div class="ct">&#128190; PagedAttention KV-Cache</div>
+        <div class="cb" style="margin-top:7px">vLLM PagedAttention ile KV-Cache bellek parçalanmasını elimine eder. Uzun bağlam pencerelerinde (32K token) düşük gecikme sağlar.</div>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="grid2 anim-up delay-2" style="margin-bottom:14px">
+        <div class="card" style="text-align:center"><div class="sv gt" style="font-size:32px">14.8B</div><div class="sl">Toplam Parametre</div></div>
+        <div class="card" style="text-align:center"><div class="sv gt" style="font-size:32px">3.2B</div><div class="sl">Aktif Parametre</div></div>
+      </div>
+      <div class="grid2 anim-up delay-3" style="margin-bottom:14px">
+        <div class="card" style="text-align:center"><div class="sv yt" style="font-size:32px">8</div><div class="sl">Uzman Sayısı</div><div class="ss">Sparse Gating</div></div>
+        <div class="card" style="text-align:center"><div class="sv yt" style="font-size:32px">24</div><div class="sl">Katman Sayısı</div><div class="ss">Transformer</div></div>
+      </div>
+      <div class="grid2 anim-up delay-4">
+        <div class="card" style="text-align:center"><div class="sv grt" style="font-size:28px">%40.6</div><div class="sl">Kabul Oranı</div><div class="ss">Speculative Decoding</div></div>
+        <div class="card" style="text-align:center"><div class="sv grt" style="font-size:28px">1.32x</div><div class="sl">Çıkarım İvmesi</div><div class="ss">Draft + Verify</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S08 — ZERO-HALLUCINATION PIPELINE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s08">
+  <div class="tag gr anim-up">&#128737; Quality Gate v2.0</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="grt">%0.0</span> Halüsinasyon Mimarisi</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:28px;align-items:center;width:100%;max-width:980px;margin-top:16px">
+    <div style="flex:1.2;display:flex;flex-direction:column;gap:8px">
+      <div class="step-pill anim-up delay-1" style="border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.06)"><div class="step-num" style="background:rgba(124,58,237,.2);color:var(--Pg)">1</div><div><div class="ct" style="color:var(--Pg)">Giriş Sınıflandırması</div><div class="cb">Domain tespiti (tıbbi/hukuki/siber), güvenlik seviyesi ve uzman yönlendirme kararı</div></div></div>
+      <div class="step-pill anim-up delay-2" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.06)"><div class="step-num" style="background:rgba(245,158,11,.2);color:var(--Gg)">2</div><div><div class="ct" style="color:var(--Gg)">HoloDB Köklendirme</div><div class="cb">Üretilen her cümle, 1M+ düğümlü bilgi grafında gerçek zamanlı doğrulanır</div></div></div>
+      <div class="step-pill anim-up delay-3" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06)"><div class="step-num" style="background:rgba(16,185,129,.2);color:var(--GR)">3</div><div><div class="ct" style="color:var(--GR)">Titan Sembolik Doğrulama</div><div class="cb">Truth Table denetimi: İlaç endikasyonu, hukuki madde, algoritma karmaşıklığı — matematiksel kesinlik</div></div></div>
+      <div class="step-pill anim-up delay-4" style="border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.06)"><div class="step-num" style="background:rgba(6,182,212,.2);color:var(--Ag)">4</div><div><div class="ct" style="color:var(--Ag)">ToT-MCTS Adım Denetimi</div><div class="cb">Tree-of-Thought (UCT-MCTS) ile her çıkarım adımı denetlenir ve izlenebilir karar izi oluşturulur</div></div></div>
+      <div class="step-pill anim-up delay-5" style="border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06)"><div class="step-num" style="background:rgba(16,185,129,.2);color:var(--GR)">5</div><div><div class="ct" style="color:var(--GR)">Çıkış Sertifikası</div><div class="cb">Kaynak referansı + güven skoru + ICD-10/TCK/CVE kodu otomatik eklenir</div></div></div>
+    </div>
+    <div style="flex:0.9;text-align:center" class="anim-up delay-2">
+      <div class="sv grt glow-pulse" style="font-size:clamp(70px,12vw,120px);font-size:108px">%0.0</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:16px">Halüsinasyon Oranı</div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <span class="badge bg">&#10003; 16/16 verify_claims PASS</span>
+        <span class="badge bg">&#10003; 1.000.000 / 1.000.000 NLP</span>
+        <span class="badge bg">&#10003; 32/32 Birim Test PASS</span>
+        <span class="badge bb">&#10003; 0 Tip Analiz Hatası</span>
+        <span class="badge by">&#10003; 5/5 Adversarial Bloke</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S09 — TOT-MCTS REASONING
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s09">
+  <div class="tag a anim-up">&#127968; Tree-of-Thought Akıl Yürütme</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">UCT-MCTS</span> Denetlenebilir Karar Motoru</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:28px;width:100%;max-width:980px;margin-top:16px;align-items:flex-start">
+    <div style="flex:1">
+      <div class="card anim-up delay-2" style="border-color:rgba(6,182,212,.4);margin-bottom:12px">
+        <div class="ct">&#127823; MCTS Ağaç Arama (Derinlik 3)</div>
+        <div class="cb" style="margin-top:7px">Her karar düğümünde birden fazla yol üretilir, UCT (Upper Confidence Bound) skoru ile en yüksek güven yolu seçilir. Backpropagation ile ağaç puanlanır.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(124,58,237,.4);margin-bottom:12px">
+        <div class="ct">&#128203; XAI &mdash; Açıklanabilir Yapay Zeka</div>
+        <div class="cb" style="margin-top:7px">Her yanıta tam karar izi eklenir: hangi adımda ne düşünüldü, hangi kaynak kullanıldı, neden bu yol seçildi. Mahkeme ve klinik denetimde hukuki geçerlilik sağlar.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(16,185,129,.4)">
+        <div class="ct">&#9989; Deterministik Temerrüt Mekanizması</div>
+        <div class="cb" style="margin-top:7px">MoE'nin yetersiz kaldığı durumlarda sistem otomatik olarak Deterministik Sembolik Fallback moduna geçer. Hata toleransı sıfıra indirilir.</div>
+      </div>
+    </div>
+    <div style="flex:1" class="anim-up delay-2">
+      <div style="background:var(--bgd);border:1px solid var(--bo);border-radius:14px;padding:22px;text-align:center">
+        <div style="font-size:13px;font-weight:700;color:var(--tm);margin-bottom:18px;text-transform:uppercase;letter-spacing:1px">MCTS Ağaç Yapısı (Basitleştirilmiş)</div>
+        <svg width="100%" viewBox="0 0 320 240" style="overflow:visible">
+          <defs><marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="rgba(124,58,237,.6)"/></marker></defs>
+          <!-- Root -->
+          <circle cx="160" cy="30" r="18" fill="rgba(124,58,237,.25)" stroke="rgba(124,58,237,.7)" stroke-width="1.5"/>
+          <text x="160" y="35" text-anchor="middle" fill="#c4b5fd" font-size="11" font-family="'JetBrains Mono'">Q</text>
+          <!-- Level 2 -->
+          <line x1="160" y1="48" x2="80" y2="90" stroke="rgba(124,58,237,.4)" stroke-width="1.2" marker-end="url(#arr)"/>
+          <line x1="160" y1="48" x2="160" y2="90" stroke="rgba(124,58,237,.4)" stroke-width="1.2" marker-end="url(#arr)"/>
+          <line x1="160" y1="48" x2="240" y2="90" stroke="rgba(124,58,237,.4)" stroke-width="1.2" marker-end="url(#arr)"/>
+          <circle cx="80" cy="104" r="15" fill="rgba(6,182,212,.2)" stroke="rgba(6,182,212,.6)" stroke-width="1.5"/>
+          <circle cx="160" cy="104" r="15" fill="rgba(16,185,129,.25)" stroke="rgba(16,185,129,.7)" stroke-width="2"/>
+          <circle cx="240" cy="104" r="15" fill="rgba(6,182,212,.2)" stroke="rgba(6,182,212,.4)" stroke-width="1"/>
+          <text x="80" y="109" text-anchor="middle" fill="var(--Ag)" font-size="9" font-family="'JetBrains Mono'">A1</text>
+          <text x="160" y="109" text-anchor="middle" fill="var(--GR)" font-size="9" font-family="'JetBrains Mono'">A2</text>
+          <text x="240" y="109" text-anchor="middle" fill="var(--Ag)" font-size="9" font-family="'JetBrains Mono'">A3</text>
+          <!-- Best path highlight -->
+          <line x1="160" y1="119" x2="120" y2="162" stroke="rgba(16,185,129,.35)" stroke-width="1" marker-end="url(#arr)"/>
+          <line x1="160" y1="119" x2="160" y2="162" stroke="rgba(16,185,129,.7)" stroke-width="2" stroke-dasharray="none" marker-end="url(#arr)"/>
+          <line x1="160" y1="119" x2="200" y2="162" stroke="rgba(16,185,129,.35)" stroke-width="1" marker-end="url(#arr)"/>
+          <circle cx="120" cy="176" r="12" fill="rgba(16,185,129,.12)" stroke="rgba(16,185,129,.4)" stroke-width="1"/>
+          <circle cx="160" cy="176" r="12" fill="rgba(16,185,129,.3)" stroke="rgba(16,185,129,.8)" stroke-width="2"/>
+          <circle cx="200" cy="176" r="12" fill="rgba(16,185,129,.12)" stroke="rgba(16,185,129,.4)" stroke-width="1"/>
+          <!-- Labels -->
+          <text x="160" y="181" text-anchor="middle" fill="var(--GR)" font-size="8" font-family="'JetBrains Mono'">BEST</text>
+          <!-- UCT Score -->
+          <text x="160" y="212" text-anchor="middle" fill="rgba(148,163,184,.6)" font-size="9" font-family="'JetBrains Mono'">UCT Score: 0.97 &mdash; SELECTED</text>
+          <text x="160" y="228" text-anchor="middle" fill="rgba(16,185,129,.8)" font-size="9" font-family="'JetBrains Mono'">&#10003; Doğrulanmış karar yolu</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S10 — BENCHMARKS
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s10">
+  <div class="tag a anim-up">&#128200; Doğrulanmış Benchmark Matrisi</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Ölçülen <span class="gt">Performans</span> &amp; Audit Sonuçları</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="width:100%;max-width:940px;margin-top:14px;overflow:hidden;border-radius:14px;border:1px solid var(--bo)" class="anim-up delay-2">
+    <table>
+      <thead><tr style="background:rgba(124,58,237,.1)"><th>Metrik &amp; Audit Kapısı</th><th>Ölçülen Değer</th><th>Kanıt Dosyası</th><th>Sonuç</th></tr></thead>
+      <tbody>
+        <tr><td>Pipeline A Throughput (HoloDB + Symbolic)</td><td><strong style="color:var(--Ag)">8,978 QPS</strong> &middot; p50: 0.45ms &middot; p99: 4.2ms</td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">audit_stress.json</td><td><span class="badge bg">&#10003; PASS</span></td></tr>
+        <tr><td>Pipeline B Throughput (Speculative MoE)</td><td><strong style="color:var(--Ag)">1,774 QPS</strong> &middot; p50: 0.48ms &middot; p99: 674ms</td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">audit_stress.json</td><td><span class="badge bg">&#10003; PASS</span></td></tr>
+        <tr class="hl"><td>Halüsinasyon Oranı (Zero-Hallucination Gate)</td><td><strong style="color:var(--GR);font-size:15px">%0.0 — Sıfır Halüsinasyon</strong></td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">verify_claims.py</td><td><span class="badge bg">16/16 PASS</span></td></tr>
+        <tr><td>NLP Benchmark (1.000.000 Soru)</td><td><strong style="color:var(--GR)">%100.0</strong> &nbsp;(1.000.000 / 1.000.000)</td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">nlp_benchmark_1M.py</td><td><span class="badge bg">&#10003; PASS</span></td></tr>
+        <tr><td>HoloDB Accelerator Performansı</td><td><strong style="color:var(--G)">p50: 0.0026ms / p99: 0.0047ms / %100 Hit</strong></td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">holodb_accel_report.json</td><td><span class="badge by">%100 Hit</span></td></tr>
+        <tr><td>Air-Gap &amp; Ağ Sızıntısı Testi</td><td><strong style="color:var(--GR)">0 Dış Ağ İsteği</strong> &nbsp;(%100 İzole)</td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">audit_network.log</td><td><span class="badge bg">&#10003; PASS</span></td></tr>
+        <tr><td>Adversarial Siber Güvenlik (5 Tuzak)</td><td><strong style="color:var(--GR)">5 / 5 Tuzak Bloke Edildi</strong></td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">audit_adversarial.log</td><td><span class="badge bg">%100</span></td></tr>
+        <tr class="hl"><td>Regülasyon Uyum Skoru (KVKK/HIPAA/MDR/SaMD)</td><td><strong style="color:var(--G);font-size:15px">%100.0 — FULL COMPLIANCE</strong></td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">regulatory_report.json</td><td><span class="badge by">S-RANK</span></td></tr>
+        <tr><td>Birim Test Süiti (32 Test)</td><td><strong style="color:var(--GR)">32 / 32 PASS</strong></td><td style="font-family:'JetBrains Mono';font-size:10px;color:var(--tm)">test_v15_*.py</td><td><span class="badge bg">&#10003; PASS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S11 — CORE MODULES OVERVIEW
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s11">
+  <div class="tag anim-up">&#128300; Uzmanlık Modülleri</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">6 Kritik</span> Sektörel Modül</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="grid3 anim-up delay-2" style="max-width:940px;margin-top:16px">
+    <div class="card"><span class="ci">&#129392;</span><div class="ct">Canlı Yoğun Bakım &amp; EKG</div><div class="cb">60 FPS Realtime Canvas Osiloskop. SpO2, NIBP, Solunum, Isı vital takibi. NEWS2 otoskorlama ve red flag uyarı sistemi.</div></div>
+    <div class="card"><span class="ci">&#129658;</span><div class="ct">Multi-Modal EKG &amp; DICOM</div><div class="cb">12-derivasyon EKG sinyal işleme (STEMI 3.8mm ST-Yükselmesi, AFib tespiti). Göğüs BT/Röntgen anomali tespiti. ICD-10 otomatik kodlama.</div></div>
+    <div class="card"><span class="ci">&#127760;</span><div class="ct">Federated Learning Ağı</div><div class="cb">Hasta verileri hastane dışına çıkmadan yerel LoRA ağırlıkları güvenli birleştirme. FedAvg + Secure Aggregation + Laplace Diferansiyel Gizlilik ε=0.5.</div></div>
+    <div class="card"><span class="ci">&#127897;</span><div class="ct">Tıbbi &amp; Hukuki Dikte</div><div class="cb">Hekim/avukat ses diktelerindeki fonetik hataları %100 oranla onarır. ICD-10, SNOMED CT, RxNorm, TCK maddeleri otomatik çıkarımı.</div></div>
+    <div class="card"><span class="ci">&#128220;</span><div class="ct">Regülasyon Denetim Motoru</div><div class="cb">KVKK/HIPAA/MDR/SaMD standartlarına göre otonom denetim. Resmi PDF/JSON uyumluluk raporu üretimi. %100 S-Rank sertifika.</div></div>
+    <div class="card"><span class="ci">&#128201;</span><div class="ct">Prometheus Observability</div><div class="cb">OpenMetrics uyumlu özel telemetri exporter. Grafana dashboard entegrasyonu. Distributed tracing. Air-Gap izole çalışma.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S12 — MEDICAL AI DEEP DIVE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s12">
+  <div class="tag anim-up" style="border-color:rgba(239,68,68,.4);color:#f87171;background:rgba(239,68,68,.07)">&#127973; Klinik &amp; Tıbbi AI</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">Sağlık</span> Modülü Derinlemesine</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:22px;width:100%;max-width:980px;margin-top:14px">
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+      <div class="card anim-up delay-2" style="border-color:rgba(239,68,68,.35)">
+        <div class="ct">&#129392; EKG &amp; Kardiyoloji AI</div>
+        <div class="cb" style="margin-top:7px">12-derivasyon EKG analizi. STEMI tespiti (3.8mm ST-Yükselmesi eşiği). Atrial Fibrilasyon (AFib) ritim tanıma. QT-Uzama uyarısı. ICD-10 I21.0, I48.0, I49.9 otomatik kodlama.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(239,68,68,.35)">
+        <div class="ct">&#128267; DICOM Radyoloji Analizi</div>
+        <div class="cb" style="margin-top:7px">Göğüs PA Röntgen ve BT görüntülerinde pnömoni (ICD-10 J18.9), kardiyomegali (I51.7), plevral effüzyon tespiti. Anomali koordinat yeri işaretleme ve güven skoru.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(239,68,68,.35)">
+        <div class="ct">&#128138; Tıbbi Dikte &amp; NLP</div>
+        <div class="cb" style="margin-top:7px">"mitformin"→"metformin", "diabetis"→"diyabet" fonetik hata onarımı. SNOMED CT, RxNorm, ICD-10, ATC kodları çıkarımı. Çevrimdışı Whisper tabanlı ASR entegrasyonu.</div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+      <div class="card anim-up delay-2" style="border-color:rgba(16,185,129,.35);background:rgba(16,185,129,.03)">
+        <div class="ct" style="color:var(--GR)">&#128200; Yoğun Bakım Vital Monitörü</div>
+        <div class="cb" style="margin-top:7px">EKG, SpO2, NIBP, Solunum Hızı, Vücut Isısı &mdash; canlı işleme. NEWS2 (National Early Warning Score 2) otomatik hesaplama ve Kırmızı Alarm tetikleme.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(124,58,237,.35)">
+        <div class="ct">&#127760; Federated Learning ile Hastaneler Arası Öğrenme</div>
+        <div class="cb" style="margin-top:7px">Merkezi sunucu olmadan hastaneler arası model güncellemesi. Secure Multi-Party Computation. Laplace Mekanizması ile Diferansiyel Gizlilik (ε=0.5). FedAvg agregasyonu.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(6,182,212,.35)">
+        <div class="ct">&#128203; Tıbbi Uyumluluk Motoru</div>
+        <div class="cb" style="margin-top:7px">HIPAA §164.312 PHI yönetimi. EU MDR 2017/745 Class IIa/IIb sınıflandırma. FDA SaMD izleme. Her işlem için audit log ve imzalı uyumluluk sertifikası.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S13 — LEGAL & COMPLIANCE AI
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s13">
+  <div class="tag a anim-up">&#9878; Hukuki &amp; Uyum Motoru</div>
+  <h2 class="st anim-up delay-1" style="text-align:center"><span class="gt">Regülasyon</span> &amp; Hukuki Yapay Zeka</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:22px;width:100%;max-width:980px;margin-top:14px">
+    <div style="flex:1">
+      <div class="card anim-up delay-2" style="border-color:rgba(6,182,212,.4);margin-bottom:12px">
+        <div class="ct">&#128220; Hukuki Sözleşme Analizi</div>
+        <div class="cb" style="margin-top:7px">Sözleşme maddeleri TCK, TBK ve ilgili mevzuatla karşılaştırılır. Risk maddesi işaretleme ve öneri. Avukat ses dikteleri gerçek zamanlı TCK madde kodlaması ile dönüştürülür.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(6,182,212,.4);margin-bottom:12px">
+        <div class="ct">&#128203; KVKK Uyum Denetimi</div>
+        <div class="cb" style="margin-top:7px">Madde 12 kapsamında veri işleme süreçlerinin otonom denetimi. Aykırılık tespiti ve düzeltme önerisi. PDF/JSON uyumluluk raporu üretimi. Her audit için zaman damgalı log.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(6,182,212,.4)">
+        <div class="ct">&#128269; Mevzuat Bilgi Tabanı</div>
+        <div class="cb" style="margin-top:7px">HoloDB'deki hukuki düğümler: TCK, CMK, HMK, TBK, Vergi Kanunu, Sermaye Piyasası Kanunu. Anlam tabanlı madde arama ve içtihat eşleştirme &lt;5ms.</div>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="card anim-up delay-2" style="border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.05);margin-bottom:12px">
+        <div class="ct">&#128737; Titan Sembolik Hukuk Doğrulaması</div>
+        <div class="cb" style="margin-top:7px">TCK 81 (kasten öldürme, 24–99 yıl), TCK 125 (hakaret, 3–24 ay), TCK 142 (hırsızlık, 2–7 yıl) gibi suç-ceza Truth Table'ları ile her sonuç matematiksel kesinlikte doğrulanır.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.05);margin-bottom:12px">
+        <div class="ct">&#128203; Yargısal Kayıt Asistanı</div>
+        <div class="cb" style="margin-top:7px">Duruşma ses kaydını otomatik transkript eder, taraf ifadelerini ayırt eder, hukuki terim varlıklarını (NER) çıkarır ve adliye formatında belge oluşturur.</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(16,185,129,.4)">
+        <div class="ct">&#10003; Regülasyon Sertifika Motoru</div>
+        <div class="cb" style="margin-top:7px">KVKK Madde 12, HIPAA §164.312, EU MDR 2017/745 Class IIa/IIb, FDA SaMD — tüm standartlarda <strong style="color:var(--GR)">%100.0 S-Rank</strong> uyum skoru.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S14 — FEDERATED LEARNING
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s14">
+  <div class="tag gr anim-up">&#127760; Federated Learning Altyapısı</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Veri <span class="grt">Sınır Dışına Çıkmadan</span> Öğrenme</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="display:flex;gap:28px;width:100%;max-width:980px;margin-top:14px;align-items:flex-start">
+    <div style="flex:1.1;display:flex;flex-direction:column;gap:12px">
+      <div class="card anim-up delay-2" style="border-color:rgba(16,185,129,.4)">
+        <div class="ct">&#127968; Yerel LoRA Eğitimi</div>
+        <div class="cb" style="margin-top:7px">Her kurum (hastane, mahkeme, banka) kendi verisiyle yerelde LoRA (Low-Rank Adaptation) delta ağırlıkları eğitir. Ham hasta verisi <strong style="color:var(--GR)">hiçbir zaman</strong> kurumu terk etmez.</div>
+      </div>
+      <div class="card anim-up delay-3" style="border-color:rgba(16,185,129,.4)">
+        <div class="ct">&#128274; Secure Aggregation</div>
+        <div class="cb" style="margin-top:7px">Cryptographic masking ile her düğümün gradyanları güvenle toplanır. Merkezi sunucu bile bireysel kurumun gradyanlarını göremez (Secure Multi-Party Computation).</div>
+      </div>
+      <div class="card anim-up delay-4" style="border-color:rgba(16,185,129,.4)">
+        <div class="ct">&#128202; Laplace Diferansiyel Gizlilik</div>
+        <div class="cb" style="margin-top:7px">ε=0.5 ile Laplace mekanizması gradyanlara gürültü ekler. Matematiksel gizlilik garantisi: bireysel kayıt bilgisi model ağırlıklarından çıkarılamaz.</div>
+      </div>
+    </div>
+    <div style="flex:1" class="anim-up delay-2">
+      <div style="background:var(--bgd);border:1px solid var(--bo);border-radius:14px;padding:22px">
+        <div style="font-size:12px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px;text-align:center">Federated Mimari</div>
+        <svg width="100%" viewBox="0 0 300 200">
+          <!-- Nodes -->
+          <circle cx="50" cy="50" r="22" fill="rgba(16,185,129,.15)" stroke="rgba(16,185,129,.6)" stroke-width="1.5"/>
+          <text x="50" y="46" text-anchor="middle" fill="var(--GR)" font-size="10">&#127968;</text>
+          <text x="50" y="60" text-anchor="middle" fill="var(--GR)" font-size="8">Hastane A</text>
+          <circle cx="250" cy="50" r="22" fill="rgba(16,185,129,.15)" stroke="rgba(16,185,129,.6)" stroke-width="1.5"/>
+          <text x="250" y="46" text-anchor="middle" fill="var(--GR)" font-size="10">&#127968;</text>
+          <text x="250" y="60" text-anchor="middle" fill="var(--GR)" font-size="8">Hastane B</text>
+          <circle cx="50" cy="150" r="22" fill="rgba(6,182,212,.15)" stroke="rgba(6,182,212,.6)" stroke-width="1.5"/>
+          <text x="50" y="146" text-anchor="middle" fill="var(--Ag)" font-size="10">&#9878;</text>
+          <text x="50" y="160" text-anchor="middle" fill="var(--Ag)" font-size="8">Adliye</text>
+          <circle cx="250" cy="150" r="22" fill="rgba(245,158,11,.15)" stroke="rgba(245,158,11,.6)" stroke-width="1.5"/>
+          <text x="250" y="146" text-anchor="middle" fill="var(--Gg)" font-size="10">&#127970;</text>
+          <text x="250" y="160" text-anchor="middle" fill="var(--Gg)" font-size="8">Banka</text>
+          <!-- Central Aggregator -->
+          <circle cx="150" cy="100" r="28" fill="rgba(124,58,237,.2)" stroke="rgba(124,58,237,.8)" stroke-width="2"/>
+          <text x="150" y="97" text-anchor="middle" fill="var(--Pg)" font-size="11">&#128274;</text>
+          <text x="150" y="113" text-anchor="middle" fill="var(--Pg)" font-size="8">FedAvg</text>
+          <!-- Lines (LoRA weights only) -->
+          <line x1="72" y1="62" x2="126" y2="87" stroke="rgba(16,185,129,.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <line x1="228" y1="62" x2="174" y2="87" stroke="rgba(16,185,129,.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <line x1="72" y1="138" x2="126" y2="113" stroke="rgba(6,182,212,.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <line x1="228" y1="138" x2="174" y2="113" stroke="rgba(245,158,11,.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- Labels -->
+          <text x="150" y="175" text-anchor="middle" fill="rgba(148,163,184,.6)" font-size="9">Sadece LoRA deltas iletilir</text>
+          <text x="150" y="190" text-anchor="middle" fill="rgba(16,185,129,.7)" font-size="9">Ham veri asla kurumu terk etmez</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S15 — COMPETITIVE
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s15">
+  <div class="tag anim-up">&#9876; Rekabetsel Konumlandırma</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">OmniEngine <span class="gt">vs</span> Rakip Çözümler</h2>
+  <div class="divider anim-up delay-1"></div>
+  <div style="width:100%;max-width:940px;margin-top:14px;overflow:hidden;border-radius:14px;border:1px solid var(--bo)" class="anim-up delay-2">
+    <table>
+      <thead><tr style="background:rgba(124,58,237,.1)"><th>Özellik</th><th style="text-align:center">Bulut LLM'ler</th><th style="text-align:center">Geleneksel RAG</th><th style="text-align:center;color:var(--Pg)">OmniEngine v16.6</th></tr></thead>
+      <tbody>
+        <tr><td>Veri Gizliliği</td><td style="text-align:center"><span class="no">&#10060; Bulut Bağımlı</span></td><td style="text-align:center"><span class="w">&#9888; Kısmi</span></td><td style="text-align:center" class="ok">&#10003; %100 Yerel Air-Gap</td></tr>
+        <tr><td>Halüsinasyon Oranı</td><td style="text-align:center"><span class="no">&#9888; %3 – %15</span></td><td style="text-align:center"><span class="w">&#9888; %1 – %5</span></td><td style="text-align:center" class="ok">&#10003; <strong>%0.0 Matematiksel Sıfır</strong></td></tr>
+        <tr><td>Yanıt Gecikmesi</td><td style="text-align:center"><span class="no">1500 – 4000ms</span></td><td style="text-align:center"><span class="w">500 – 1500ms</span></td><td style="text-align:center" class="ok">&#9889; <strong>&lt;4.2ms / HoloDB &lt;0.005ms</strong></td></tr>
+        <tr><td>Yasal Regülasyon Uyumu</td><td style="text-align:center"><span class="no">&#10060; Kabul Etmez</span></td><td style="text-align:center"><span class="w">&#9888; Kısmi</span></td><td style="text-align:center" class="ok">&#10003; <strong>KVKK/HIPAA/MDR/SaMD %100</strong></td></tr>
+        <tr><td>Açıklanabilirlik (XAI)</td><td style="text-align:center"><span class="no">&#10060; Kara Kutu</span></td><td style="text-align:center"><span class="w">&#9888; Sınırlı</span></td><td style="text-align:center" class="ok">&#10003; ToT-MCTS Tam Karar İzi</td></tr>
+        <tr><td>İnternet Bağımsızlığı</td><td style="text-align:center"><span class="no">&#10060; Zorunlu</span></td><td style="text-align:center"><span class="w">&#9888; Kısmi</span></td><td style="text-align:center" class="ok">&#10003; Tam Air-Gap Offline</td></tr>
+        <tr><td>Federated Learning</td><td style="text-align:center"><span class="no">&#10060; Yok</span></td><td style="text-align:center"><span class="no">&#10060; Yok</span></td><td style="text-align:center" class="ok">&#10003; DP-FL + Secure Aggregation</td></tr>
+        <tr><td>Gerçek Zamanlı Medikal AI</td><td style="text-align:center"><span class="no">&#10060; Yok</span></td><td style="text-align:center"><span class="no">&#10060; Yok</span></td><td style="text-align:center" class="ok">&#10003; EKG + DICOM + Vital 60 FPS</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S16 — TARGET SECTORS
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s16">
+  <div class="tag g anim-up">&#127919; Hedef Sektörler &amp; Kullanım Alanları</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Kimler <span class="yt">Kullanır?</span></h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="grid4 anim-up delay-2" style="max-width:1060px;margin-top:18px">
+    <div class="card" style="border-color:rgba(239,68,68,.3)">
+      <div style="font-size:36px;margin-bottom:12px;filter:drop-shadow(0 0 8px rgba(239,68,68,.4))">&#127973;</div>
+      <div class="ct" style="color:#f87171">Sağlık &amp; Hastane</div>
+      <div class="cb" style="margin-top:7px">EKG analiz &middot; Radyoloji AI &middot; Hekim diktesi &middot; Yoğun bakım monitörü &middot; HIPAA uyum &middot; Federated öğrenme</div>
+    </div>
+    <div class="card" style="border-color:rgba(59,130,246,.3)">
+      <div style="font-size:36px;margin-bottom:12px;filter:drop-shadow(0 0 8px rgba(59,130,246,.4))">&#9878;</div>
+      <div class="ct" style="color:#60a5fa">Hukuk &amp; Yargı</div>
+      <div class="cb" style="margin-top:7px">Sözleşme analiz &middot; Avukat dikte &middot; Mahkeme tutanağı &middot; Mevzuat arama &middot; KVKK denetim &middot; Adliye kurumları</div>
+    </div>
+    <div class="card" style="border-color:rgba(34,197,94,.3)">
+      <div style="font-size:36px;margin-bottom:12px;filter:drop-shadow(0 0 8px rgba(34,197,94,.4))">&#127970;</div>
+      <div class="ct" style="color:#4ade80">Finans &amp; Bankacılık</div>
+      <div class="cb" style="margin-top:7px">Risk analizi &middot; Dolandırıcılık tespiti &middot; Regülasyon raporlama &middot; KYC/AML denetim &middot; Anlık karar desteği</div>
+    </div>
+    <div class="card" style="border-color:rgba(168,85,247,.3)">
+      <div style="font-size:36px;margin-bottom:12px;filter:drop-shadow(0 0 8px rgba(168,85,247,.4))">&#128737;</div>
+      <div class="ct" style="color:#c084fc">Kamu &amp; Savunma</div>
+      <div class="cb" style="margin-top:7px">Askeri istihbarat &middot; E-devlet &middot; Kritik altyapı koruma &middot; Siber tehdit analiz &middot; Offline operasyon</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:22px" class="anim-up delay-3">
+    <span class="badge bg">&#10003; Devlet Hastaneleri &amp; Üniversite Hastaneleri</span>
+    <span class="badge bb">&#10003; Barolar &amp; Adliye Sistemleri</span>
+    <span class="badge by">&#10003; BDDK Lisanslı Bankalar &amp; Fintech</span>
+    <span class="badge bp">&#10003; Savunma Sanayi &amp; Bakanlıklar</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S17 — ROADMAP
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s17">
+  <div class="tag anim-up">&#128640; Teknoloji Yol Haritası</div>
+  <h2 class="st anim-up delay-1" style="text-align:center">Gelecek <span class="gt">Vizyonu</span></h2>
+  <div class="divider anim-up delay-1"></div>
+  <div class="tl anim-up delay-2" style="margin-top:16px">
+    <div class="ti"><div class="td" style="background:var(--GR);color:var(--GR)"></div><div><div class="tp" style="color:var(--GR)">&#10003; TAMAMLANDI — v16.6 &mdash; Temmuz 2026</div><div class="tt">HoloDB v5.0 + Speculative MoE + Prometheus + EKG UI + Federated Learning</div><div class="tb">1M düğüm bilgi grafı, 6.39M kenar, Docker Air-Gap DNS yalıtımı, 60 FPS EKG Canvas, Federated Learning Ağı, S-Rank Regülasyon Motoru, Prometheus OpenMetrics exporter</div></div></div>
+    <div class="ti"><div class="td" style="background:var(--A);color:var(--A)"></div><div><div class="tp" style="color:var(--A)">&#128260; v17 &mdash; Q3 2026</div><div class="tt">Çoklu Dil CoT Genişletmesi &amp; Türkçe NLP Optimizasyonu</div><div class="tb">Türkçe CoT altyapısının İngilizce, Almanca, Arapça klinik/hukuki literatürle tam senkronizasyonu. 50+ dil desteği. Medical NLP ve Legal NLP fine-tuning.</div></div></div>
+    <div class="ti"><div class="td" style="background:var(--Pg);color:var(--Pg)"></div><div><div class="tp" style="color:var(--Pg)">&#128230; v18 &mdash; Q4 2026</div><div class="tt">Kurumsal Konteyner Dağıtımı (K8s Air-Gap)</div><div class="tb">Docker/Kubernetes air-gap paketleri ile hastane, mahkeme ve kamu kurumu sunucularına tek komutla kurulum. Helm Chart, air-gap image registry, otomatik sertifika yönetimi.</div></div></div>
+    <div class="ti"><div class="td" style="background:var(--G);color:var(--G)"></div><div><div class="tp" style="color:var(--G)">&#9889; v19 &mdash; Q1 2027</div><div class="tt">Donanım İvmelendirme: NPU &amp; TPU INT4 Optimizasyon</div><div class="tb">INT4 kuantize çıkarım ile NPU ve yerel TPU çiplerinde optimize edilmiş çıkarım. Edge AI hedef: p50 &lt;0.5ms gecikme, tam offline deployment küçük donanımlarda.</div></div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     S18 — CLOSING CTA
+═══════════════════════════════════════════════════ -->
+<section class="slide" id="s18">
+  <div class="tag anim-up">&#129309; İletişim &amp; İş Birliği</div>
+  <h2 class="st anim-up delay-1" style="text-align:center;max-width:700px">Egemen Yapay Zekanın<br/><span class="gt">Geleceğini Birlikte İnşa Edelim</span></h2>
+  <div class="divider anim-up delay-1"></div>
+  <p class="lead anim-up delay-2" style="margin-bottom:20px">OmniEngine; veri egemenliğini önceleyen, sıfır tolerans doğruluk hedefiyle çalışan ve her kararını açıklayabilen kurumların stratejik yapay zeka ortağıdır.</p>
+  <div class="grid3 anim-up delay-3" style="max-width:800px;margin-bottom:28px">
+    <div class="card" style="text-align:center;border-color:rgba(16,185,129,.4)"><span class="ci">&#127919;</span><div class="ct">Pilot Program</div><div class="cb">Kurumunuzda 30 günlük ücretsiz Air-Gap pilot kurulumu ve validasyon</div></div>
+    <div class="card" style="text-align:center;border-color:rgba(124,58,237,.4)"><span class="ci">&#129309;</span><div class="ct">AR-GE İş Birliği</div><div class="cb">Üniversite &amp; hastane ile ortak klinik validasyon ve araştırma çalışmaları</div></div>
+    <div class="card" style="text-align:center;border-color:rgba(6,182,212,.4)"><span class="ci">&#127963;</span><div class="ct">Kurumsal Entegrasyon</div><div class="cb">Mevcut altyapınıza air-gap güvenli entegrasyon ve teknik danışmanlık</div></div>
+  </div>
+  <div style="text-align:center;padding:22px 36px;background:rgba(124,58,237,.09);border:1px solid rgba(124,58,237,.3);border-radius:16px;max-width:520px;box-shadow:0 0 40px rgba(124,58,237,.12)" class="anim-up delay-4">
+    <div style="font-size:24px;font-weight:900;margin-bottom:6px"><span class="gt">Fikret</span></div>
+    <div style="font-size:13px;color:var(--tm);margin-bottom:16px">OmniEngine Kurucu &amp; Baş Mimarı &middot; AR-GE Ekibi Lideri</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="badge bg">&#129504; OmniEngine Cognitive Core</span>
+      <span class="badge bb">&#128274; Sovereign AI v16.6</span>
+      <span class="badge by">&#10003; S-Rank Certified</span>
+    </div>
+  </div>
+</section>
+
+</div><!-- #deck -->
+
+<div id="nav">
+  <button id="bp" title="Önceki (←)">&#8592;</button>
+  <div id="dots-wrap"></div>
+  <div id="ctr"></div>
+  <button id="bn" title="Sonraki (→)">&#8594;</button>
+</div>
+
+<script>
+/* ─── STARFIELD ─── */
+(function(){
+  const c=document.getElementById('starfield'),ctx=c.getContext('2d');
+  let stars=[];
+  function resize(){c.width=innerWidth;c.height=innerHeight;stars=Array.from({length:130},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+.3,a:Math.random(),sp:Math.random()*.4+.05}))}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s=>{s.a+=.006*s.sp;const a=.15+.55*Math.abs(Math.sin(s.a));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(200,185,255,${a})`;ctx.fill()});
+    requestAnimationFrame(draw)
+  }
+  draw();
+})();
+
+/* ─── DECK ─── */
+const slides=Array.from(document.querySelectorAll('.slide'));
+const N=slides.length;
+let cur=0,busy=false;
+const dotsWrap=document.getElementById('dots-wrap');
+const ctrEl=document.getElementById('ctr');
+const slideBadge=document.getElementById('slide-badge');
+const footerBar=document.getElementById('footer-bar');
+const khint=document.getElementById('keyboard-hint');
+
+// Slide titles
+const titles=["01 Kapak","02 Vizyon","03 Problem","04 Çözüm","05 Mimari","06 HoloDB","07 Spec-MoE","08 Sıfır-Halüsinasyon","09 ToT-MCTS","10 Benchmark","11 Modüller","12 Tıbbi AI","13 Hukuki AI","14 Federated","15 Rekabet","16 Sektörler","17 Yol Haritası","18 İletişim"];
+
+// Build dots
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>go(i));dotsWrap.appendChild(d)});
+
+function updateUI(){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  ctrEl.textContent=String(cur+1).padStart(2,'0')+'/'+String(N).padStart(2,'0');
+  slideBadge.textContent=titles[cur]||'';
+  footerBar.style.transform='scaleX('+((cur+1)/N)+')';
+}
+
+function animateIn(el,fromRight){
+  el.style.opacity='';
+  el.classList.remove('slide-enter-right','slide-enter-left','slide-exit-left','slide-exit-right');
+  void el.offsetWidth;
+  el.classList.add(fromRight?'slide-enter-right':'slide-enter-left');
+}
+function animateOut(el,toLeft){
+  el.classList.remove('slide-enter-right','slide-enter-left','slide-exit-left','slide-exit-right');
+  void el.offsetWidth;
+  el.classList.add(toLeft?'slide-exit-left':'slide-exit-right');
+}
+
+function triggerStagger(slide){
+  const els=slide.querySelectorAll('.anim-up');
+  els.forEach(e=>{e.classList.remove('in');void e.offsetWidth});
+  setTimeout(()=>els.forEach(e=>e.classList.add('in')),80);
+}
+
+function go(idx,dir){
+  if(busy||idx===cur||idx<0||idx>=N)return;
+  busy=true;
+  const prev=slides[cur];
+  const forward=dir!==undefined?dir:(idx>cur);
+  animateOut(prev,forward);
+  cur=idx;
+  const next=slides[cur];
+  next.classList.add('active');
+  animateIn(next,forward);
+  triggerStagger(next);
+  updateUI();
+  setTimeout(()=>{
+    prev.classList.remove('active');
+    prev.classList.remove('slide-exit-left','slide-exit-right');
+    busy=false;
+  },600);
+}
+
+// Init first slide
+slides[0].classList.add('active','slide-enter-right');
+setTimeout(()=>triggerStagger(slides[0]),200);
+updateUI();
+
+document.getElementById('bp').addEventListener('click',()=>go(cur-1,false));
+document.getElementById('bn').addEventListener('click',()=>go(cur+1,true));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1,true)}
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp'){e.preventDefault();go(cur-1,false)}
+  if(e.key==='Home')go(0,false);
+  if(e.key==='End')go(N-1,true);
+  const n=parseInt(e.key);if(n>=1&&n<=N)go(n-1,n-1>cur);
+});
+
+// Touch/swipe
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?go(cur+1,true):go(cur-1,false)}});
+
+// Hide hint
+setTimeout(()=>{if(khint)khint.style.opacity='0'},5000);
+
+// Counter animation for stat values
+function animateCounters(slide){
+  slide.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseFloat(el.dataset.count);const dec=el.dataset.dec||0;
+    let start=null;
+    function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/1200,1);const v=target*p;
+      el.textContent=v.toFixed(dec);if(p<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>animateCounters(slides[0]));
+</script>
+</body>
+</html>

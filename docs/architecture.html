@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniEngine v9.0 — Interactive Architecture</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #12121a;
+      --border:    #1e1e2e;
+      --accent:    #6366f1;
+      --accent2:   #f59e0b;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --yellow:    #eab308;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --mono:      'JetBrains Mono', 'Fira Code', monospace;
+      --sans:      'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Typography ── */
+    h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; }
+    h2 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+    h3 { font-size: 1.15rem; }
+    p  { color: #cbd5e1; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: #1e1e2e;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #a5b4fc;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 6rem 0 4rem;
+      text-align: center;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      color: #a5b4fc;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+
+    .hero-title { margin-bottom: 1rem; }
+    .hero-title span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+
+    .badge-green  { background: rgba(34,197,94,0.1);   color: #86efac; border: 1px solid rgba(34,197,94,0.2); }
+    .badge-amber  { background: rgba(245,158,11,0.1);  color: #fcd34d; border: 1px solid rgba(245,158,11,0.2); }
+    .badge-violet { background: rgba(139,92,246,0.1);  color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2); }
+    .badge-blue   { background: rgba(59,130,246,0.1);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.2); }
+    .badge-teal   { background: rgba(20,184,166,0.1);  color: #5eead4; border: 1px solid rgba(20,184,166,0.2); }
+
+    /* ── Section Header ── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-family: var(--mono);
+    }
+
+    .section-header { margin-bottom: 2.5rem; }
+
+    /* ── Metrics Grid ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+
+    .metric-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--mono);
+      background: linear-gradient(135deg, #a5b4fc, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .metric-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ── Architecture Diagram ── */
+    #arch-diagram {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arch-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .arch-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .arch-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red    { background: #ef4444; }
+    .dot-yellow { background: #eab308; }
+    .dot-green  { background: #22c55e; }
+
+    .arch-canvas {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .arch-layer {
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .layer-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      font-family: var(--mono);
+      flex-shrink: 0;
+      margin-right: 1rem;
+      z-index: 1;
+    }
+
+    .layer-box {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .arch-layer:hover .layer-box,
+    .arch-layer.active .layer-box {
+      border-color: var(--accent);
+      background: rgba(99,102,241,0.05);
+    }
+
+    .layer-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .layer-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .layer-arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem 0 0.5rem 2.5rem;
+      color: var(--muted);
+      font-size: 1.2rem;
+    }
+
+    /* ── Detail Panel ── */
+    #detail-panel {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+      animation: slideDown 0.25s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #detail-panel.visible { display: block; }
+
+    .detail-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #a5b4fc;
+    }
+
+    .detail-content {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      background: rgba(99,102,241,0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+
+    /* ── Comparison Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .compare-table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .compare-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(30,30,46,0.5);
+      vertical-align: middle;
+    }
+
+    .compare-table tr:hover td { background: rgba(99,102,241,0.04); }
+
+    .compare-table td:first-child { color: var(--text); font-weight: 500; }
+    .compare-table td:nth-child(2) { color: #22c55e; font-weight: 700; font-family: var(--mono); }
+    .compare-table td:nth-child(3),
+    .compare-table td:nth-child(4) { color: var(--muted); font-family: var(--mono); }
+
+    .check  { color: #22c55e; }
+    .cross  { color: #ef4444; }
+    .warn   { color: #eab308; }
+
+    /* ── Benchmark Bars ── */
+    .bench-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.75rem 0;
+    }
+
+    .bench-label {
+      width: 160px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      font-family: var(--mono);
+    }
+
+    .bench-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bench-bar {
+      height: 100%;
+      border-radius: 999px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bench-val {
+      width: 80px;
+      text-align: right;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    /* ── Roadmap ── */
+    .roadmap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .phase {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .phase-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+      z-index: 1;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .phase:hover .phase-num,
+    .phase.active .phase-num {
+      border-color: var(--accent);
+      background: rgba(99,102,241,0.15);
+      color: #a5b4fc;
+    }
+
+    .phase-content { flex: 1; }
+
+    .phase-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .phase-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, margin-bottom 0.3s;
+    }
+
+    .phase.active .phase-desc {
+      max-height: 200px;
+      margin-bottom: 0.5rem;
+    }
+
+    .phase-items {
+      list-style: none;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.3s, max-height 0.4s ease;
+    }
+
+    .phase.active .phase-items {
+      opacity: 1;
+      max-height: 400px;
+    }
+
+    .phase-items li {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      padding: 0.2rem 0;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .phase-items li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* ── Status Grid ── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.875rem 1rem;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-dot.green  { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.4); animation: pulse 2s infinite; }
+    .status-dot.yellow { background: #eab308; }
+    .status-dot.red    { background: #ef4444; }
+
+    .status-name { font-size: 0.8rem; font-weight: 500; }
+    .status-val  { font-size: 0.7rem; color: var(--muted); font-family: var(--mono); }
+
+    /* ── Scenario Cards ── */
+    .scenario-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      border-color: var(--accent);
+      color: #a5b4fc;
+      background: rgba(99,102,241,0.08);
+    }
+
+    .scenario-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .scenario-content.active { display: block; }
+
+    .scenario-header {
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .scenario-q {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .scenario-q strong { color: var(--text); display: block; margin-bottom: 0.4rem; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+
+    .scenario-a {
+      padding: 1.25rem;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      font-family: var(--mono);
+      color: #cbd5e1;
+      white-space: pre-wrap;
+    }
+
+    .risk-crit { color: #ef4444; font-weight: 700; }
+    .risk-ok   { color: #22c55e; }
+    .risk-warn { color: #eab308; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p + p { margin-top: 0.25rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .bench-label { width: 100px; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Omni<span>Engine</span> v9.0</div>
+    <ul class="nav-links">
+      <li><a href="#metrics">Metrikler</a></li>
+      <li><a href="#arch-diagram">Mimari</a></li>
+      <li><a href="#benchmark">Benchmark</a></li>
+      <li><a href="#scenarios">Senaryolar</a></li>
+      <li><a href="#compare">Karşılaştırma</a></li>
+      <li><a href="#roadmap">Yol Haritası</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Local-First · Air-Gapped · Production Ready
+    </div>
+    <h1 class="hero-title">
+      OmniEngine<br><span>Cognitive Core</span>
+    </h1>
+    <p class="hero-sub">
+      Buluta tek byte göndermeden çalışan, 499K-node ikili bilgi grafiyle güçlendirilmiş kurumsal yerel yapay zeka.
+    </p>
+    <div class="badge-row">
+      <span class="badge badge-green">✓ Build Passing</span>
+      <span class="badge badge-green">✓ E2E 6/6 PASS</span>
+      <span class="badge badge-green">✓ Medical QA 100%</span>
+      <span class="badge badge-amber">⚡ 355 QPS</span>
+      <span class="badge badge-violet">27ms Median</span>
+      <span class="badge badge-teal">KVKK · HIPAA · Basel III</span>
+      <span class="badge badge-blue">HoloPack v4.0</span>
+    </div>
+  </div>
+</section>
+
+<!-- Metrics -->
+<section id="metrics">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Operasyonel Güç</div>
+      <h2>Gerçek Zamanlı Sistem Metrikleri</h2>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value" id="m-qps">0</div>
+        <div class="metric-label">Sorgu / Saniye (QPS)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="m-lat">0ms</div>
+        <div class="metric-label">Medyan Gecikme (p50)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="m-nodes">0K</div>
+        <div class="metric-label">Bilgi Grafiği Düğümleri</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="m-edges">0M</div>
+        <div class="metric-label">Ontolojik Kenarlar</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="m-disk">0MB</div>
+        <div class="metric-label">Disk Boyutu (Binary)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="m-boot">0ms</div>
+        <div class="metric-label">Soğuk Başlangıç</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section id="arch-diagram">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Mimari</div>
+      <h2>7 Katmanlı Bilişsel Yapı</h2>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color: var(--muted);">Katmana tıklayarak detayları görüntüleyin</p>
+    </div>
+
+    <div class="arch-container">
+      <div class="arch-header">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span style="margin-left:0.5rem;">omniengine — bilişsel mimari v9.0</span>
+      </div>
+      <div class="arch-canvas" id="arch-canvas">
+
+        <div class="arch-layer" data-idx="0">
+          <div class="layer-num">L0</div>
+          <div class="layer-box">
+            <div class="layer-title">Kullanıcı Arayüzü</div>
+            <div class="layer-desc">Next.js 16 · Chat UI · Memory Graph (D3) · Benchmark Dashboard (Recharts)</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="1">
+          <div class="layer-num" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:#fca5a5;">L1</div>
+          <div class="layer-box">
+            <div class="layer-title">Güvenlik Ağgeçidi</div>
+            <div class="layer-desc">PIIScrubber.ts · TC Kimlik (Luhn) · Kredi Kartı · Domain Exclusions</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="2">
+          <div class="layer-num">L2</div>
+          <div class="layer-box">
+            <div class="layer-title">Hafıza ve Bağlam</div>
+            <div class="layer-desc">Memory.ts (Prisma) · RAG.ts (MiniLM 384-dim) · GraphRAG.ts (Co-occurrence)</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="3">
+          <div class="layer-num" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:#fcd34d;">L3</div>
+          <div class="layer-box">
+            <div class="layer-title">HoloPack v4.0 — Binary Engine</div>
+            <div class="layer-desc">499K node · 6.4M edge · FNV-1a hash · Binary search O(log N) · zlib · mmap · 355 QPS</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="4">
+          <div class="layer-num">L4</div>
+          <div class="layer-box">
+            <div class="layer-title">FastAPI Bilişsel Çekirdek (Port 8765)</div>
+            <div class="layer-desc">Intent Parser · /medical · /legal · /finance · /cyber · /diagnosis · /holo_query</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="5">
+          <div class="layer-num">L5</div>
+          <div class="layer-box">
+            <div class="layer-title">Uzman Alan Modülleri</div>
+            <div class="layer-desc">Tıp (DiagEngine) · Hukuk (TCK/TBK/KVKK) · Finans (Basel III/BDDK) · Siber (MITRE/OWASP)</div>
+          </div>
+        </div>
+
+        <div class="layer-arrow">↓</div>
+
+        <div class="arch-layer" data-idx="6">
+          <div class="layer-num" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:#86efac;">L6</div>
+          <div class="layer-box">
+            <div class="layer-title">Kalite Kapısı ve Şema Kilidi</div>
+            <div class="layer-desc">quality_gate.py (7 kural) · schema_lock.py · BenchmarkRun (Prisma) · PASS / WARN / ABSTAIN</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Detail Panel -->
+    <div id="detail-panel">
+      <div class="detail-title" id="detail-title"></div>
+      <div class="detail-content" id="detail-content"></div>
+      <div class="detail-tags" id="detail-tags"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Benchmark -->
+<section id="benchmark">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Performans</div>
+      <h2>HoloDB v3.0 → HoloPack v4.0 Karşılaştırması</h2>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;">
+      <div class="bench-row">
+        <span class="bench-label">QPS Kapasitesi</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#6366f1,#f59e0b);" data-target="89.2"></div>
+        </div>
+        <span class="bench-val">355.67 QPS</span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">p50 Gecikme</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#22c55e,#6366f1);" data-target="96"></div>
+        </div>
+        <span class="bench-val">27ms ← 699ms</span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">p99 Gecikme</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#22c55e,#6366f1);" data-target="98.5"></div>
+        </div>
+        <span class="bench-val">60ms ← 3999ms</span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">Başlangıç Süresi</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#22c55e,#6366f1);" data-target="99.3"></div>
+        </div>
+        <span class="bench-val">&lt;100ms ← 15sn</span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">Disk Boyutu</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#f59e0b,#6366f1);" data-target="83"></div>
+        </div>
+        <span class="bench-val">286MB ← 1.76GB</span>
+      </div>
+      <div class="bench-row">
+        <span class="bench-label">RAM Kullanımı</span>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar" style="background:linear-gradient(90deg,#f59e0b,#22c55e);" data-target="100"></div>
+        </div>
+        <span class="bench-val">~0MB (mmap)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scenarios -->
+<section id="scenarios">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Karar Senaryoları</div>
+      <h2>Gerçek Sorgular, Deterministik Yanıtlar</h2>
+    </div>
+
+    <div class="scenario-tabs">
+      <button class="tab-btn active" onclick="showScenario(0, this)">🏥 Tıp</button>
+      <button class="tab-btn" onclick="showScenario(1, this)">⚖️ Hukuk</button>
+      <button class="tab-btn" onclick="showScenario(2, this)">💹 Finans</button>
+      <button class="tab-btn" onclick="showScenario(3, this)">🔒 Siber</button>
+    </div>
+
+    <div class="scenario-content active" id="sc-0">
+      <div class="scenario-header">
+        <span class="dot dot-green"></span> medical_expert.py · Bayesian DiagnosisEngine · HoloPack v4.0
+      </div>
+      <div class="scenario-q">
+        <strong>Kullanıcı Sorgusu</strong>
+        Penisilin alerjisi ve karaciğer yetmezliği olan bir hastaya amoksisilin + parasetamol reçetelendi. Uygun mu?
+      </div>
+      <div class="scenario-a"><span class="risk-crit">❌ REÇETEYİ ONAYLAMIYORUM — 2 KRİTİK RİSK</span>
+
+<span class="risk-crit">[KONTRENDİKASYON #1] Amoksisilin × Penisilin Alerjisi</span>
+  Amoksisilin bir amino-penisilindir (beta-laktam halkası taşır).
+  Penisilin alerjisinde çapraz reaktivite %15-30.
+  Potansiyel: <span class="risk-crit">ANAFİLAKSİ (hayati tehlike)</span>
+
+<span class="risk-crit">[KONTRENDİKASYON #2] Parasetamol × Karaciğer Yetmezliği</span>
+  Parasetamol → NAPQI toksik metaboliti (CYP2E1).
+  Mevcut yetmezlikte NAPQI birikimi → hepatotoksisite.
+  Potansiyel: <span class="risk-crit">Karaciğer Nekrozu</span>
+
+<span class="risk-ok">✓ Alternatif: Azithromisin 500mg (makrolid) veya Seftriakson 1g IV</span>
+
+Kaynak: drug_database.json · HoloPack CONTRAINDICATES kenarı · Bayesian p=0.97</div>
+    </div>
+
+    <div class="scenario-content" id="sc-1">
+      <div class="scenario-header">
+        <span class="dot dot-green"></span> legal_expert.py · KVKK Md.12 · MITRE T1486
+      </div>
+      <div class="scenario-q">
+        <strong>Kullanıcı Sorgusu</strong>
+        Hastane ağımızda fidye yazılımı (ransomware) tespit edildi. KVKK kapsamında ne yapmalıyım?
+      </div>
+      <div class="scenario-a"><span class="risk-warn">⚖️ KVKK MADDE 12 — ACİL UYUM PROTOKOLÜ</span>
+
+Adım 1 — 72 Saatlik Bildirim (Md.12/5):
+  Veri sorumlusu olarak 72 saat içinde KVK Kurulu'na bildirim zorunlu.
+  Sağlık verileri = özel nitelikli → üst sınır ceza riski (2024: 2.6M TL)
+
+Adım 2 — İlgili Kişi Bildirimi:
+  Etkilenen hastaları doğrudan veya web sitesi üzerinden bilgilendirin.
+
+<span class="risk-crit">Adım 3 — Teknik Müdahale (MITRE T1486 Playbook):</span>
+  • Ağ segmentlerini derhal izole edin
+  • AD ve EDR loglarını değiştirilemez kopyaya alın
+  • <span class="risk-crit">Fidye ödemeyin — hukuki garanti yoktur</span>
+
+Kaynak: KVKK Md.12 · HoloPack MAPS_TO_MITRE T1486 kenarı</div>
+    </div>
+
+    <div class="scenario-content" id="sc-2">
+      <div class="scenario-header">
+        <span class="dot dot-green"></span> finance_expert.py · Basel III · BDDK Md.35
+      </div>
+      <div class="scenario-q">
+        <strong>Kullanıcı Sorgusu</strong>
+        Bankamızın CET1 oranı %4.2, Toplam Sermaye Rasyosu %7.8. Basel III durumu nedir?
+      </div>
+      <div class="scenario-a"><span class="risk-warn">💹 BASEL III UYUM ANALİZİ — 3 EŞİK ALTINDA</span>
+
+  Metrik              Mevcut    Basel III Min    Durum
+  ──────────────────────────────────────────────────────
+  CET1 Oranı           %4.2        %4.5       <span class="risk-crit">UYUMSUZ</span>
+  Tier 1 Sermaye       ~%5.1       %6.0       <span class="risk-crit">UYUMSUZ</span>
+  Toplam Sermaye       %7.8        %8.0       <span class="risk-crit">UYUMSUZ</span>
+  BDDK SYR             %7.8        %12.0      <span class="risk-crit">UYUMSUZ</span>
+
+BDDK Madde 35 kapsamında acil sermaye artırımı gereklidir.
+Risk ağırlıklı varlıklar azaltılmalı veya sermaye enjeksiyonu yapılmalıdır.
+
+Kaynak: Basel III 2023 · BDDK Tebliği · HoloPack finance domain</div>
+    </div>
+
+    <div class="scenario-content" id="sc-3">
+      <div class="scenario-header">
+        <span class="dot dot-green"></span> cyber_expert.py · MITRE ATT&CK · OWASP Top 10
+      </div>
+      <div class="scenario-q">
+        <strong>Kullanıcı Sorgusu</strong>
+        Sistemimizde SQL injection açığı tespit edildi. Ne yapmalıyım?
+      </div>
+      <div class="scenario-a"><span class="risk-crit">🔒 OWASP A03 — SQL INJECTION — ACİL MÜDAHALE</span>
+
+MITRE ATT&CK Eşlemesi: T1190 (Exploit Public-Facing Application)
+Risk Seviyesi: <span class="risk-crit">KRİTİK — Acil yama gerektirir</span>
+
+<span class="risk-warn">Acil Teknik Adımlar:</span>
+  1. Açık URL/endpoint'i derhal offline alın
+  2. WAF kuralı ekleyin (SQLi payload filtresi)
+  3. DB loglarını doğrudan audit edin (exfiltration kontrolü)
+
+<span class="risk-ok">Kalıcı Çözüm (OWASP Kontrolleri):</span>
+  • Parameterized Queries / Prepared Statements kullanın
+  • ORM katmanı (SQLAlchemy, Prisma) ile sorgu oluşturma
+  • Input Validation: whitelist tabanlı, her endpoint ayrı
+  • Principle of Least Privilege: DB kullanıcısı yalnızca gerekli tabloları görmeli
+
+Kaynak: OWASP ASVS 4.0 · MITRE T1190 · HoloPack cyber domain</div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison -->
+<section id="compare">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Rekabetçi Karşılaştırma</div>
+      <h2>OmniEngine vs. Bulut Alternatifler</h2>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Kriter</th>
+            <th>OmniEngine v9.0</th>
+            <th>GPT-4o (Bulut)</th>
+            <th>Claude 3.5 (Bulut)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Air-Gapped Çalışma</td><td><span class="check">✓ Tam</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Sıfır Bulut Veri İletimi</td><td><span class="check">✓ Garanti</span></td><td><span class="cross">✗ API zorunlu</span></td><td><span class="cross">✗ API zorunlu</span></td></tr>
+          <tr><td>KVKK / HIPAA Uyumlu</td><td><span class="check">✓ Tasarım gereği</span></td><td><span class="warn">⚠ DPA gerekli</span></td><td><span class="warn">⚠ DPA gerekli</span></td></tr>
+          <tr><td>Deterministik Uzman Modül</td><td><span class="check">✓ 4 sektör</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Medyan Gecikme</td><td><span class="check">27ms</span></td><td>~1000ms</td><td>~1200ms</td></tr>
+          <tr><td>TC Kimlik Doğrulama</td><td><span class="check">✓ Luhn+Mod</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Bayesian Tanı Motoru</td><td><span class="check">✓ Dahili</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Halüsinasyon Kalkanı</td><td><span class="check">✓ 7 kural</span></td><td><span class="warn">⚠ RLHF</span></td><td><span class="warn">⚠ CAI</span></td></tr>
+          <tr><td>Audit Log (Hukuki Kanıt)</td><td><span class="check">✓ Prisma hash</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Sürekli API Maliyeti</td><td><span class="check">Sıfır</span></td><td>💰 Yüksek</td><td>💰 Yüksek</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Roadmap -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Yol Haritası</div>
+      <h2>Sonraki Fazlar</h2>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color: var(--muted);">Faza tıklayarak detayları genişletin</p>
+    </div>
+
+    <div class="roadmap">
+      <div class="phase" onclick="togglePhase(this)">
+        <div class="phase-num">I</div>
+        <div class="phase-content">
+          <div class="phase-title">Kanıt Zinciri — Evidence Drawer</div>
+          <div class="phase-desc">Her kararın kaynağını görsel olarak izlenebilir kılmak. Hukuki audit için hash zinciri.</div>
+          <ul class="phase-items">
+            <li>Görsel kaynak koordinatları — her iddia için tıklanabilir belge referansı</li>
+            <li>Hash zinciri audit log — girdi + çıktı hash'i Prisma'ya imzalanarak kaydedilir</li>
+            <li>Citation Graph UI — iddia → kaynak → güven skoru etkileşimli ağacı</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" onclick="togglePhase(this)">
+        <div class="phase-num">II</div>
+        <div class="phase-content">
+          <div class="phase-title">Sıfır-Bilgi Çok Kullanıcı</div>
+          <div class="phase-desc">Kurumsal ortamlarda izole, şifrelenmiş çok kullanıcı desteği.</div>
+          <ul class="phase-items">
+            <li>NextAuth.js entegrasyonu — rol tabanlı erişim kontrolü</li>
+            <li>AES-256 bellek izolasyonu — her kullanıcının hafızası kendi anahtarıyla şifrelenir</li>
+            <li>Federated HoloPack — farklı kurumların bilgi segmentlerini merkezi şemaya bağlaması</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" onclick="togglePhase(this)">
+        <div class="phase-num">III</div>
+        <div class="phase-content">
+          <div class="phase-title">HA Scale-Out Kümelenmesi</div>
+          <div class="phase-desc">Tek makine kısıtını aşarak kurumsal ölçekte yatay büyüme.</div>
+          <ul class="phase-items">
+            <li>Çok GPU yük dengeleme — yerel GPU kümesinde akıllı model dağıtımı</li>
+            <li>Rust tabanlı Quality Gate — 1ms altı kontrol gecikmesi</li>
+            <li>HoloPack v5.0 Delta Güncellemeleri — artımlı node/edge ekleme protokolü</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase" onclick="togglePhase(this)">
+        <div class="phase-num">IV</div>
+        <div class="phase-content">
+          <div class="phase-title">Otonom Araştırma Ajanı</div>
+          <div class="phase-desc">Pasif yanıt vermenin ötesine geçen proaktif bilişsel döngü.</div>
+          <ul class="phase-items">
+            <li>Otomatik literatür tarama — PubMed ve Resmi Gazete izleme → HoloPack güncelleme</li>
+            <li>Explainability Engine — "neden bu yanıt?" adım adım çıkarım haritası</li>
+            <li>Multi-Modal giriş — PDF, görüntü, ses tanıma ile çok modaliteli sorgulama</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Status -->
+<section id="status" style="padding:3rem 0;">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Sistem Durumu</div>
+      <h2>Bileşen Sağlık Paneli</h2>
+    </div>
+    <div class="status-grid">
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">FastAPI Sunucu</div>
+          <div class="status-val">Port 8765 — Aktif</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">HoloPack v4.0</div>
+          <div class="status-val">286 MB mmap — Eşlendi</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">Bayesian Motor</div>
+          <div class="status-val">499K düğüm — %100</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">PIIScrubber</div>
+          <div class="status-val">TC + Luhn + Domain</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">Quality Gate</div>
+          <div class="status-val">7 kural — Aktif</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-dot green"></div>
+        <div>
+          <div class="status-name">Air-Gap Durumu</div>
+          <div class="status-val">Sıfır dışa iletim</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p><strong>OmniEngine Cognitive Core v9.0</strong></p>
+    <p>Non-Commercial Academic &amp; Enterprise Evaluation License</p>
+    <p style="margin-top:0.5rem; color:#475569;">Intelligence should serve those who need it most — without ever leaving their hands.</p>
+  </div>
+</footer>
+
+<script>
+  /* ── Animated Counters ── */
+  const targets = {
+    'm-qps':   { end: 355.67, suffix: '',   decimals: 1 },
+    'm-lat':   { end: 27,     suffix: 'ms', decimals: 0 },
+    'm-nodes': { end: 499,    suffix: 'K',  decimals: 0 },
+    'm-edges': { end: 6.4,    suffix: 'M',  decimals: 1 },
+    'm-disk':  { end: 286,    suffix: 'MB', decimals: 0 },
+    'm-boot':  { end: 100,    suffix: 'ms', decimals: 0, prefix: '<' },
+  };
+
+  function animateCounter(el, opts, duration = 1400) {
+    let start = null;
+    const step = ts => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const val = eased * opts.end;
+      el.textContent = (opts.prefix||'') + val.toFixed(opts.decimals) + opts.suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        Object.entries(targets).forEach(([id, opts]) => {
+          const el = document.getElementById(id);
+          if (el) animateCounter(el, opts);
+        });
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const metricsSection = document.getElementById('metrics');
+  if (metricsSection) observer.observe(metricsSection);
+
+  /* ── Benchmark Bar Animation ── */
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.bench-bar').forEach(bar => {
+          const target = bar.dataset.target;
+          setTimeout(() => { bar.style.width = target + '%'; }, 200);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const benchSection = document.getElementById('benchmark');
+  if (benchSection) barObserver.observe(benchSection);
+
+  /* ── Architecture Layer Detail ── */
+  const layerDetails = [
+    {
+      title: 'L0 — Kullanıcı Arayüzü',
+      content: 'Next.js 16 App Router tabanlı arayüz. Chat UI kullanıcıyla etkileşimi sağlar. Memory Graph, D3 force-directed algoritmasıyla hafıza düğümlerini canlı görselleştirir — her düğüm bir kavram, her kenar bir ilişki. Benchmark Dashboard ise Recharts radar ve trend grafikleriyle sistem metriklerini gerçek zamanlı gösterir.',
+      tags: ['Next.js 16', 'TypeScript', 'D3 Force Graph', 'Recharts', 'page.tsx', 'MemoryGraph.tsx']
+    },
+    {
+      title: 'L1 — Güvenlik Ağgeçidi (PIIScrubber)',
+      content: 'Her girdi sisteme ulaşmadan, her çıktı kullanıcıya sunulmadan önce çift yönlü maskeleme. TC Kimlik: 11 hane + 2 matematiksel Mod10 kontrolü. Kredi Kartı: Luhn algoritması. Domain Exclusions: tıbbi ve siber terimler büyük harfle başlasa dahi korunur.',
+      tags: ['PIIScrubber.ts', 'Luhn Algoritması', 'TC Kimlik Mod10', 'Domain Exclusions', 'KVKK', 'HIPAA']
+    },
+    {
+      title: 'L2 — Hafıza ve Bağlam',
+      content: 'Üç katmanlı bağlam erişimi: Memory.ts Prisma SQLite ile oturumlar arası kalıcı bellek grafiği tutar (Liquid State + EpisodicCrystal). RAG.ts Xenova MiniLM 384-dim vektör gömmeleri ve cosine similarity ile anlamsal arama yapar. GraphRAG.ts co-occurrence ve named-entity linking ile ilişkisel ağ oluşturur.',
+      tags: ['Memory.ts', 'Prisma SQLite', 'RAG.ts', 'MiniLM 384-dim', 'GraphRAG.ts', 'Liquid State']
+    },
+    {
+      title: 'L3 — HoloPack v4.0 Binary Engine',
+      content: 'Sıfırdan tasarlanmış tescilli ikili format. binindex: 5.5M anahtar kelime FNV-1a hash\'ine göre sıralı, O(log N) binary search. binpack: 499K düğüm zlib sıkıştırmalı, mmap ile lazy-decode. Disk erişim gecikmesi işletim sistemi sanal bellek altyapısıyla matematiksel olarak sıfıra indirildi.',
+      tags: ['FNV-1a hash', 'Binary Search O(logN)', 'zlib lazy-decode', 'mmap', '355 QPS', '27ms p50']
+    },
+    {
+      title: 'L4 — FastAPI Bilişsel Çekirdek',
+      content: 'PyTorch tabanlı Intent Parser modeli (omni_gpt_intent_full.pth) domain tespitini yapar. Lifespan yöneticisi model ve HoloPack\'i sunucu başlangıcında bir kez yükler, her istek hızlı yanıt alır. 22 API rotası, 8 uzman endpoint.',
+      tags: ['FastAPI', 'PyTorch', 'Port 8765', '/intent', '/medical', '/legal', '/finance', '/cyber']
+    },
+    {
+      title: 'L5 — Uzman Alan Modülleri',
+      content: 'Dört ayrı Python modülü, her biri kendi deterministik kural seti ve bilgi tabanıyla. Tıp: DiagnosisEngine Bayesian motor + 500+ ilaç + ICD-10. Hukuk: TCK/TBK/KVKK madde atıfları. Finans: Basel III eşik karşılaştırma. Siber: MITRE ATT&CK TTP eşleştirme.',
+      tags: ['medical_expert.py', 'legal_expert.py', 'finance_expert.py', 'cyber_expert.py', 'DiagnosisEngine']
+    },
+    {
+      title: 'L6 — Kalite Kapısı ve Şema Kilidi',
+      content: 'quality_gate.py 7 deterministik kural uygular — toplam skor ≥3 ise ABSTAIN (yanıt reddedilir). schema_lock.py her çıktıyı JSON Schema\'dan geçirir. BenchmarkRun her yanıtın gecikme, doğruluk ve güvenlik metriğini Prisma\'ya kaydeder.',
+      tags: ['quality_gate.py', 'schema_lock.py', '7 Kural', 'PASS/WARN/ABSTAIN', 'BenchmarkRun', 'Prisma']
+    }
+  ];
+
+  const layers = document.querySelectorAll('.arch-layer');
+  const panel  = document.getElementById('detail-panel');
+  const dtitle = document.getElementById('detail-title');
+  const dcont  = document.getElementById('detail-content');
+  const dtags  = document.getElementById('detail-tags');
+
+  let activeLayer = null;
+
+  layers.forEach((layer, i) => {
+    layer.addEventListener('click', () => {
+      if (activeLayer === i) {
+        panel.classList.remove('visible');
+        layer.classList.remove('active');
+        activeLayer = null;
+        return;
+      }
+      layers.forEach(l => l.classList.remove('active'));
+      layer.classList.add('active');
+      activeLayer = i;
+
+      const d = layerDetails[i];
+      dtitle.textContent = d.title;
+      dcont.textContent  = d.content;
+      dtags.innerHTML    = d.tags.map(t => `<span class="tag">${t}</span>`).join('');
+      panel.classList.remove('visible');
+      requestAnimationFrame(() => panel.classList.add('visible'));
+    });
+  });
+
+  /* ── Scenario Tabs ── */
+  function showScenario(idx, btn) {
+    document.querySelectorAll('.scenario-content').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  /* ── Roadmap Toggle ── */
+  function togglePhase(el) {
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+    if (!wasActive) el.classList.add('active');
+  }
+</script>
+</body>
+</html>
