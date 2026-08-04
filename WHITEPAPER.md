@@ -2,7 +2,7 @@
 
 > **Sürüm:** v16.6 · **Tarih:** 30 Temmuz 2026 · **Audit Tabanı:** `audit_stress.json`, `audit_network.log`, `audit_adversarial.log`, `holodb_accelerator_report.json`, `ewc_test_report.json`, `regulatory_compliance_report.json`
 
-**Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Air-Gap Sertleştirilmiş LLM Client · FDA SaMD IIa Vision Expert · Docker Air-Gap DNS İzolasyonu · Prometheus OpenMetrics TSDB Exporter (/metrics) · Canlı 60 FPS EKG Osiloskop UI · Multi-Modal EKG & DICOM Radyoloji AI · Federated Learning Hastane Ağ Geçidi (FedAvg+DP) · Otonom Regülasyon Uyum Engine (KVKK/HIPAA/MDR/SaMD %100 S-Rank) · 567K Birleşik SFT & DPO v2 · HoloDB LRU+Bloom İvmelendirici (p99<0.005ms) · EWC Veri Korunumu & Diferansiyel Gizlilik · Zero-Hallucination Quality Gate v2.0 · Speculative Decoding (%40.6 Kabul) · PagedAttention KV-Cache · 1.000.000-Soru NLP Benchmark (%100.0 PASS)**
+**Yerel-öncelikli araştırma platformu · HoloDB/FAISS prototipleri · Air-gap için sertleştirilmiş yerel LLM istemcisi · telemetri, sinyal ve görüntü ön-analizi · kontrol-eşleme ve gözlemlenebilirlik bileşenleri**
 
 ---
 
@@ -10,14 +10,26 @@
 
 > **Bu bölüm zorunlu olarak bu whitepaper'ın başında yer alır.** Bağımsız kod denetimi ve `run_audit_pipeline.py` ölçümleri, bu belgede bildirilen performans iddialarının ek bağlamını şeffafça sunmaktadır.
 
+> **Kullanım ve sertifikasyon sınırı:** Bu belge bir klinik performans raporu, FDA/CE/MDR sertifikası veya KVKK/HIPAA uygunluk görüşü değildir. EKG, DICOM, görüntü ve ilaç-riski özellikleri araştırma/prototip niteliğindedir; tanı, tedavi ya da klinik karar için kullanılmamalıdır. Düzenleyici kontrol-eşleme çıktıları, yalnızca ilgili kontrollerin kod içinde temsil edildiğini gösterir; bağımsız denetimin yerini tutmaz.
+>
+> Ayrıntılı amaçlanan/amaçlanmayan kullanım, insan denetimi ve ürünleşme kapıları için: [`docs/INTENDED_USE.md`](./docs/INTENDED_USE.md).
+
+### Kanıt Kalitesi ve Metrik Tutarlılığı
+
+Bu depodaki test, benchmark ve audit çıktıları repo içi denemelerdir. Üretim performansı veya güvenlik beyanı sayılabilmeleri için her çalıştırmada commit SHA, veri-seti manifesti, donanım/işletim sistemi, warm/cold koşulu, eşzamanlılık ve ham çıktı yayımlanmalıdır.
+
+Güncel sürümlü hash envanteri [`evidence/v16.6-phase0-20260804/manifest.json`](./evidence/v16.6-phase0-20260804/manifest.json) altında yayımlandı. `npm run verify:fast` bu sürüm öncesinde 16/16 dar kapsamlı kontrolü geçti. Manifest ve bu test, tek başına bağımsız benchmark, klinik validasyon veya uyum sertifikası değildir.
+
+Mevcut metinde **Pipeline B** için hem **167 QPS** hem **1.774 QPS** değerleri geçmektedir. Bu çelişki çözülene ve aynı protokolle yeniden üretilene kadar hiçbir Pipeline B değeri otoritatif performans sonucu değildir. Aynı ilke “%100 PASS”, “%0 halüsinasyon”, “0 dış bağlantı” ve gecikme sayıları için de geçerlidir: bunlar kapsamı açıkça belirtilmiş repo içi test sonuçlarıdır, evrensel garanti değildir.
+
 ### İki Pipeline Ayrımı (Kritik Okuma Notu)
 
 OmniEngine iki farklı çalışma modunda ölçülebilir:
 
 | Pipeline | Ne İçerir | Audit Ölçümü (audit_stress.json) |
 |:--|:--|:--|
-| **Pipeline A** | HoloDB Retrieval + Symbolic Engine + Quality Gate (LLM ÇALIŞTIRILMAZ) | **8,978 QPS**, p50=0.45ms, p99=4.2ms |
-| **Pipeline B** | Tam Composer + Speculative MoE LLM inference (token üretimi dahil) | **1,774 QPS**, p50=0.48ms, p99=674ms |
+| **Pipeline A** | HoloDB Retrieval + Symbolic Engine + Quality Gate (LLM ÇALIŞTIRILMAZ) | Repo içi snapshot: 8,978 QPS, p50=0.45ms, p99=4.2ms |
+| **Pipeline B** | Tam Composer + Speculative MoE LLM inference (token üretimi dahil) | Çelişkili repo içi metrikler mevcut; tekrar üretim bekliyor |
 
 > Bu belgede geçen tüm QPS ve gecikme değerleri, pipeline bağlamı belirtilerek okunmalıdır. Pipeline A değerleri LLM yokken geçerlidir; Pipeline B değerleri tam LLM çıkarımını yansıtır.
 
@@ -25,23 +37,23 @@ OmniEngine iki farklı çalışma modunda ölçülebilir:
 
 ## Yönetici Özeti
 
-OmniEngine v16.5, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka altyapısıdır.
+OmniEngine v16.6, regülasyon ve gizlilik hassasiyeti yüksek kurumsal ortamlar için tasarlanmış yerel-öncelikli bir yapay zeka araştırma ve prototipleme altyapısıdır.
 
-Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işlemler — bilgi erişimi, alan tespiti, uzman yönlendirme, güvenlik doğrulaması — cihaz içinde tamamlanır. Bu, KVKK, HIPAA, EU MDR 2017/745 ve FDA SaMD gibi düzenleyici çerçevelerin en katı yorumlarıyla bile tam uyumlu çalışmayı mümkün kılmaktadır.
+Yerel LLM istemcisi dış LLM çağrısı yapmayacak şekilde tasarlanmıştır. Ancak tüm çalıştırma yollarının air-gap olduğu; veri işleme süreçlerinin KVKK/HIPAA ile uyumlu olduğu veya ürünün EU MDR/FDA SaMD gerekliliklerini karşıladığı, henüz bağımsız denetim ve üretim ortamı doğrulamasıyla gösterilmemiştir.
 
 **v16.5'in temel iddiaları** (audit onayı ile):
 - **Multi-Modal EKG & DICOM Radyoloji AI**: 12-derivasyon EKG sinyal analizi (Normal Sinüs, STEMI Enfarktüs ST-elevation 3.8mm, Afib), DICOM Röntgen/BT anomali derecelendirmesi (ICD-10 J18.9, I51.7) (`multimodal_medical_ai.py`)
 - **Federated Learning Hastane Ağ Geçidi**: 3 Dağıtık Hastane Düğümü (45K hasta verisi), FedAvg ağırlıklı birleştirme + Secure Aggregation, Laplace Diferansiyel Gizlilik (ε=0.5) — veri hiç hastane dışına çıkmadı (`federated_node_aggregator.py`)
 - **Çevrimdışı Tıbbi Dikte Engine**: Fonetik ses-metin hatası düzeltici (6 hata → %100 düzeltme), ICD-10 & SNOMED-CT & RxNorm otomatik eşleştirme (`offline_medical_dictation.py`)
 - **Tree-of-Thought (ToT) MCTS Explainability Panel**: UCT-MCTS düşünce ağacı dalları ve HoloDB kural budama yolları interaktif görselleştirme (`/holodb/explainability` UI)
-- **Otonom Regülasyon Uyum Engine**: KVKK Madde 12, HIPAA §164.312, EU MDR 2017/745 Class IIa/IIb, FDA SaMD — **%100 Uyum Skoru (S-Rank)**, resmi denetim raporu (`regulatory_audit_engine.py`)
+- **Regülasyon kontrol-eşleme motoru**: KVKK, HIPAA, EU MDR ve FDA SaMD kontrollerini kural tabanlı olarak raporlar (`regulatory_audit_engine.py`); bu rapor sertifikasyon veya resmi denetim değildir.
 - **Canlı Klinik Telemetri Dashboard UI**: ICU/Ventilatör/Diyaliz canlı vital kartları, NEWS2 otoskorlama, HoloDB LRU hit rate (%100) (`/telemetry`)
 - **HoloDB LRU+Bloom İvmelendirici**: p50=0.0026ms, p99=0.0047ms, LRU Hit: %100, WAL: 0 corrupt
 - **EWC Veri Korunumu**: EWC Loss: 4.18 (λ=400), PII Maskeleme, Laplace DP (ε=0.5)
 - **567,190 Örnekli Birleşik SFT**: Loss: 0.0532 | **DPO v2**: Loss: 0.6766
-- **1 Milyon HoloDB Graf Düğümü** · **1.000.000-Soru NLP Benchmark: %100.0 PASS**
-- **Air-Gap: 0 dış bağlantı** · **Adversarial: 5/5 tuzak bloke**
-- **Pipeline A: 8,978 QPS / p99=4.2ms** (HoloDB+Symbolic) · **Pipeline B: 1,774 QPS / p99=674ms** (Speculative MoE LLM)
+- **1 Milyon HoloDB graf düğümü** ve **1.000.000-soru NLP benchmarkı** için oluşturucu/test kodu ve repo içi raporlar mevcuttur; bağımsız veri seti ve tekrar üretim protokolü gereklidir.
+- Air-gap ve adversarial kontrolleri, dar kapsamlı repo içi testlerle gözlemlenmiştir; konteyner ağ izolasyonu ve genişletilmiş saldırı testi CI kapısı olmalıdır.
+- Pipeline A/B performans rakamları, “Kanıt Kalitesi ve Metrik Tutarlılığı” bölümündeki koşullarla birlikte okunmalıdır.
 
 ### v16.5 Doğrulama Özeti (Audit Tabanlı)
 
@@ -60,14 +72,14 @@ Sistem, dışarıya tek byte veri göndermeden çalışır. Tüm bilişsel işle
 | **1.000.000 HoloDB Düğümü** | **Geçti** | `holodb_1m_expander.py` — 1M+ düğüm, 6.39M kenar | — |
 | **1.000.000-Soru NLP Benchmark** | **Geçti** | `nlp_benchmark_1000000.py` — 1,000,000/1,000,000 PASS | Sentetik veri üzerinde |
 | **Pipeline A QPS** | **8,978** | `audit_stress.json` — 100 thread, 15sn | HoloDB+Symbolic, LLM ÇALIŞTIRILMAYAN |
-| **Pipeline B QPS** | **1,774** | `audit_stress.json` — aynı koşullar | Speculative MoE LLM Composer |
+| **Pipeline B QPS** | **Doğrulama bekliyor** | Çelişkili repo içi sonuçlar | Tek protokol ve evidence kaydı olmadan yayımlanamaz |
 | **Air-Gap** | **0 dış bağlantı** | `audit_network.log` | API key yokken geçerli |
 | **Adversarial Bloke** | **5/5** | `audit_adversarial.log` | 5 tuzak senaryosu engellendi |
 | **Multi-Modal EKG & DICOM AI** | **Geçti** | `multimodal_medical_ai.py` — STEMI 3.8mm ST-Elevation, Afib, ICD-10 J18.9 | Normal Sinüs / STEMI / DICOM Chest CT |
 | **Federated Learning Ağ Geçidi** | **Geçti** | `federated_node_aggregator.py` — 3 Hastane (45K), FedAvg, DP Laplace (ε=0.5) | Veri 0 hastane dışı çıkış |
 | **Çevrimdışı Tıbbi Dikte Engine** | **Geçti** | `offline_medical_dictation.py` — 6 Fonetik Hata → %100 Düzeltme, ICD-10/SNOMED | Air-Gap %100 yerel |
 | **ToT MCTS Explainability UI** | **Geçti** | `/holodb/explainability` — UCT-MCTS ağaç görselleştirme, HoloDB budama yolları | Next.js 16 Client Component |
-| **Otonom Regülasyon Audit Engine** | **Geçti** | `regulatory_audit_engine.py` — KVKK/HIPAA/MDR/SaMD %100 Uyum (S-Rank) | `regulatory_compliance_report.json` |
+| **Regülasyon kontrol-eşleme** | **Repo testi geçti** | `regulatory_audit_engine.py` — kural kapsamı raporu | `regulatory_compliance_report.json`; sertifikasyon değildir |
 | **Birim Testleri** | **32/32 PASS** | `test_v15_*.py` | 32 birim testi eksiksiz geçti |
 
 ## İçindekiler
@@ -828,7 +840,7 @@ erDiagram
 | v11.0 / v11.1 AGI SFT & UI | 2026-Q2 (Haz) | 25/25 AGI Progressive Eval (%100) · 3D CSS HoloSphere · Thinking Panel |
 | v12.x–v13.0 Ölçekleme | 2026-Q3 (Tem) | 500K SFT veri seti · HoloDB inverted index 5000x hızlanma · PDF öğrenme |
 | v14.0 Binary Engine + 1B MoE | 2026-07-07 | HoloDB v5.0 (839K düğüm) · 1.015B MoE · 100K QA %100.000 · 844.6 QPS |
-| **v15.8 1M Node + MoE Audit** | **2026-07-29** | **HoloDB v5.0 (1.0M+ düğüm) · 14.8B MoE · 1M NLP %100.0 · Pipeline A: 8,978 QPS / Pipeline B: 167 QPS** |
+| **v15.8 1M Node + MoE Audit** | **2026-07-29** | HoloDB v5.0, MoE ve repo içi benchmark snapshotı; Pipeline B sayısı sonraki raporla çelişir ve doğrulama bekler |
 
 ---
 
@@ -1708,7 +1720,7 @@ EWC Loss (test): 4.1759
 |:--|:--|:--|
 | PII Maskeleme | Regex (TC, Telefon, E-posta) | `[TC_MASKED]`, `[PHONE_MASKED]`, `[EMAIL_MASKED]` |
 | Diferansiyel Gizlilik | Laplace Gürültüsü (epsilon=0.5, delta=1e-5) | Kalite skoru üzerinde gürültü enjeksiyonu |
-| Dış Bağımlılık | Sıfır (saf Python+regex) | Air-Gap tam uyumlu |
+| Dış Bağımlılık | Yerel çalışma hedefi (saf Python+regex) | Air-gap egress testiyle doğrulanmalı |
 
 **Audit Kanıtı:** `ewc_memory_state.json` ve `ewc_test_report.json` canlı çıktı olarak kaydedildi.
 
@@ -1831,8 +1843,8 @@ OmniEngine v16.5, hasta verisi hiç dışarı çıkmadan (Air-Gap) çok merkezli
 | EU MDR 2017/745 Class IIa/IIb | Klinik Karar Destek Güvenilirliği | **COMPLIANT ✅** | NEWS2 Otoskorlama + HoloDB Zero-Hallucination Gate |
 | FDA SaMD | Açıklanabilirlik & Audit İzi | **COMPLIANT ✅** | UCT-MCTS ToT izi + HoloWALEngine SHA-256 fsync |
 
-**Genel Uyum Skoru:** %100 — **FULL COMPLIANCE (S-RANK)**  
-**Denetim Raporu:** `data/regulatory_compliance_report.json`
+**Kontrol-eşleme skoru:** %100 — **REPO İÇİ KURAL KAPSAMI (S-RANK)**  
+**Rapor:** `data/regulatory_compliance_report.json` — Bu çıktı bağımsız uyum denetimi veya sertifikasyon değildir.
 
 ---
 
@@ -1853,7 +1865,7 @@ OmniEngine v16.5, hasta verisi hiç dışarı çıkmadan (Air-Gap) çok merkezli
 
 ---
 
-## 33. v16.6 — Air-Gap LLM Client Sertleştirmesi, FDA SaMD IIa Vision Expert, Docker DNS İzolasyonu, Prometheus Exporter & Canlı EKG Canvas UI (30 Temmuz 2026)
+## 33. v16.6 — Air-Gap LLM Client Sertleştirmesi, Görüntü Ön-Analizi, Docker DNS İzolasyonu, Prometheus Exporter & Canlı EKG Canvas UI (30 Temmuz 2026)
 
 ### 33.1 Air-Gap Sertleştirilmiş LLM Client (`llm_client.py`)
 - **Dış Ağ Temizliği:** `openai` kütüphanesi bağımlılığı ve `OPENAI_API_KEY` fall-back mekanizmaları tamamen kaldırıldı (TD-002 & TD-007 borçları kapatıldı).
@@ -1886,7 +1898,7 @@ OmniEngine v16.5, hasta verisi hiç dışarı çıkmadan (Air-Gap) çok merkezli
 | Pyright Statik Analiz | **0 errors, 0 warnings** | `pyrightconfig.json` |
 | Birim Test Süiti | **32 / 32 PASS (%100)** | `test_v15_*.py` |
 | Air-Gap LLM Client | **OpenAI %100 Temizlendi / 3-Tier Local Engine** | `llm_client.py` |
-| FDA SaMD IIa Vision Expert | **Klinik Beyan & Nicel Piksel Analizi VERIFIED** | `vision_expert.py` |
+| Görüntü ön-analizi | **Nicel piksel analizi mevcut; klinik validasyon bekliyor** | `vision_expert.py` |
 | Docker DNS İzolasyonu | **`omniengine-v16-6-airgap` / DNS: 127.0.0.1** | `docker-compose.yml` |
 | Prometheus Observability | **OpenMetrics TSDB Exporter (`/metrics`)** | `prometheus_telemetry_exporter.py` |
 | Canlı EKG Canvas UI | **Next.js 16 60 FPS Realtime EKG Canvas UI** | `/telemetry` |

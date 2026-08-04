@@ -3,12 +3,12 @@
 # 🧠 OmniEngine Cognitive Core — v16.6
 
 **Yerel Egemen AI · 1 Milyon HoloDB Graf Düğümü · FAISS 1M HNSW Vektör İndeksi (<5ms) · Air-Gap Sertleştirilmiş LLM Client**  
-**FDA SaMD IIa Vision Expert · Docker Air-Gap DNS İzolasyonu · Prometheus OpenMetrics TSDB Exporter (/metrics)**  
+**Araştırma amaçlı klinik görüntü ön-analizi · Docker Air-Gap DNS izolasyonu · Prometheus OpenMetrics exporter (/metrics)**  
 **Canlı EKG Osiloskop Canvas UI (/telemetry) · Multi-Modal EKG & DICOM AI · Federated Learning Hastane Ağ Geçidi**  
-**Otonom Regülasyon Uyum Engine (%100 S-Rank) · Speculative Decoding (%40.6 Kabul) · PagedAttention KV-Cache**  
+**Regülasyon kontrol-eşleme motoru · Speculative Decoding (%40.6 kabul; repo içi ölçüm) · PagedAttention KV-Cache**  
 **Zero-Hallucination Quality Gate v2.0 · Live Benchmark & Adversarial UI · HoloDB v5.0 (1M+ Node)**
 
-*Buluta tek byte göndermeden çalışan, PhD seviyesinde tıbbi, hukuki, finansal ve siber güvenlik zekası.*
+*Yerel çalışmayı hedefleyen; tıbbi, hukuki, finansal ve siber güvenlik senaryoları için araştırma ve prototipleme platformu.*
 
 ---
 
@@ -16,33 +16,36 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
 [![Version](https://img.shields.io/badge/Version-v16.6-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
-[![Hallucination](https://img.shields.io/badge/Halüsinasyon-%250-16a34a?style=flat-square)](./)
-[![1M Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-100%25_PASS-16a34a?style=flat-square)](./)
+[![Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-repo__içi-4D9EFF?style=flat-square)](./nlp_benchmark_1000000_report.md)
 [![HoloDB](https://img.shields.io/badge/HoloDB-v5.0_1.0M%2B_Düğüm-8B5CF6?style=flat-square)](./)
 [![FHIR](https://img.shields.io/badge/FHIR-R4_HL7_IPS-0f766e?style=flat-square)](./)
-[![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_Basel_IV-Compliant-0f766e?style=flat-square)](./)
+[![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_MDR-kontrol__eşleme-0f766e?style=flat-square)](./data/regulatory_compliance_report.json)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
 </div>
 
 ---
 
-> **⚠️ YASAL UYARI — TİCARİ KULLANIM KISITLAMASI**  
+> **⚠️ ARAŞTIRMA, GÜVENLİK VE YASAL UYARI**  
 > Bu repoda yer alan matematiksel algoritmalar ve homeostatik mimariler (Simulated Annealing EWC, Karl Popper REM döngüleri, Episodic Crystallization) akademik araştırma, hakem değerlendirmesi ve kişisel testler içindir. Kurumsal entegrasyon için lisans gereklidir → [CERTIFICATION.md](./CERTIFICATION.md)
+>
+> Tıbbi görüntüleme, telemetri, EKG/DICOM ve ilaç-riski özellikleri **klinik karar, tanı veya tedavi amacıyla kullanılmamalıdır**. Bu depo FDA/CE/MDR onaylı bir tıbbi cihaz değildir; KVKK, HIPAA veya başka bir mevzuata “tam uyum” beyanı bağımsız hukuk, güvenlik ve uygunluk denetimi gerektirir.
+>
+> Ayrıntılı kapsam, insan denetimi ve ürünleşme öncesi kapılar: [`docs/INTENDED_USE.md`](./docs/INTENDED_USE.md).
 
 ---
 
 ## Güncel Gelişim Durumu — v16.6 (30 Temmuz 2026)
 
-OmniEngine **v16.6**, platforma **Air-Gap Sertleştirilmiş LLM Client** (`llm_client.py` — OpenAI bağımlılığı %100 temizlendi, 3-kademeli yerel düşüş hiyerarşisi), **FDA SaMD IIa Klinik Beyanlı Vision Expert** (`vision_expert.py`), **Docker Air-Gap DNS İzolasyonu** (`docker-compose.yml` — `dns: [127.0.0.1]`), **Prometheus OpenMetrics TSDB Exporter** (`prometheus_telemetry_exporter.py`), **Canlı 60 FPS EKG Osiloskop Canvas UI** (`src/app/telemetry/ECGWaveformCanvas.tsx`), **Multi-Modal EKG & DICOM AI** (`multimodal_medical_ai.py`), **Federated Learning Ağ Geçidi** (`federated_node_aggregator.py`) ve **Otonom Regülasyon Uyum Engine** (`regulatory_audit_engine.py` — %100 S-Rank) kazandırmıştır.
+OmniEngine **v16.6**, yerel LLM istemcisi (`llm_client.py`), görüntüden nicel özellik çıkarımı ve isteğe bağlı VLM adaptörü (`vision_expert.py`), Docker ağ yapılandırması, Prometheus metrikleri, EKG/telemetri arayüzleri, federated-learning prototipi ve mevzuat kontrol-eşleme raporu içerir. Bu bileşenlerin bir bölümü simülasyon, kural tabanlı işleme veya isteğe bağlı model bağımlılıkları kullanır; üretim/klinik hazır oldukları varsayılmamalıdır.
 
-> **Audit Notu (30 Temmuz 2026):** `run_audit_pipeline.py` bağımsız pipeline testi: **Pipeline A** (HoloDB+Symbolic+QualityGate): **8,978 QPS**, p99=4.2ms. **Pipeline B** (Speculative MoE LLM): **1,774 QPS**, p99=674ms. **Adversarial:** 5/5 tuzak engellendi. **Air-Gap:** 0 dış ağ isteği. **Regülasyon Uyum:** %100 S-Rank. **Birim Testler:** 32/32 PASS.
+> **Ölçüm notu (30 Temmuz 2026):** `audit_stress.json` ve ilgili test raporları repo içi bir deneme ortamından alınmış anlık sonuçlardır. Donanım, veri kümesi, eşzamanlılık, commit SHA’sı ve bağımsız tekrar bilgisi yayımlanmadıkça bunlar üretim SLO’su, klinik performans veya üçüncü taraf doğrulaması olarak yorumlanmamalıdır.
 
 | Alan | Güncel durum (v16.6) |
 |:--|:--|
-| Platform | Next.js 16.2.6 + Turbopack build hatasız geçiyor (TypeScript & Pyright 0 hata) |
+| Platform | Next.js 16.2.6 uygulaması; build/lint sonucu çalışma ortamında yeniden doğrulanmalı |
 | **Air-Gap LLM Client (YENİ v16.6)** | `llm_client.py` — OpenAI import %100 temizlendi, 3-kademeli yerel MoE -> Composer -> Fallback |
-| **FDA SaMD IIa Vision Expert (YENİ v16.6)** | `vision_expert.py` — Klinik Sorumluluk Beyanı & Nicel Piksel Histogram analizi |
+| **Görüntü ön-analizi (v16.6)** | `vision_expert.py` — nicel piksel/histogram analizi; VLM isteğe bağlıdır, tanısal doğrulaması yoktur |
 | **Docker Air-Gap DNS (YENİ v16.6)** | `docker-compose.yml` — `omniengine-v16-6-airgap` container, `dns: [127.0.0.1]` izolasyonu |
 | **Prometheus Exporter (YENİ v16.6)** | `prometheus_telemetry_exporter.py` — OpenMetrics Prometheus `/metrics` TSDB canlı aktarıcı |
 | **Canlı EKG Osiloskop UI (YENİ v16.6)** | `src/app/telemetry/ECGWaveformCanvas.tsx` — 60 FPS realtime Lead II EKG dalga boyu canvas |
@@ -50,7 +53,7 @@ OmniEngine **v16.6**, platforma **Air-Gap Sertleştirilmiş LLM Client** (`llm_c
 | **Federated Learning Ağ Geçidi (v16.5)** | `federated_node_aggregator.py` — 3 Hastane düğümü (45K veri), **FedAvg + Secure Aggregation**, DP Laplace ($\epsilon=0.5$) |
 | **Çevrimdışı Tıbbi Dikte Engine (v16.5)** | `offline_medical_dictation.py` — Fonetik terim düzeltme (6 hata), **ICD-10 & SNOMED-CT eşleştirme** |
 | **ToT MCTS Explainability UI (v16.5)** | `src/app/holodb/explainability/page.tsx` — MCTS düşünce ağacı dalları, **UCT skorlaması** ve HoloDB budama yolları |
-| **Otonom Regülasyon Uyum Engine (v16.5)**| `regulatory_audit_engine.py` — KVKK, HIPAA, EU MDR 2017/745, FDA SaMD **%100 Uyum (S-Rank)** |
+| **Regülasyon kontrol-eşleme (v16.5)**| `regulatory_audit_engine.py` — KVKK, HIPAA, EU MDR ve FDA SaMD için kural tabanlı kontrol raporu; sertifikasyon değildir |
 | **Canlı Telemetri & HoloDB Dashboard (v16.4)** | `src/app/telemetry/page.tsx` — ICU/Ventilatör/Diyaliz canlı vital kartları, NEWS2 otoskorlama, HoloDB LRU (%100 hit) |
 | **Tıbbi Cihaz Telemetri (v16.3)** | `device_telemetry_simulator.py` — 4 ICU/OR/Diyaliz senaryosu, NEWS2 otomatik skoru, HL7 v2.8 / FHIR R4 |
 | **HoloDB LRU+Bloom İvmelendirici (v16.3)** | `holodb_accelerator.py` — 50K LRU Cache + 1M Bloom-Filter + WAL SHA-256, **p50=0.0026ms**, **p99=0.005ms** |
@@ -61,13 +64,27 @@ OmniEngine **v16.6**, platforma **Air-Gap Sertleştirilmiş LLM Client** (`llm_c
 | **Speculative Decoding (v16.1)** | `draft_model.py` — 300M Draft + 3.2B Target, **%40.6 kabul oranı**, 1.32x hızlanma |
 | **PagedAttention KV-Cache (v16.1)** | `kv_cache_manager.py` — 16-token sanal bellek bloklama, **%59.38 fragmantasyon tasarrufu** |
 | **HoloDB v5.0 — 1M Düğüm** | `holodb_1m_expander.py` — **1.000.000+ düğüm**, 6.39M+ kenar, 24.2M mmap binary indeksi |
-| **1M NLP Benchmark** | `nlp_benchmark_1000000.py` — 1.000.000 soru, **%100.0 PASS**, Halüsinasyon: **%0.0** |
-| **Air-Gap & Adversarial** | Audit onaylı: runtime'da dış ağa **0 istek**, **5/5 adversarial tuzak engellendi** |
-| Güvenlik & Doğrulama | `test_v15_*.py` (32/32 PASS), `verify_claims.py` (16/16 PASS) |
+| **1M NLP benchmark** | `nlp_benchmark_1000000.py` — repo içi/sentetik değerlendirme; bağımsız test seti ve tekrar üretim protokolü gerektirir |
+| **Air-Gap & adversarial** | Kod yolu yerel çalışacak şekilde tasarlanmıştır; konteynerde ağ izolasyonu ve saldırı testleri CI’da yeniden doğrulanmalıdır |
+| Güvenlik & doğrulama | Test ve claim doğrulama scriptleri mevcuttur; sonuçlar commit ve ortam bilgisiyle tekrar üretilmelidir |
 
 > 📄 **Kurucu & Proje Yönetici Özeti (One-Pager):** Fikret ve AR-GE ekibinin vizyonunu, mimari detaylarını ve klinik/kurumsal yeteneklerini içeren kapsamlı özet için [`ONE_PAGER.md`](./ONE_PAGER.md) dosyasına göz atabilirsiniz.
 
-**Açık üretim borçları:** FAISS binary indeks build çalıştırma (1M node, ~2-4h CPU), SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke test. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
+**Açık üretim borçları:** FAISS binary indeksinin doğrulanabilir build’i, SFT/DPO eğitimi ve pretrained `.pth` üretimi, Docker air-gap smoke testi, klinik doğrulama ve bağımsız güvenlik/uyum denetimi. Detaylar: [`roadmap/08_TEKNIK_BORC_ENVANTERI.md`](./roadmap/08_TEKNIK_BORC_ENVANTERI.md)
+
+**Kanıt kaydı:** Güncel sürümlü hash envanteri [`evidence/v16.6-phase0-20260804/manifest.json`](./evidence/v16.6-phase0-20260804/manifest.json) altında oluşturuldu. `npm run verify:fast` bu sürüm öncesinde 16/16 dar kapsamlı iddia kontrolünü geçti; yeni ölçüm veya izlenen girdi değiştiğinde `npm run evidence:create -- <release-tag>` ile yeni bir kanıt sürümü üretilmelidir.
+
+### İddia olgunluğu ve ürünleşme kapıları
+
+| Katman | Bugünkü durum | Üretim beyanı için eksik kapı |
+|:--|:--|:--|
+| Yerel çalışma / air-gap | İstemci dış LLM çağrısı yapmayacak şekilde tasarlandı; Docker yapılandırması mevcut | `--network none` konteyner testi, egress logu ve CI’da zorunlu kapı |
+| Arama ve performans | HoloDB/FAISS kodu ve repo içi benchmark raporları mevcut | Sabit veri sürümü, donanım profili, warm/cold ayrımı ve bağımsız tekrar |
+| LLM kalitesi | Composer fallback mevcut; pretrained ağırlık ve eğitim çıktıları açık borç | Sürümlemeli ağırlık, hold-out set, hata analizi ve regresyon eşiği |
+| Tıbbi özellikler | Telemetri, sinyal ve görüntü ön-analizi prototipleri mevcut | Klinik veriyle etik onaylı validasyon, risk yönetimi, insan denetimi ve düzenleyici süreç |
+| Uyum ve güvenlik | Kontrol-eşleme ve denetim raporu üretiliyor | Dış denetim, tehdit modeli, penetrasyon testi ve veri işleme envanteri |
+
+**Önerilen geliştirme sırası:** (1) her benchmark’a commit SHA, donanım ve veri-seti manifesti ekleyin; (2) CI’da `build → lint → test → air-gap smoke → claim doğrulama` kapılarını zorunlu yapın; (3) klinik ve uyum ifadelerini doğrulanmış kanıt oluşana dek “araştırma/prototip” olarak koruyun; (4) performans, güvenlik ve kalite iddialarını tek bir sürümlü `evidence/` dizininden yayınlayın.
 
 ## 📑 İçindekiler
 
@@ -130,21 +147,21 @@ Kurumsal ortamlarda büyük bulut yapay zekası modellerini (GPT-4, Claude 3.5) 
 
 OmniEngine bu paradigmayı köklünden yıkmak için tasarlandı. Buluta tek byte göndermeden, **mmap tabanlı sembolik bir bilgi grafını** PyTorch tabanlı yerel bir dil modeliyle birleştiren hibrit bir mimari:
 
-| Özellik | Bulut YZ / API | OmniEngine v15.8 |
+| Özellik | Bulut YZ / API | OmniEngine v16.6 prototipi |
 |:---|:---:|:---:|
-| Veri nereye gider? | ❌ Dış sunuculara | ✅ Hiçbir yere (Air-Gap) |
-| Halüsinasyon riski | ❌ Yüksek | ✅ Deterministik filtreli (5/5 adversarial bloke) |
-| İnternet bağımlılığı | ❌ Zorunlu | ✅ Tamamen offline (Audit onaylı: 0 dış bağlantı) |
-| Retrieval QPS (HoloDB+Symbolic) | ❌ 1–5 QPS | ✅ **8,978 QPS** (p99=17ms) ¹ |
-| Tam LLM Composer QPS | ❌ 1–5 QPS | ✅ **167 QPS** (p99=1175ms) ² |
-| HoloDB Düğüm | ❌ — | ✅ **1.000.000+ Düğüm** (v5.0) |
-| Model Parametresi | ❌ Kapalı | ✅ **14.8B MoE / 3.2B Aktif** |
-| Başlangıç süresi | ❌ API bağlantısı | ✅ **< 0.1 ms** (mmap preload) |
-| RAM kullanımı | ❌ Sunucu tarafı | ✅ **~35 MB** retrieval + **167 MB** model |
+| Veri nereye gider? | Sağlayıcı ve sözleşmeye bağlı | Yerel çalışma yolu mevcut; konteyner/egress testiyle doğrulanmalı |
+| Halüsinasyon riski | Modele ve guardrail’lere bağlı | Kural/quality gate mevcut; sıfır-risk iddiası yok |
+| İnternet bağımlılığı | Sağlayıcıya bağlı | Dış LLM çağrısı kaldırıldı; tüm bileşenler için air-gap testi bekliyor |
+| Retrieval QPS (HoloDB+Symbolic) | Değişken | Repo içi ölçüm: **8,978 QPS**; ortam ve tekrar bilgisi eksik ¹ |
+| Tam LLM Composer QPS | Değişken | Repo içi ölçüm: **167 QPS**; pretrained ağırlık borcu açık ² |
+| HoloDB düğümü | — | 1.000.000+ düğüm hedefi/oluşturucu kodu mevcut; artefakt doğrulaması gerekir |
+| Model parametresi | Sağlayıcıya bağlı | Mimari hedef: 14.8B MoE / 3.2B aktif; sürümlü ağırlık yayımlanmalı |
+| Başlangıç süresi | Ağ ve sağlayıcıya bağlı | mmap yolunun ölçümü repo içi; cold-start profili yayımlanmalı |
+| RAM kullanımı | Sağlayıcıya bağlı | Retrieval/model ölçümleri çalışma ortamına göre tekrar üretilmeli |
 | Özelleştirme | ❌ API parametreleri | ✅ Domain-specific LoRA / MoE |
 
-> ¹ **Pipeline A** (HoloDB+Symbolic+QualityGate, LLM çalıştırılmadan): `audit_stress.json` gerçek yük testi, 100 eşzamanlı bağlantı, 15 sn.  
-> ² **Pipeline B** (Tam Composer LLM inference): `audit_stress.json`, aynı koşullar. Pretrained ağırlık dosyası yokken `inference.py` fallback iskelet model devreye girer.
+> ¹ **Pipeline A** (HoloDB+Symbolic+QualityGate, LLM çalıştırılmadan): `audit_stress.json` repo içi yük denemesi, 100 eşzamanlı bağlantı, 15 sn.  
+> ² **Pipeline B** (Tam Composer LLM inference): aynı rapordaki repo içi deneme. Pretrained ağırlık dosyası yokken `inference.py` fallback iskelet model devreye girer.
 
 ---
 
@@ -1565,4 +1582,3 @@ v15.8 sürümü ile OmniEngine, bilgi grafı ölçeğini **1.000.000+ (1 Milyon)
 *Son güncelleme: 23 Temmuz 2026*
 
 </div>
-
