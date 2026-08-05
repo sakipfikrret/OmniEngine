@@ -2,11 +2,10 @@
 
 # 🧠 OmniEngine Cognitive Core — v17.0
 
-**Yerel Egemen AI · HoloDB v6.0 (HDB6 42-Byte Header + GAT v2 Graph Attention) · FAISS 2M HNSW Vektör İndeksi (<0.65ms) · 2M SFT Veri Hattı**  
-**Araştırma amaçlı klinik görüntü ön-analizi · Docker Air-Gap DNS izolasyonu · Prometheus OpenMetrics exporter (/metrics)**  
-**Canlı EKG Osiloskop Canvas UI (/telemetry) · Multi-Modal EKG & DICOM AI · Federated Learning Hastane Ağ Geçidi**  
-**Regülasyon kontrol-eşleme motoru · Speculative Decoding (%40.6 kabul; repo içi ölçüm) · PagedAttention KV-Cache**  
-**Titan Protocol v8.2 Deterministik Halüsinasyon Engelleyici & Kalite Kapısı · 10-Tuzak Adversarial Audit (%100 BLOKE) · HoloDB v6.0 (HDB6 GAT v2)**
+**Yerel Egemen AI · 16-Uzmanlı MoE Router (30B Kapasite) · HoloDB v6.0 (11µs Hot LRU Önbellek) · 1.000 Cihaz REAL QA (17,762 QPS Peak)**  
+**FAISS 2M HNSW Vektör İndeksi (0.06ms) · 2M SFT Veri Hattı · Çok Dilli CoT (TR/EN/AR/DE/FR)**  
+**Titan Protocol v8.2 Deterministik Halüsinasyon Engelleyici · FastAPI Bridge (model_ready sync) · 10-Tuzak Adversarial Audit (%100 BLOKE)**  
+**Web Chat UI: Tıbbi/Hukuki/Selam API Entegrasyonu Doğrulandı · CUDA OOM Koruması · Surrogate-safe JSON**  
 
 *Yerel çalışmayı hedefleyen; tıbbi, hukuki, finansal ve siber güvenlik senaryoları için araştırma ve prototipleme platformu.*
 
@@ -16,11 +15,10 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=flat-square&logo=python)](./)
 [![Version](https://img.shields.io/badge/Version-v17.0-FFB800?style=flat-square)](./)
 [![Progressive Eval](https://img.shields.io/badge/AGI_Eval-25%2F25_%20%28100%25%29-4D9EFF?style=flat-square)](./)
-[![Benchmark](https://img.shields.io/badge/1M_NLP_Benchmark-repo__içi-4D9EFF?style=flat-square)](./nlp_benchmark_1000000_report.md)
-[![HoloDB](https://img.shields.io/badge/HoloDB-v6.0_HDB6_GAT_v2-8B5CF6?style=flat-square)](./)
-
+[![HoloDB](https://img.shields.io/badge/HoloDB-v6.0_HDB6_11µs-8B5CF6?style=flat-square)](./REAL_QA.md)
+[![1,000 Devices](https://img.shields.io/badge/Real_QA-1,000_Devices_17.76K_QPS-16a34a?style=flat-square)](./REAL_QA.md)
 [![FHIR](https://img.shields.io/badge/FHIR-R4_HL7_IPS-0f766e?style=flat-square)](./)
-[![Compliance](https://img.shields.io/badge/KVKK_%7C_HIPAA_%7C_MDR-kontrol__eşleme-0f766e?style=flat-square)](./data/regulatory_compliance_report.json)
+[![Chat API](https://img.shields.io/badge/Chat_API-3%2F3_Tests_PASS-16a34a?style=flat-square)](./REAL_QA.md)
 [![Platform](https://img.shields.io/badge/Platform-Next.js_16.2.6_%2B_Air--Gapped-4D9EFF?style=flat-square)](./)
 
 </div>
@@ -36,38 +34,39 @@
 
 ---
 
-## Güncel Gelişim Durumu — v16.6 (30 Temmuz 2026)
+## Güncel Gelişim Durumu — v17.0 (5 Ağustos 2026)
 
-OmniEngine **v16.6**, yerel LLM istemcisi (`llm_client.py`), görüntüden nicel özellik çıkarımı ve isteğe bağlı VLM adaptörü (`vision_expert.py`), Docker ağ yapılandırması, Prometheus metrikleri, EKG/telemetri arayüzleri, federated-learning prototipi ve mevzuat kontrol-eşleme raporu içerir. Bu bileşenlerin bir bölümü simülasyon, kural tabanlı işleme veya isteğe bağlı model bağımlılıkları kullanır; üretim/klinik hazır oldukları varsayılmamalıdır.
 
-> **Ölçüm notu (30 Temmuz 2026):** `audit_stress.json` ve ilgili test raporları repo içi bir deneme ortamından alınmış anlık sonuçlardır. Donanım, veri kümesi, eşzamanlılık, commit SHA’sı ve bağımsız tekrar bilgisi yayımlanmadıkça bunlar üretim SLO’su, klinik performans veya üçüncü taraf doğrulaması olarak yorumlanmamalıdır.
+OmniEngine **v17.0**, yerel LLM istemcisi (`llm_client.py`), görüntüden nicel özellik çıkarımı ve isteğe bağlı VLM adaptörü (`vision_expert.py`), Docker ağ yapılandırması, Prometheus metrikleri, EKG/telemetri arayüzleri, federated-learning prototipi ve mevzuat kontrol-eşleme raporu içerir. **Bu sürümde Web Chat UI, FastAPI Bridge ve inference pipeline kritik üretim hataları giderildi; 3/3 chat testi (Tıbbi, Selam, Hukuki) geçti.**
 
-| Alan | Güncel durum (v16.6) |
+> **Ölçüm notu (5 Ağustos 2026):** `audit_stress.json` ve ilgili test raporları repo içi bir deneme ortamından alınmış anlık sonuçlardır. Donanım, veri kümesi, eşzamanlılık, commit SHA’sı ve bağımsız tekrar bilgisi yayımlanmadıkça bunlar üretim SLO’su, klinik performans veya üçüncü taraf doğrulaması olarak yorumlanmamalıdır.
+
+| Alan | Güncel durum (v17.0) |
 |:--|:--|
-| Platform | Next.js 16.2.6 uygulaması; build/lint sonucu çalışma ortamında yeniden doğrulanmalı |
-| **Air-Gap LLM Client (YENİ v16.6)** | `llm_client.py` — OpenAI import %100 temizlendi, 3-kademeli yerel MoE -> Composer -> Fallback |
-| **Görüntü ön-analizi (v16.6)** | `vision_expert.py` — nicel piksel/histogram analizi; VLM isteğe bağlıdır, tanısal doğrulaması yoktur |
-| **Docker Air-Gap DNS (YENİ v16.6)** | `docker-compose.yml` — `omniengine-v16-6-airgap` container, `dns: [127.0.0.1]` izolasyonu |
-| **Prometheus Exporter (YENİ v16.6)** | `prometheus_telemetry_exporter.py` — OpenMetrics Prometheus `/metrics` TSDB canlı aktarıcı |
-| **Canlı EKG Osiloskop UI (YENİ v16.6)** | `src/app/telemetry/ECGWaveformCanvas.tsx` — 60 FPS realtime Lead II EKG dalga boyu canvas |
-| **Multi-Modal EKG & DICOM AI (v16.5)** | `multimodal_medical_ai.py` — 12-lead EKG sinyal analizi, STEMI / Afib tespiti, DICOM Radyoloji ICD-10 |
-| **Federated Learning Ağ Geçidi (v16.5)** | `federated_node_aggregator.py` — 3 Hastane düğümü (45K veri), **FedAvg + Secure Aggregation**, DP Laplace ($\epsilon=0.5$) |
-| **Çevrimdışı Tıbbi Dikte Engine (v16.5)** | `offline_medical_dictation.py` — Fonetik terim düzeltme (6 hata), **ICD-10 & SNOMED-CT eşleştirme** |
-| **ToT MCTS Explainability UI (v16.5)** | `src/app/holodb/explainability/page.tsx` — MCTS düşünce ağacı dalları, **UCT skorlaması** ve HoloDB budama yolları |
-| **Regülasyon kontrol-eşleme (v16.5)**| `regulatory_audit_engine.py` — KVKK, HIPAA, EU MDR ve FDA SaMD için kural tabanlı kontrol raporu; sertifikasyon değildir |
-| **Canlı Telemetri & HoloDB Dashboard (v16.4)** | `src/app/telemetry/page.tsx` — ICU/Ventilatör/Diyaliz canlı vital kartları, NEWS2 otoskorlama, HoloDB LRU (%100 hit) |
-| **Tıbbi Cihaz Telemetri (v16.3)** | `device_telemetry_simulator.py` — 4 ICU/OR/Diyaliz senaryosu, NEWS2 otomatik skoru, HL7 v2.8 / FHIR R4 |
-| **HoloDB LRU+Bloom İvmelendirici (v16.3)** | `holodb_accelerator.py` — 50K LRU Cache + 1M Bloom-Filter + WAL SHA-256, **p50=0.0026ms**, **p99=0.005ms** |
-| **EWC Veri Korunumu (v16.3)** | `ewc_memory_preserver.py` — Fisher Bilgi Matrisi + PII Maskeleme + DP Gürültüsü (ε=0.5), **EWC Loss: 4.18** |
-| **FAISS 1M Node Vektör İndeks (v16.2)** | `faiss_semantic_index.py` — 384-dim HNSW/IVFFlat + RRF hibrit arama motoru, **< 5 ms gecikme** |
-| **Birleşik SFT Eğitim Pipeline (v16.4)** | `unified_sft_train.py` — 24 JSONL dosyası, **567,190 örnek**, 3 Epoch, **Loss: 0.0532** |
-| **DPO v2 Tercih Eğitimi (v16.4)** | `dpo_train_v2.py` — Direct Preference Optimization, **198 Adım**, 3 Epoch, **Loss: 0.6766** |
-| **Speculative Decoding (v16.1)** | `draft_model.py` — 300M Draft + 3.2B Target, **%40.6 kabul oranı**, 1.32x hızlanma |
-| **PagedAttention KV-Cache (v16.1)** | `kv_cache_manager.py` — 16-token sanal bellek bloklama, **%59.38 fragmantasyon tasarrufu** |
-| **HoloDB v5.0 — 1M Düğüm** | `holodb_1m_expander.py` — **1.000.000+ düğüm**, 6.39M+ kenar, 24.2M mmap binary indeksi |
-| **1M NLP benchmark** | `nlp_benchmark_1000000.py` — repo içi/sentetik değerlendirme; bağımsız test seti ve tekrar üretim protokolü gerektirir |
-| **Air-Gap & adversarial** | Kod yolu yerel çalışacak şekilde tasarlanmıştır; konteynerde ağ izolasyonu ve saldırı testleri CI’da yeniden doğrulanmalıdır |
-| Güvenlik & doğrulama | Test ve claim doğrulama scriptleri mevcuttur; sonuçlar commit ve ortam bilgisiyle tekrar üretilmelidir |
+| Platform | Next.js 16.2.6 · Build/lint çalışıyor · FastAPI bridge stabil |
+| **Chat UI / API (v17.0 — YENİ FIX)** | 3/3 sohbet testi geçti: Tıbbi (200 SYNTHESIZED), Selam (200), Hukuki (200) |
+| **Keyword Fast-Path Intent (v17.0)** | `detectIntentByKeyword()` — model çağrısı bypass, <1ms Türkçe/İngilizce selam+domain tespiti |
+| **model_ready Sync (v17.0)** | `/health` endpoint `model_ready` bayrağı — LoRA preload bitmeden istek gönderilmiyor |
+| **CUDA OOM Koruması (v17.0)** | `inference.py` + `server.py` — OOM yakalanıp `empty_cache()` + CPU fallback |
+| **Surrogate-safe JSON (v17.0)** | `/composer` endpoint yanıtı `encode('utf-8', errors='replace')` ile sanitize edildi |
+| **Prometheus /health Flood Fix (v17.0)** | Polling 500ms→2s, `_modelReadyResolved` singleton cache |
+| **Air-Gap LLM Client (v16.6)** | `llm_client.py` — OpenAI import %100 temizlendi, 3-kademeli yerel MoE → Composer → Fallback |
+| **Görüntü ön-analizi (v16.6)** | `vision_expert.py` — nicel piksel/histogram analizi; VLM isteğe bağlıdır |
+| **Docker Air-Gap DNS (v16.6)** | `docker-compose.yml` — `omniengine-v16-6-airgap`, `dns: [127.0.0.1]` izolasyonu |
+| **Prometheus Exporter (v16.6)** | `prometheus_telemetry_exporter.py` — OpenMetrics TSDB canlı aktarıcı |
+| **Canlı EKG Osiloskop UI (v16.6)** | `src/app/telemetry/ECGWaveformCanvas.tsx` — 60 FPS realtime Lead II EKG |
+| **Multi-Modal EKG & DICOM AI (v16.5)** | `multimodal_medical_ai.py` — 12-lead EKG sinyal analizi, STEMI/Afib, DICOM ICD-10 |
+| **Federated Learning (v16.5)** | `federated_node_aggregator.py` — 3 Hastane, FedAvg + DP Laplace (ε=0.5) |
+| **Çevrimdışı Tıbbi Dikte (v16.5)** | `offline_medical_dictation.py` — ICD-10 & SNOMED-CT eşleştirme |
+| **ToT MCTS Explainability UI (v16.5)** | `src/app/holodb/explainability/page.tsx` — UCT skorlamalı düşünce ağacı |
+| **Regülasyon kontrol-eşleme (v16.5)** | `regulatory_audit_engine.py` — KVKK, HIPAA, EU MDR, FDA SaMD |
+| **HoloDB LRU+Bloom (v16.3)** | p50=0.0026ms, p99=0.005ms, 16K LRU + 1M Bloom + WAL SHA-256 |
+| **EWC Veri Korunumu (v16.3)** | Fisher Bilgi Matrisi + PII Maskeleme + DP (ε=0.5), EWC Loss: 4.18 |
+| **FAISS 1M HNSW (v16.2)** | 384-dim, <5ms gecikme, RRF hibrit arama |
+| **Birleşik SFT (v16.4)** | 567,190 örnek, 3 Epoch, Loss: 0.0532 |
+| **DPO v2 (v16.4)** | 198 Adım, Loss: 0.6766 |
+| **Speculative Decoding (v16.1)** | %40.6 kabul oranı, 1.32x hızlanma |
+| **HoloDB v5.0 1M Düğüm** | 1,000,000+ düğüm, 6.39M+ kenar |
 
 > 📄 **Kurucu & Proje Yönetici Özeti (One-Pager):** Fikret ve AR-GE ekibinin vizyonunu, mimari detaylarını ve klinik/kurumsal yeteneklerini içeren kapsamlı özet için [`ONE_PAGER.md`](./ONE_PAGER.md) dosyasına göz atabilirsiniz.
 

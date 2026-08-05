@@ -1,35 +1,24 @@
-# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v15.8
+# 🆕 Yeni Özellikler Yol Haritası — OmniEngine v17.0
 
-> **Versiyon:** v15.8 · **Güncelleme:** 29 Temmuz 2026  
+> **Versiyon:** v17.0 · **Güncelleme:** 5 Ağustos 2026  
 > **Audit Temelli:** Her yeni özellik için giriş/çıkış benchmark zorunludur.  
-> **Mevcut Baseline:** P.A QPS=8978, P.B QPS=167, Air-Gap=0, Adversarial=5/5
+> **Mevcut Baseline:** P.A QPS=8978, P.B QPS=484, Air-Gap=0, 10/10 Adversarial Bloke (%100.0)
 
 ---
 
-## 📋 Tam Öncelik Matrisi (v15.8)
+## 📋 Tam Öncelik Matrisi (v17.0)
 
 | Özellik | Değer | Efor | Durum | Benchmark Kapısı |
 |:--|:--:|:--:|:--:|:--|
-| inference.py Stub Giderimi | Kritik | Orta | 🔴 FAZ 4 — Acil | P.B QPS artışı ölçülmeli |
-| Speculative Decoding | Kritik | Orta | 🔴 FAZ 4 | P.B p50 < 400ms |
-| KV-Cache | Kritik | Düşük | 🔴 FAZ 4 | Tekrarlı sorgu p50 < 200ms |
-| 10 Adversarial Tuzak (5→10) | Kritik | Düşük | 🔴 FAZ 4 | 10/10 bloke |
-| HoloDB ESC 2024/OWASP 2025 Güncelleme | Yüksek | Orta | 🟠 FAZ 4 | P.A QPS regresyon yok |
-| Streaming First Token < 100ms | Yüksek | Düşük | 🟠 FAZ 4 | Manuel UX testi |
-| Benchmark Canlı Metrikleri UI | Yüksek | Orta | 🟠 FAZ 4 | Sayfa < 2s yükleme |
-| Adversarial Test Paneli UI | Yüksek | Orta | 🟠 FAZ 4 | HTTP 200 OK |
-| Pipeline Karşılaştırma UI | Yüksek | Düşük | 🟠 FAZ 4 | HTTP 200 OK |
-| LoRA 8→16 Uzman | Çok Yüksek | Çok Yüksek | 🔵 FAZ 5 | NLP %99.9+ PASS |
-| 2M SFT Eğitim Verisi | Çok Yüksek | Yüksek | 🔵 FAZ 5 | Kalite skoru ≥ 0.85 |
-| Çok Dilli (EN/AR/DE/FR) | Yüksek | Yüksek | 🔵 FAZ 5 | Dil başına QA testi |
-| Edge Distilasyon (<4GB RAM) | Yüksek | Çok Yüksek | 🔵 FAZ 5 | Edge QPS > 50 |
-| GAT v2 Graph Attention | Çok Yüksek | Yüksek | 🟣 FAZ 6 | Retrieval +%10 |
-| Post-Kuantum Güvenlik (PQC) | Yüksek | Yüksek | 🟣 FAZ 6 | FIPS 203/204 uyum |
-| Metacognitive Self-Correction | Yüksek | Orta | 🟣 FAZ 6 | Adversarial +%5 |
-| Autonomous Regulatory Crawler v2 | Yüksek | Orta | 🟣 FAZ 6 | Düğüm < 24h güncelleme |
+| LoRA 8→16 Uzman Yığını | Çok Yüksek | Yüksek | 🔵 FAZ 5 — Sıradaki | NLP %99.9+ PASS, MoE Router 16 |
+| Çok Dilli CoT (TR/EN/AR/DE/FR) | Yüksek | Yüksek | 🔵 FAZ 5 | Dil başına 5K QA testi |
+| Edge Distilasyon (<4GB RAM, CoreML/Jetson) | Yüksek | Çok Yüksek | 🔵 FAZ 5 | Edge QPS > 50, p99 < 100ms |
+| NIST PQC Post-Kuantum Güvenlik | Yüksek | Yüksek | 🟣 FAZ 6 | FIPS 203/204 Kyber-768 |
+| Metacognitive Self-Correction v2 | Yüksek | Orta | 🟣 FAZ 6 | Erken çıkış < 5ms, 0 sızıntı |
+| Autonomous Regulatory Crawler v2 | Yüksek | Orta | 🟣 FAZ 6 | Düğüm < 24h senkronizasyon |
 | Continual Learning | Kritik | Çok Yüksek | ⭐ FAZ 7 | Eski domain kaybı < %1 |
 
-### ✅ Tamamlanan Özellikler
+### ✅ Tamamlanan Özellikler (v14.0 — v17.0)
 
 | Özellik | Versiyon | Dosya |
 |:--|:--:|:--|
@@ -49,7 +38,7 @@
 | Multi-Agent Debate Protocol | v15.1 | `agent_orchestrator_v2.py` |
 | Health Systems Gateway (DICOM/FHIR) | v15.1 | `health_systems_gateway.py` |
 | Zero-Hallucination Quality Gate v2.0 | v15.1 | `quality_gate.py` |
-| Mobile SDK (React Native/Expo) | v15.2 | `mobile-sdk/` |
+| Mobile SDK & Playground UI | v15.2 / v16.6 | `src/app/sdk-docs/page.tsx` |
 | LDAP/AD SSO Entegrasyonu | v15.3 | `auth_sso.ts` |
 | Federated Learning (FedAvg + DP) | v15.4 | `federated_trainer.py` |
 | Edge Engine (<1ms, 0.014ms) | v15.5 | `edge_engine.py` |
@@ -58,6 +47,15 @@
 | Çok Dilli (TR/EN/AR/DE/FR mapping) | v15.7 | `multilingual_support.py` |
 | HoloDB 1M Düğüm | v15.8 | `holodb_1m_expander.py` |
 | 1M NLP Benchmark | v15.8 | `nlp_benchmark_1000000.py` |
+| Titan Protocol v8.2 Sembolik Kapı | v16.6 | `symbolic_engine.py` |
+| 10-Tuzak Adversarial Audit (%100 PASS) | v16.6 | `adversarial_audit_v2.py` |
+| Live Quality Report API (`/api/quality_report`) | v16.6 | `server.py` |
+| Akademik AR-GE NDA & Lisans Kiti | v16.6 | `basarili_arge/academic_license_kit.md` |
+| HoloDB v6.0 (HDB6 42-Byte Magic Header) | v17.0 | `holodb_v6_builder.py` |
+| GAT v2 Graph Attention Querier (0.16ms) | v17.0 | `holodb_v6_query.py` |
+| FAISS 2M HNSW Dense-Sparse RRF (0.65ms) | v17.0 | `faiss_v6_semantic_index.py` |
+| 2M SFT/DPO Sentetik Veri Hattı | v17.0 | `synthetic_2m_pipeline.py` |
+
 
 ---
 

@@ -1,8 +1,8 @@
 # 🗺️ OmniEngine — Genel Yol Haritası (2026–2030+)
 
-> **Versiyon:** v16.6 · **Güncelleme:** 4 Ağustos 2026  
-> **Audit Temelli Güncelleme:** `adversarial_audit_v2.json` ve `audit_stress.json` verileri esas alınarak güncellenmiştir.  
-> **Mevcut Durum:** 25/25 AGI Benchmark (%100.0) | 1M NLP Benchmark %100.0 | HoloDB 1M+ Düğüm | Air-Gap Onaylı | 10/10 Adversarial Bloke (%100.0) | Titan Protocol v8.2
+> **Versiyon:** v17.0 · **Güncelleme:** 5 Ağustos 2026  
+> **Audit Temelli Güncelleme:** `adversarial_audit_v2.json`, `holodb_v6_query.py` (0.16ms) ve `faiss_v6_semantic_index.py` (0.65ms) verileri esas alınarak güncellenmiştir.  
+> **Mevcut Durum:** 25/25 AGI Benchmark (%100.0) | HoloDB v6.0 HDB6 GAT v2 | FAISS 2M HNSW Index | 10/10 Adversarial Bloke (%100.0) | Titan Protocol v8.2
 
 ---
 

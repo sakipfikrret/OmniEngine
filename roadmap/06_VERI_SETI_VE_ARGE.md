@@ -25,6 +25,37 @@
 
 ---
 
+## 🚀 HoloDB v6.0 Performans Optimizasyon Stratejileri (Sub-Millisecond & 25K+ QPS)
+
+HoloDB v6.0'ın mmap arama gecikmesini **0.16 ms'den 0.012 ms'ye (12 mikrosaniye)** düşürmek ve throughput'u **25,000+ QPS** seviyesine çıkarmak için tanımlanan 6 teknik optimizasyon mimarisi:
+
+1. **⚡ LZ4 / ZSTD Ultra-Hızlı Sıkıştırma Değişimi (`lz4_decompress`):**
+   - Varsayılan Python `zlib` (level 6) sıkıştırmasını `lz4` veya `zstd` (level 1) ile değiştirme.
+   - **Etki:** Metin açma hızı 300 MB/s ➔ **3,000 MB/s (10x Hızlanma)**.
+
+2. **🧠 LRU Memory Block Cache & Sıfır-Kopyalama (Zero-Copy) Unpack (`@lru_cache`):**
+   - Sık sorgulanan "sıcak" (hot) düğümlerin HDB6 header ve metin verilerini 16,384 girdili RAM LRU önbelleğinde saklama.
+   - **Etki:** Sıcak düğümlerde disk/mmap I/O kaldırılır, gecikme **0.012 ms (12 mikrosaniye)** seviyesine iner.
+
+3. **🏎️ SIMD / C-Extension Hızlı FNV-1a Hash ve Bitwise İndeksleyici (`holodb_c_accelerator.c`):**
+   - Python bayt döngüsü yerine C/Cython veya Numba JIT ile FNV-1a 64-bit hash alma ve bitwise maskeleme.
+   - **Etki:** 10.000 kelimelik metin hashleme nano-saniyelere iner.
+
+4. **📐 Kuantize Int8 Dense Vektör Gömüleri (SQ8 / PQ Int8):**
+   - HDB6 header içerisindeki 384/768-dim float32 vektörleri Int8 kuantizasyona (Scalar Quantization SQ8) tabi tutma.
+   - **Etki:** Vektör alan boyutu %75 küçülür (1,536 B ➔ 384 B), AVX-512 / NEON SIMD iç çarpım hızlanır.
+
+5. **🔀 Multi-Threaded Asenkron Paralel Sorgulama (`ThreadPoolExecutor` Batching):**
+   - 64 paralel worker thread ile toplu kurumsal RAG sorgularını mmap üzerinde paralel tarama.
+   - **Etki:** Retrieval throughput **8,978 QPS ➔ 25,000+ QPS** seviyesine çıkar.
+
+6. **🌺 Bloom Filter Erken Eleme Bitmaskı (`bloom_64`):**
+   - HDB6 header'a 64-bit Bloom Filter bitmask ekleme. Sorgulanan kelimenin düğümde **KESİNLİKLE BULUNMADIĞI** 1 CPU komutunda tespit edilip title/text okunmadan düğüm atlanır.
+   - **Etki:** Yanlış aramalarda gereksiz mmap ofset okuması %90 engellenir.
+
+
+---
+
 ## ⚠️ Veri Ekleme Protokolü (Zorunlu)
 
 > Her yeni veri kaynağı eklendiğinde aşağıdaki adımlar sırayla çalıştırılır.

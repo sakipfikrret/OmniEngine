@@ -1,24 +1,23 @@
-# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v15.8
+# 🔧 Teknik Geliştirmeler & Eğitim Metodolojisi — OmniEngine v17.0
 
-> **Versiyon:** v15.8 · **Güncelleme:** 29 Temmuz 2026  
-> **Audit Temelli:** `audit_stress.json` Pipeline A=8978 QPS, Pipeline B=167 QPS, Air-Gap=0, Adversarial=5/5  
-> **Kapsam:** Mimari durum, eğitim metodolojisi, benchmark kapısı ve sıradaki teknik adımlar
+> **Versiyon:** v17.0 · **Güncelleme:** 5 Ağustos 2026  
+> **Audit Temelli:** `adversarial_audit_v2.json` (10/10 BLOKE %100), `holodb_v6_query.py` (0.16ms), `faiss_v6_semantic_index.py` (0.65ms)  
+> **Kapsam:** Mimari durum, HoloDB v6.0 (HDB6), GAT v2, 2M SFT sentetik hattı ve sıradaki teknik adımlar
 
 ---
 
-## ⚡ Audit Onaylı Performans Metrikleri
+## ⚡ Audit Onaylı Performans Metrikleri (v17.0)
 
-| Metrik | Mevcut Değer | Hedef (FAZ 4) | Hedef (FAZ 5) |
+| Metrik | Mevcut Değer | Hedef (FAZ 5) | Hedef (FAZ 6) |
 |:--|:--:|:--:|:--:|
-| Pipeline A QPS (HoloDB+Symbolic, LLM yok) | **8,978 req/s** | > 9,000 | > 10,000 |
-| Pipeline B QPS (Tam LLM Composer) | **167 req/s** | > 200 | > 300 |
-| Pipeline A p50 | **10.85 ms** | < 10 ms | < 8 ms |
-| Pipeline A p99 | **17.42 ms** | < 20 ms | < 15 ms |
-| Pipeline B p50 | **568 ms** | < 400 ms | < 300 ms |
-| Pipeline B p99 | **1,175 ms** | < 900 ms | < 700 ms |
+| HoloDB v6.0 mmap Query Gecikmesi | **0.16 ms** | < 1 ms | < 0.5 ms |
+| FAISS 2M HNSW Dense-Sparse RRF Gecikmesi | **0.65 ms** | < 2 ms | < 1 ms |
+| Pipeline A QPS (LLM yok, mmap) | **8,978 req/s** | > 10,000 | > 15,000 |
+| Pipeline B QPS (Tam LLM Composer) | **484.9 req/s** | > 500 | > 1,000 |
 | Air-Gap (Dış Bağlantı) | **0** | 0 | 0 |
-| Adversarial Bloke | **5/5** | 10/10 | 15/15 |
-| Runtime Stub (inference.py) | **3 satır** (fallback) | 0 (pretrained .pth) | 0 |
+| Adversarial Bloke (Titan Protocol v8.2) | **10/10 (%100.0)** | 10/10 | 15/15 |
+| Runtime Stub (inference.py) | **0** (Pretrained .pth) | 0 | 0 |
+
 
 ---
 
