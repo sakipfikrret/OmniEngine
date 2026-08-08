@@ -559,7 +559,7 @@ Bilişsel motorun Whitepaper formülasyonları doğrudan aşağıdaki kaynak kod
 | Bilişsel Modül / İşlev | İlgili Kaynak Kod Dosyası | Başarılı AR-GE & Test Referansı |
 |:--|:--|:--|
 | **MoE 16-Uzman Yönlendirici** | [expert_router.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/expert_router.py) | [proje_arge_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/basarili_arge/proje_arge_raporu.md) |
-| **Deterministik Kural Motoru** | [symbolic_engine.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/symbolic_engine.py) | [gelişim aşaması.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/geli%C5%9Fim%20a%C5%9Famasc%C4%B1.md) |
+| **Deterministik Kural Motoru** | [symbolic_engine.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/symbolic_engine.py) | [proje_arge_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/basarili_arge/proje_arge_raporu.md) |
 | **HoloDB v6.0 mmap Engine & GAT v2** | [retriever.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/retriever.py) · [holo_db_injector.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/holo_db_injector.py) | [proje_arge_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/basarili_arge/proje_arge_raporu.md) |
 | **Titan Protocol v8.2 Kalite Kapısı** | [quality_gate.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/quality_gate.py) · [composer_verifier.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/composer_verifier.py) | [test_sonuclari.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/test_sonuclari.md) |
 | **Bayesyen Klinik Tanı Engine** | [bayesian_diagnostic_engine.py](file:///c:/Users/fikre/Desktop/OmniGPT/src/python/bayesian_diagnostic_engine.py) | [proje_arge_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/basarili_arge/proje_arge_raporu.md) |

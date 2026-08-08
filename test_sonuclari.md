@@ -18,7 +18,6 @@ Projeye ait tüm uzmanlık ve regülasyon denetim raporları aşağıdaki alt be
 | [penetrasyon_ve_guvenlik_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/penetrasyon_ve_guvenlik_raporu.md) | OWASP Top 10, Jailbreak Audit & PII Sanitizer | 10/10 Bloke (%100) | ✅ VERIFIED |
 | [regulasyon_ve_uyumluluk_raporu.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/regulasyon_ve_uyumluluk_raporu.md) | KVKK, GDPR, FDA SaMD IIa, EU MDR, HIPAA | 4/4 Standart Compliant | ✅ VERIFIED |
 | [airgap_bundle_manifestosu.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/airgap_bundle_manifestosu.md) | Air-Gap Bundle, SHA-256 Checksums & SFT Dataset | 9/9 Hash PASS | ✅ VERIFIED |
-| [gelişim aşaması.md](file:///c:/Users/fikre/Desktop/OmniGPT/belgeler/geli%C5%9Fim%20a%C5%9Famasc%C4%B1.md) | Faz 1.0 - Faz 7.0 Tarihsel Evrim Belgesi | Faz 7.0 Ready | ✅ VERIFIED |
 
 ---
 
