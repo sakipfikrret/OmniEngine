@@ -40,7 +40,6 @@
 
 | Belge Adı | Açıklama | Sürüm / Durum |
 |:--|:--|:--|
-| 🤝 [CHATGPT_PROJE_INCELEME_NOTU.md](CHATGPT_PROJE_INCELEME_NOTU.md) | **Web ChatGPT ile proje değerlendirme bağlamı** — mimari özet, kanıt seviyesi, güvenli paylaşım sınırı ve istem şablonu | ✅ Paylaşıma hazır |
 | 🧪 [genel_test_suiti/GENEL_TEST_SUITI.md](genel_test_suiti/GENEL_TEST_SUITI.md) | **Genel Test Süiti** — 11 Ağustos çalıştırması: FAZ 8 39/39, iddia 16/16, yanıt kalitesi 6/6, adversarial 10/10 ve stres 4/4 | ✅ Dahili çalışma |
 | 🔬 [WHITEPAPER.md](WHITEPAPER.md) | **Master Technical Whitepaper v18.0** — Mimari formüller, kanıtlar ve sınırlamalar | ✅ v18.0 |
 | 📊 [test_sonuclari.md](test_sonuclari.md) | **Dahili Test & Benchmark Portalı** — 17,762 QPS yük testi, 24 FAZ 8 kontrolü ve 16 iddia doğrulaması | ✅ Dahili sonuçlar |
