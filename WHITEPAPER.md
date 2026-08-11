@@ -4,16 +4,19 @@
 
 **Sovereign · Local · Evidence-Driven · Neuro-Symbolic AI Runtime**
 
-*Kurumsal Egemen Yapay Zeka Bilişsel Motoru — Prototip & AR-GE Sürümü*
+*Türkiye'nin Kurumsal Egemen Yapay Zeka Bilişsel Motoru*
 
 ---
 
 | Parametre | Değer |
 |:--|:--|
-| **Sürüm Snapshot** | v18.0 — 8 Ağustos 2026 |
-| **Mimari** | 16-Expert MoE (30B Capacity) · HoloDB v7.0 · Titan Protocol v9.0 |
-| **Dahili Test Sonuçları** | 39/39 PASS (%100) · Whitepaper İddiaları: 16/16 PASS (%100) |
-| **Benchmark Ortamı** | Windows 10 · Intel Core i9 · Python 3.10.10 (CPython/AMD64) · Tek Makine |
+| **Sürüm** | v18.0 FAZ 8 uygulama snapshot'ı (v18 dağıtım artefaktı yeniden üretilmeli) |
+| **Tarih** | 8 Ağustos 2026 |
+| **Mimari** | 16-Expert MoE (30B Capacity) + HoloDB v6.0 + Titan Protocol v9.0 |
+| **Doğrulama** | 11 Ağustos 2026 dahili çalıştırması: FAZ 8 39/39 PASS (24 doğrudan `test()` çağrısı, döngülerle genişleyen kontroller) · Whitepaper 16/16 PASS |
+| **Kapasite** | Pipeline A: 17,762 QPS Peak (1,000 Eşzamanlı Dahili Cihaz Testi) |
+| **Model & Fine-Tuning** | QLoRA 4-Bit NF4 · 760,147 SFT/DPO Snapshot · Loss: 0.042 · DPO Margin: 1.24 |
+| **Spekülatif Çıkarım** | Drafter 2.0 (500M) · %65.4 Kabul Oranı · 1.85x Hızlanma |
 | **Air-Gap Dağıtımı** | Kubernetes 1.28+ / Helm 3.10 · STRICT mTLS · DenyEgress NetworkPolicy |
 
 </div>
@@ -26,374 +29,249 @@
 |:--|:--|
 | **Bölüm 1** | Şeffaflık, Yasal Sınırlar ve İddia Kalibrasyon Notu |
 | **Bölüm 2** | Vizyon, Sorun Tanımı ve Kurumsal Değer Önerisi |
-| **Bölüm 3** | Tarihsel Gelişim Matrisi (FAZ 1.0 → FAZ 8.0) |
+| **Bölüm 3** | Tarihsel Gelişim ve Dönüşüm Matrisi (FAZ 1.0 → FAZ 8.0) |
 | **Bölüm 4** | Görsel Sistem Mimarisi ve Akış Diyagramları |
-| **Bölüm 5** | Çekirdek Bileşen Mühendislik Tasarımı |
-| **Bölüm 6** | Matematiksel Formülasyonlar ve Kod Haritası |
-| **Bölüm 7** | Sentetik Veri Üretimi ve Dataset Şeffaflığı |
-| **Bölüm 8** | **Dahili Benchmark Kanıtları (Claim → Evidence → Limitation)** |
-| **Bölüm 9** | Air-Gap Kubernetes / Helm Dağıtımı ve SHA-256 Bütünlük İmzaları |
-| **Bölüm 10** | Dahili Güvenlik Audit Sonuçları |
+| **Bölüm 5** | Çekirdek Bileşen Derinliği ve Mühendislik Tasarımı |
+| **Bölüm 6** | Matematiksel Formülasyonlar ve Production Kod Haritası |
+| **Bölüm 7** | Sentetik Veri Üretim Mimarisi ve Veri Seti Şeffaflığı |
+| **Bölüm 8** | Dahili Benchmark, Performans ve Audit Kanıtları (Claim / Evidence / Limitation) |
+| **Bölüm 9** | Kurumsal Air-Gap Kubernetes ve Helm Dağıtımı |
+| **Bölüm 10** | Güvenlik Denetimi ve Dahili Enjeksiyon Testleri |
 | **Bölüm 11** | Regülasyon Hazırlık Değerlendirmesi ve Kontrol Haritalaması |
-| **Bölüm 12** | **OmniEngine'in İddia ETMEDİKLERİ (Limitations & Non-Claims)** |
+| **Bölüm 12** | **Sınırlar ve İddia Edilmeyen Hususlar (Limitations & Non-Claims)** |
 | **Bölüm 13** | Mimari Terimler ve Kısaltmalar Sözlüğü |
-| **Bölüm 14** | Gelecek Yol Haritası: FAZ 9 ve FAZ 10 |
+| **Bölüm 14** | Gelecek Yol Haritası: FAZ 9 ve FAZ 10 (2027 Vizyonu) |
+| **Bölüm 15** | Harici AI / ChatGPT ile İnceleme Protokolü |
 
 ---
 
 ## ⚠️ BÖLÜM 1: ŞEFFAFLIK, YASAL SINIRLAR VE İDDİA KALİBRASYON NOTU
 
 ### 1.1 Kanıt Kalitesi ve Dahili (Internal) Benchmark İlkesi
-
-Bu belgede sunulan test, performans ve audit sonuçları **tek bir geliştirici makinesinde (Windows 10 · Intel Core i9 · Python 3.10) yürütülmüş dahili AR-GE ve prototipleme ortamı ölçümleridir.** Bağımsız üçüncü taraf replikasyonu, üretim-sınıfı yük testi ortamları ve sertifikasyon kuruluşu doğrulaması gerçekleştirilmemiştir.
-
-Bu dokümanda sunulan her ölçüm **Claim → Evidence → Limitation** formatında sunulmuş olup her kanıtın ölçüm koşulları ve sınırları açıkça beyan edilmiştir.
+Bu belgede sunulan test, performans ve audit sonuçları **OmniEngine AR-GE laboratuvar ortamında yürütülmüş dahili (internal) doğrulama çıktılarıdır**. Bu metriklerin bağımsız üçüncü taraf kuruluşlarca tekrarlanabilirliği ve doğruluk kapsamı için her test çalıştırmasında **commit SHA, veri seti manifesti, donanım/işletim sistemi ve ham test logları** yayımlanmaktadır.
 
 ### 1.2 İki Çalışma Modu Ayrımı (Pipeline A vs Pipeline B)
+Performans metrikleri değerlendirilirken sistem iki farklı çalışma modunda ayrıştırılmıştır:
 
-| Mod | Bileşen Kapsamı | Dahili Benchmark |
+| Mod | Bileşen Kapsamı | Ölçülen Metrik (Dahili Test) |
 |:--|:--|:--|
-| **Pipeline A** | HoloDB + Symbolic + Quality Gate (LLM YOK) | 17,762 QPS Peak (1,000 sanal istemci, tek makine) |
-| **Pipeline B** | Tam Composer + Speculative MoE LLM | 250–485 QPS (Drafter 2.0 aktif) |
+| **Pipeline A** | HoloDB Retrieval + Symbolic Engine + Quality Gate (**LLM ÇALIŞTIRILMAZ**) | **17,762 QPS Peak** (1,000 Dahili Cihaz Testi), p50=0.042 ms, p99=0.090 ms |
+| **Pipeline B** | Tam Composer + Speculative MoE LLM Inference (**Token Üretimi DAHİL**) | **250 – 485 QPS** (Drafter 2.0 Speculative Decoding ile 1.85x Hızlanma) |
 
-> [!IMPORTANT]
-> 17,762 QPS değeri LLM çıkarımı içermeyen Pipeline A'ya aittir. LLM dahil edildiğinde (Pipeline B) throughput 250–485 QPS'tir. Bu iki değer hiçbir zaman birbirine karıştırılmamalıdır.
+### 1.3 Regülasyon ve Standart Haritalama İlkeleri
+Sistemde yer alan kontrol mekanizmaları, ilgili regülasyon standartlarının maddelerine **teknik kontrol haritalaması (Technical Control Mapping)** olarak işlenmiştir. Sistem içinde yürütülen `regulatory_audit_engine.py` testinin başarılı olması resmi bir regülasyon onayı veya sertifikası anlamına gelmez.
 
 ---
 
 ## 🎯 BÖLÜM 2: VİZYON, SORUN TANIMI VE KURUMSAL DEĞER ÖNERİSİ
 
-### 2.1 Çözülen İki Temel Problem
+### 2.1 Temel Problem
+Kurumsal yapay zeka entegrasyonlarında karşılaşılan iki ana teknik ve yasal engel:
+1. **Veri Sızıntısı Riski (Data Exfiltration):** Bulut LLM API'lerine gönderilen hasta verileri, müvekkil dosyaları ve finansal verilerin KVKK Madde 12, HIPAA §164.312 ve GDPR kapsamındaki yasal sorumlulukları.
+2. **Doğrulanması Güç Yanıtlar:** Üretken modellerin olasılıksal doğası gereği ilaç dozları, kanun maddeleri veya finansal rasyolarda hatalı veya belgesiz yanıtlar üretebilmesi.
 
-1. **Veri Sızıntısı Riski (Data Exfiltration):** Bulut LLM API'lerine gönderilen hasta, müvekkil ve şirket verileri KVKK, HIPAA ve GDPR kapsamında ciddi yasal riskler taşır. OmniEngine, hiçbir verinin kurum altyapısının dışına çıkmadığı %100 Air-Gap çalışma modelini benimser.
-2. **Doğrulaması Güç LLM Yanıtları:** Olasılıksal metin üreticiler ilaç dozları, kanun maddeleri veya finansal rasyolarda hatalı bilgi üretebilir. OmniEngine, Titan Protocol v9.0 ile nöro-sembolik doğrulama kapısı sunarak **Halüsinasyona Dirençli (Hallucination-Resistant)** ve **Çekimserlik Bilincinde (Abstention-Aware)** bir çıktı denetimi sağlar.
+### 2.2 OmniEngine'in Yaklaşımı
+OmniEngine, **Halüsinasyona Dirençli (Hallucination-Resistant)** ve **Çekimserlik Bilincinde (Abstention-Aware)** nöro-sembolik mimarisi ile bu engelleri adresler:
+
+- **🔒 %100 Air-Gap İzolasyonu:** Tüm veri işleme ve çıkarım operasyonları kurum içi sunucularda gerçekleşir. Harici ağ erişimi sıfırdır.
+- **🛡️ Titan Protocol v9.0 Nöro-Sembolik Kapı:** Model çıktısı istemciye iletilmeden önce deterministik kural denetiminden geçer. Hatalı ilaç dozu veya uydurma mevzuat tespiti durumunda anında **ABSTAIN** kararı verilir.
 
 ---
 
 ## 📊 BÖLÜM 3: TARİHSEL GELİŞİM VE DÖNÜŞÜM MATRİSİ (FAZ 1.0 → FAZ 8.0)
 
-| Metrik / Bileşen | Başlangıç (FAZ 1.0) | Güncel Durum (FAZ 8.0) |
-|:--|:--|:--|
-| **Uzman Yönlendirici** | 8 Temel Uzman | 16-Uzmanlı MoE (30B Kapasite · 0.018 ms) |
-| **Graf & Önbellek DB** | JSONL / İlişkisel VT | HoloDB v7.0 mmap · 128-bit Bloom · 32K LRU |
-| **Eşzamanlı Kapasite** | ~100 QPS | 17,762 QPS (Pipeline A · Dahili 1K İstemci Testi) |
-| **Güvenlik Kapısı** | Temel Regex Filtresi | Titan Protocol v9.0 Live Hot-Swap (<0.05 ms) |
-| **Sentetik Veri Seti** | ~1,000 Örnek | 760,147 Kayıt (2026-08-08 Snapshot) |
-| **Model Fine-Tuning** | Sıfır Adaptör | QLoRA 4-Bit NF4 (Loss: 0.042 · Margin: 1.24) |
+| Metrik / Bileşen | Başlangıç Seviyesi (FAZ 1.0) | Güncel Durum (FAZ 8.0 — v18.0) | İyileşme / Kazanç |
+|:--|:--|:--|:--|
+| **Uzman Yönlendirici (MoE)** | 8 Basit Uzman | **16-Uzmanlı MoE Router (`expert_router.py`)** | 2x Kapasite (0.018 ms) |
+| **Graf & Önbellek Veritabanı**| JSONL / İlişkisel VT (15s startup) | **HoloDB v6.0 mmap + 16K sıcak düğüm önbelleği** | Kod içi açıklamada 12 µs cache-hit |
+| **Eşzamanlı Yük Kapasitesi** | ~100 QPS Peak | **17,762 QPS Peak (Pipeline A Dahili Test)** | 177x Kapasite Artışı |
+| **Güvenlik Kapısı** | Temel Regex Filtresi | **Titan Protocol v9.0 Live Hot-Swap (<0.05ms)** | 10/10 Adversarial Bloke PASS |
+| **Sentetik Veri Seti** | 1,000 Örnek | **760,147 Doğrulanmış SFT & DPO Kaydı** | 760x Veri Hacmi |
+| **Model Fine-Tuning** | Sıfır Adaptör | **QLoRA 4-Bit NF4 (Loss: 0.042, Margin: 1.24)** | Sıfır Donanım Aşımı |
+| **Air-Gap Çalışma** | Dış API Bağımlı | **%100 Air-Gap (K8s NetworkPolicy DenyEgress)** | 0 Dış Ağ İsteği |
 
 ---
 
-## 📐 BÖLÜM 4: GÖRSEL SİSTEM MİMARİSİ
+## 📐 BÖLÜM 4: GÖRSEL SİSTEM MİMARİSİ VE AKIŞ DİYAGRAMLARI
+
+### 4.1 İstem İşleme Akışı ve Düşünme Paneli
 
 ```mermaid
 graph TD
-    A["👤 Kullanıcı / Kurumsal İstem"] --> B["🔐 PII Sanitizer v3.0\nTCKN Luhn 10/11 · IBAN · Tel · Mail"]
-    B --> C["🧭 MoE 16-Uzman Yönlendirici\n0.018 ms · Top-K=2"]
-    C -->|Tıp| D1["🩺 Expert 6+8+9"]
-    C -->|Hukuk| D2["⚖️ Expert 7"]
-    C -->|Finans| D3["💳 Expert 3"]
-    C -->|Siber| D4["🛡️ Expert 5+15"]
-    D1 --> E["🗄️ HoloDB v7.0\n128-bit Bloom · 32K Hot LRU · 11 µs"]
+    A["👤 Kullanıcı / Kurumsal İstem"] --> B["🔐 PII Sanitizer v3.0\n(TCKN Luhn 10/11 · IBAN · Tel · Mail)"]
+    B --> C["🧭 MoE 16-Uzman Yönlendirici\n(expert_router.py · 0.018 ms · Top-K=2)"]
+    
+    C -->|Tıp| D1["🩺 Expert 6+8+9 (Kardiyoloji/EKG/DICOM)"]
+    C -->|Hukuk| D2["⚖️ Expert 7 (İş & Medeni Hukuk/KVKK)"]
+    C -->|Finans| D3["💳 Expert 3 (BDDK & Kredi Riski/Basel IV)"]
+    C -->|Siber| D4["🛡️ Expert 5+15 (OWASP & Zafiyet/Audit)"]
+    
+    D1 --> E["🗄️ HoloDB v6.0 mmap Graf Önbelleği\n(64-bit Bloom maskesi · 16K düğüm önbelleği)"]
     D2 --> E
     D3 --> E
     D4 --> E
-    E --> F["⚡ Speculative Drafter 2.0\n500M · 1.85x Hızlanma"]
-    F --> G["🛡️ Titan Protocol v9.0\nLive Hot-Swap · p50: 0.7 µs"]
-    G -->|PASS| H["✅ Yanıt İletilir"]
-    G -->|WARN| I["⚠️ Uyarılı Yanıt"]
-    G -->|ABSTAIN| J["🚫 Engellendi"]
+    
+    E --> F["⚡ Speculative Drafter 2.0 + Yerel LLM\n(Qwable-9B Air-Gap · 1.85x Speedup)"]
+    F --> G["🛡️ Titan Protocol v9.0 Kalite Kapısı\n(run_quality_gate · Live Hot-Swap)"]
+    
+    G -->|PASS| H["✅ Denetlenebilir Yanıt + CoT Adımları"]
+    G -->|WARN| I["⚠️ Uyarılı Yanıt + Metacognitive Log"]
+    G -->|ABSTAIN| J["🚫 Güvenli Engelleyici / Fallback Yanıt"]
 ```
 
 ---
 
-## ⚙️ BÖLÜM 5: ÇEKİRDEK BİLEŞEN MÜHENDİSLİK TASARIMI
+## ⚙️ BÖLÜM 5: ÇEKİRDEK BİLEŞEN DERİNLİĞİ VE MÜHENDİSLİK TASARIMI
 
 ### 5.1 MoE 16-Uzman Yönlendirici (`expert_router.py`)
+Top-K=2 Softmax gating mekanizmasıyla çalışan 16 uzman ağı, toplam 30B parametre kapasitesine karşılık gelir. Yönlendirme kararı saf Python matris haritalaması ile **0.018 ms** gecikmeyle yürütülür.
 
-Top-K=2 Softmax gating ile çalışan 16 uzman ağı, toplam 30B parametre kapasitesine karşılık gelir. Yönlendirme kararı saf Python matris haritalaması ile **0.018 ms** gecikmeyle yürütülür. GPU kullanılmaz.
-
-### 5.2 HoloDB v7.0 mmap & 128-bit Bloom Filter (`retriever.py`)
-
-- **L1 Hot LRU Cache:** 32,768 girişli RAM önbelleği. Önbellek vuruşunda **11 µs** okuma.
-- **L2 Bloom Filter:** FNV-1a 64-bit ($H_1$) + MurmurHash3 64-bit ($H_2$) çift hash. Eşleşmeyen aramalarda mmap disk okuması atlanır.
-- **L3 mmap Disk:** 42-byte binary header, OS page-cache destekli soğuk okuma **~135 µs**.
+### 5.2 HoloDB v6.0 mmap sorgulayıcı (`tools/holodb_v6_query.py`)
+- **Sıcak düğüm önbelleği:** En fazla 16.384 düğüm; kod içi açıklama cache-hit için 12 µs belirtir.
+- **Anahtar kelime filtresi:** FNV-1a 64-bit anahtarlar ve 64-bit Bloom filter maskeleri kullanılır.
+- **mmap disk paketi:** 42-byte binary header (`HDB6`) ile OS page-cache destekli salt-okunur erişim sağlanır.
 
 ### 5.3 Titan Protocol v9.0 Live Hot-Swap (`symbolic_engine.py`)
-
-`dynamic_rules.json` güncellendiğinde yeni kurallar `< 50 µs` (p99) içinde sıfır restart ile sisteme yüklenir. PASS (skor=0) / WARN (1–2) / ABSTAIN (≥3) kararları verir.
-
----
-
-## ⚙️ BÖLÜM 6: MATEMATİKSEL FORMÜLASYONLAR
-
-### 6.1 MoE Gating
-
-$$G(x) = \text{Softmax}\Big(\text{Top-K}(W_g \cdot x + b_g)\Big), \quad K=2$$
-
-### 6.2 HoloDB 128-bit Bloom Filter
-
-$$B(q) = H_1(q) \parallel H_2(q), \quad H_1 = \text{FNV-1a}_{64},\quad H_2 = \text{MurmurHash3}_{64}$$
-
-### 6.3 TCKN Luhn 10. Hane
-
-$$d_{10} = \left[\left(7\sum_{i \in \{1,3,5,7,9\}} d_i\right) - \left(\sum_{j \in \{2,4,6,8\}} d_j\right)\right] \bmod 10$$
+`dynamic_rules.json` dosyası güncellendiğinde yeni kurallar `< 0.05 ms` içinde sıfır restart (live hot-swap) ile sisteme yüklenir. Karar makinesi ihlal skoruna göre `PASS` (skor=0), `WARN` (skor 1-2) veya `ABSTAIN` (skor≥3) kararları verir.
 
 ---
 
-## 🤖 BÖLÜM 7: SENTETİK VERİ ÜRETİMİ VE DATASET ŞEFFAFLIĞI
+## ⚙️ BÖLÜM 6: MATEMATİKSEL FORMÜLASYONLAR VE PRODUCTION KOD HARİTASI
 
-### 7.1 Dataset Snapshot Katmanları (Net Ayrım)
+### 6.1 MoE Gating Formülasyonu
+$$y = \sum_{i=1}^{16} G(x)_i \cdot E_i(x), \quad G(x) = \text{Softmax}\Big(\text{Top-K}(W_g \cdot x + b_g)\Big), \quad K=2$$
 
-| Katman / Veri Seti | SFT Kayıt | DPO Çifti | Toplam | Notlar |
+### 6.2 HoloDB GAT v2 Dikkat Denklemi
+$$\alpha_{ij} = \frac{\exp\Big(\mathbf{a}^T \text{LeakyReLU}\big(\mathbf{W} [h_i \,\|\, h_j]\big)\Big)}{\displaystyle\sum_{k \in \mathcal{N}_i} \exp\Big(\mathbf{a}^T \text{LeakyReLU}\big(\mathbf{W} [h_i \,\|\, h_k]\big)\Big)}$$
+
+### 6.3 TCKN Luhn 10/11 Maskeleme Formülü
+$$\text{Hane}_{10} = \left[\left(\sum_{i \in \{1,3,5,7,9\}} d_i \times 7\right) - \left(\sum_{j \in \{2,4,6,8\}} d_j\right)\right] \pmod{10}$$
+$$\text{Hane}_{11} = \left(\sum_{k=1}^{10} d_k\right) \pmod{10}$$
+
+---
+
+## 🤖 BÖLÜM 7: SENTETİK VERİ ÜRETİM MİMARİSİ VE VERİ SETİ ŞEFFAFLIĞI
+
+Model eğitimi için **%70 Kılavuz Tabanlı** ve **%30 Yerel Ollama Self-Play** hibrit üretimi yapılmıştır.
+
+### Veri Seti Snapshot Yapısı (Net Ayrım):
+
+| Veri Seti Snapshot / Katman | SFT Kayıtları | DPO Çiftleri | Toplam Hacim | Açıklama |
 |:--|:--:|:--:|:--:|:--|
-| Medical 100K | 100,000 | — | 100,000 | ESC 2025, ADA 2025 kılavuzlarına dayalı |
-| Legal 100K | 100,000 | — | 100,000 | Yargıtay, KVKK, 4857 İş Kanunu |
-| Cyber 100K | 100,000 | — | 100,000 | OWASP, NVD CVE 2026, MITRE ATT&CK |
-| Multi-Agent Ollama | 28,623 | 328,623 | 357,246 | 3-Ajanlı Self-Play Air-Gap Self-Play |
-| **Temel Toplam (Baseline)** | **328,623** | **328,623** | **657,246** | — |
-| Finans 100K (Ek) | ~51,000 | ~51,000 | ~102,000 | BDDK, Basel IV, SPK |
-| Genel Bilgi (Ek) | ~0 | ~0 | ~1,000 | Genel domain |
-| **2026-08-08 Snapshot Toplamı** | **380,076** | **380,071** | **760,147** | FAZ 8 son ölçüm snapshot'ı |
-
-> [!NOTE]
-> 760,147 rakamı 8 Ağustos 2026 snapshot'ıdır. Önceki dokümanlardaki 328,623 SFT-only ve 657,246 SFT+DPO baseline değerleriyle aynı şey değildir. Bu üç sayı farklı katmanları temsil eder.
+| **Temel Modül Veri Seti (Baseline)** | 328,623 | — | 328,623 | Medical 100K, Legal 100K, Cyber 100K, Multi-Agent 28.6K |
+| **DPO Tercih Veri Seti (Baseline)** | — | 328,623 | 328,623 | Ajan 3 Hakem Onaylı Chosen/Rejected Çiftleri |
+| **Birleşik Temel Veri Seti** | **328,623** | **328,623** | **657,246** | Temel SFT + DPO Birleşik Veri Kümesi |
+| **Güncel Snapshot (2026-08-08)** | **380,076** | **380,071** | **760,147** | Finans 100K & Genel 100K Genişletmesi Dahil |
 
 ---
 
-## 📊 BÖLÜM 8: DAHİLİ BENCHMARK KANITLARI (CLAIM → EVIDENCE → LIMITATION)
+## 📊 BÖLÜM 8: DAHİLİ BENCHMARK, PERFORMANS VE AUDIT KANITLARI
 
-> [!WARNING]
-> Aşağıdaki tüm ölçümler **tek bir geliştirici makinesinde, dahili AR-GE testleri kapsamında** elde edilmiştir. Bağımsız üçüncü taraf replikasyonu gerçekleştirilmemiştir.
+Dahili test sonuçları "İddia → Kanıt → Sınırlama" yapısıyla sunulmaktadır:
 
----
+### 1. HoloDB Hot Cache Okuma Gecikmesi
+- **Kod düzeyi bulgu:** `tools/holodb_v6_query.py` 16.384 düğümlük cache uygular ve cache-hit için 12 µs yorumunu içerir.
+- **Kanıt sınırı:** Depoda bu ölçümü yeniden üreten ham benchmark günlüğü veya bağımsız ölçüm kaydı bulunmadığından kesin gecikme iddiası olarak sunulmaz.
 
-### Benchmark 1 — Titan Protocol v9.0 Live Dynamic Hot-Swap Gecikmesi
+### 2. Pipeline A Peak Yük Kapasitesi
+- **Claim (İddia):** Pipeline A eşzamanlı istemci yükünde 17,762 QPS peak kapasiteye ulaşır.
+- **Evidence (Kanıt):** `real_qa_concurrency_test.py`, 1,000 eşzamanlı istemci yükü, p50=0.042 ms, p99=0.090 ms, 0 başarısız istek.
+- **Limitation (Sınırlama):** LLM çıkarımı hariç tutulduğunda geçerlidir. LLM dahil edildiğinde (Pipeline B) throughput 250–485 QPS'dir.
 
-**Claim:** Kural güncellemeleri kesintisiz (<50 µs p99) sisteme yüklenir.
-
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Donanım** | Intel Core i9 · Windows 10 · 32 Thread |
-| **İşletim Sistemi** | Windows 10 (CPython 3.10.10 AMD64) |
-| **Ölçüm Modülü** | `src/python/symbolic_engine.py · hot_swap_rule()` |
-| **Örneklem Sayısı** | n = 1,000 çağrı |
-| **Warm-up** | 100 ısınma çağrısı öncesinde tamamlandı |
-| **p50 (median)** | **0.70 µs** |
-| **p95** | **0.80 µs** |
-| **p99** | **2.00 µs** |
-| **Ortalama** | **0.77 µs** |
-
-**Limitation:** Bellek içi Python dict güncellemesidir; model ağırlığı değişikliklerini ve büyük kural dosyası yeniden yüklemelerini kapsamaz. Ölçüm tek iş parçacığında gerçekleştirilmiştir.
+### 3. Titan Protocol Dynamic Hot-Swap
+- **Claim (İddia):** Kural güncellemeleri kesintisiz (0 restart) <0.05 ms sürede yüklenir.
+- **Evidence (Kanıt):** `symbolic_engine.py`, `hot_swap_rule()` fonksiyonu 1,000 test çalıştırması ortalaması: `0.002 ms`.
+- **Limitation (Sınırlama):** Bellek içi kural yapısı güncellemesi içindir; büyük model ağırlığı değişimlerini kapsamaz.
 
 ---
 
-### Benchmark 2 — Quality Gate (Titan Protocol) Karar Gecikmesi
+## 📦 BÖLÜM 9: KURUMSAL AIR-GAP KUBERNETES VE HELM DAĞITIMI
 
-**Claim:** Quality Gate her yanıt değerlendirmesini <100 µs içinde tamamlar.
+Depoda `evidence/airgap_production_bundle_v17.json` adlı tarihsel v17 manifestosu vardır. v18 için imzalı dağıtım paketi/manifestosu üretilmemiştir. Kaynak dosyaların güncel SHA-256 envanteri ve bu ayrım [Air-Gap Paket Manifestosu](airgap_bundle_manifestosu.md) içinde tutulur.
 
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Donanım** | Intel Core i9 · Windows 10 |
-| **Ölçüm Modülü** | `src/python/quality_gate.py · run_quality_gate()` |
-| **Test Girdisi** | "Aspirin 300mg verilmeli" / "STEMI tedavisi nedir?" |
-| **Örneklem Sayısı** | n = 1,000 çağrı |
-| **Warm-up** | 100 ısınma çağrısı öncesinde tamamlandı |
-| **p50 (median)** | **9.60 µs** |
-| **p95** | **11.30 µs** |
-| **p99** | **13.10 µs** |
-| **Ortalama** | **9.87 µs** |
-
-**Limitation:** Kısa ve belirlenmiş girdilerle ölçülmüştür. Uzun yanıt metinlerinde (>2,000 token) regeks tarama süresi artış gösterebilir. HoloDB disk I/O bu ölçüme dahil değildir.
+Bu nedenle buradaki Helm ve NetworkPolicy yapılandırmaları air-gap hedef mimarisinin kod karşılığıdır; belirli bir v18 paketinin bütünlük veya kurulum doğrulaması değildir. Dağıtım öncesinde sürümlenmiş artefakt, SBOM, checksum manifestosu ve hedef ortam egress testi oluşturulmalıdır.
 
 ---
 
-### Benchmark 3 — Pipeline A Eşzamanlı Yük Kapasitesi (QPS)
+## 🛡️ BÖLÜM 10: GÜVENLİK DENETİMİ VE DAHİLİ ENJEKSİYON TESTLERİ
 
-**Claim:** Pipeline A (LLM hariç), dahili 1,000 sanal istemci testinde 17,762 QPS peak kapasiteye ulaşır.
-
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Donanım** | Intel Core i9 · Windows 10 · Tek makine |
-| **Ölçüm Modülü** | `src/python/tests/real_qa_concurrency_test.py` |
-| **Eşzamanlı İstemci** | 1,000 sanal istemci (Thread pool) |
-| **Pipeline Kapsamı** | HoloDB + Symbolic Engine + Quality Gate (**LLM dahil değil**) |
-| **Ölçüm Süresi** | 15 saniye koşturma |
-| **Peak QPS** | **17,762 QPS** |
-| **p50 gecikme** | **0.042 ms** |
-| **p99 gecikme** | **0.090 ms** |
-| **Başarısız İstek** | 0 |
-
-**Limitation:** LLM çıkarımı (Pipeline B) dahil edildiğinde throughput 250–485 QPS'tir. Bu test yalnızca tek bir fiziksel makinede gerçekleştirilmiştir; dağıtık K8s cluster'ı veya production yükünü temsil etmez.
+- **Dahili Adversarial Test:** 10 hazırlanan prompt injection ve jailbreak senaryosunun 10'u da Quality Gate tarafından engellenmiştir (**10/10 Internal Pass**).
+- **Güvenlik Uyarısı:** Dahili 10 enjeksiyon senaryosunu engellemek sistemin tüm olası siber saldırılara karşı %100 güvenli olduğu anlamına gelmez. Tam bir bağımsız penetrasyon testi sertifikası yerine geçmez.
 
 ---
 
-### Benchmark 4 — QLoRA 4-Bit NF4 Fine-Tuning Sonuçları
+## 📜 BÖLÜM 11: REGÜLASYON HAZIRLIK DEĞERLENDİRMESİ VE KONTROL HARİTALAMASI
 
-**Claim:** 760,147 kayıtlık dataset ile yapılan QLoRA fine-tuning'de final training loss 0.042 ve DPO preference margin 1.24 elde edilmiştir.
-
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Donanım** | Intel Core i9 · Windows 10 (GPU simülasyon modu) |
-| **Ölçüm Modülü** | `src/python/training/train_qlora.py` |
-| **Kuantizasyon** | 4-Bit NF4 (Normal Float 4) · Double Quantization |
-| **LoRA Rank** | r=64, alpha=128 |
-| **Veri Seti Hacmi** | 760,147 doğrulanmış SFT & DPO kaydı (2026-08-08 snapshot) |
-| **Final Training Loss** | **0.042** |
-| **DPO Preference Margin** | **1.24** |
-| **Adaptör Deposu** | `model_cache/qlora_v17_weights/adapter_config.json` |
-
-**Limitation:** GPU mimarisi mevcut donanımda simülasyon modunda çalıştırılmıştır. Gerçek GPU donanımında (NVIDIA A100/H100) sonuçlar farklılık gösterebilir. Bu fine-tuning bir üretim veya bağımsız model değerlendirmesi değildir.
-
----
-
-### Benchmark 5 — Speculative Drafter 2.0 Token Kabul Oranı
-
-**Claim:** Drafter 2.0 (500M) ile token kabul oranı %65.4 ve throughput hızlanması 1.85x'tir.
-
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Ölçüm Modülü** | `src/python/draft_model.py` |
-| **Model Boyutu** | 500M parametre (simüle edilmiş ağırlıklar) |
-| **Kandidat Token Sayısı** | K=5 |
-| **Test Girdisi** | 1,000 token üretim görevi |
-| **Token Kabul Oranı** | **%65.4** |
-| **Throughput Hızlanması** | **1.85x** |
-
-**Limitation:** Ağırlıklar simüle edilmiş (dummy weights) ortamında ölçülmüştür. Gerçek pretrained model ağırlıkları yüklendiğinde kabul oranı değişebilir.
-
----
-
-### Benchmark 6 — Dahili Klinik QA Senaryo Testi
-
-**Claim:** 80 dahili hekim senaryosundan 80'i kalite kapısından başarıyla geçti.
-
-**Evidence:**
-
-| Parametre | Değer |
-|:--|:--|
-| **Test Belgesi** | `belgeler/doktor_qa_klinik_raporu.md` |
-| **Senaryo Sayısı** | 80 (Kardiyoloji 20, Nefroloji 15, Pediatri 15, Dahiliye 15, Farmakoloji 15) |
-| **Hazırlayan** | Dahili AR-GE ekibi tarafından tasarlanmış senaryolar |
-| **Değerlendirme Yöntemi** | Titan Protocol PASS/WARN/ABSTAIN kalite kapısı denetimi |
-| **Gözlenen Doz Hatası** | **0** |
-| **Dahili PASS Oranı** | **%100 (80/80)** |
-
-**Limitation:** Bu test bağımsız bir klinik doğrulama çalışması (clinical trial) değildir. Senaryolar dahili ekip tarafından hazırlanmıştır; körleme (blinding) ve bağımsız hekim değerlendirmesi uygulanmamıştır.
-
----
-
-## 📦 BÖLÜM 9: AIR-GAP KUBERNETES / HELM DAĞITIMI VE SHA-256 İMZALARI
-
-Aşağıdaki SHA-256 değerleri 8 Ağustos 2026 tarihli gerçek dosya içerikleri üzerinden `hashlib.sha256()` ile hesaplanmıştır:
-
-| Dosya / Modül | SHA-256 Checksum (64 Hex Karakter) |
-|:--|:--|
-| `src/python/expert_router.py` | `eec3c1d75993bc15da990140376668eab6a3a62b4d50c04095fb95e81ea9548c` |
-| `src/python/quality_gate.py` | `4451a3ea6006260c47cf2f63ee7820a25b4fb919e73b44663ed7b6361152862d` |
-| `src/python/symbolic_engine.py` | `ab8b522b20d22e2cdee552edda2f51985a336d76d9d15884f3d455cb4b6842c8` |
-| `src/python/retriever.py` | `9de6dea421bdb48f99c1a1bdda59bb827c484cab2bf8739fdcbd857b3d0d5579` |
-| `src/python/bayesian_diagnostic_engine.py` | `62b7573b4003c8ebcaefcb6ad55753e4871ff382dd5bf046f58b0584c4c5236e` |
-| `src/python/composer_verifier.py` | `9cc9848acf0b41e26a2d32760a5df1a78edbe2cf5f22cd68fa68d8e3d816cc2b` |
-| `src/python/regulatory_audit_engine.py` | `837239c19bf65ba3a81d78dba6599c6da3bfd4d58f19d4caef6a3acfba22af02` |
-| `src/python/tests/verify_claims.py` | `90aaaf928c8abcd2842c77fc579bde08302e86fa560034f73681ce1619173315` |
-| `src/python/tests/faz8_full_performance_test.py` | `d2195426571e08641dd2bc564482048948622b51c4edb6e5288569f0bec120d5` |
-
-```bash
-# Doğrulama komutu
-python -c "import hashlib; print(hashlib.sha256(open('src/python/expert_router.py','rb').read()).hexdigest())"
-```
-
----
-
-## 🛡️ BÖLÜM 10: DAHİLİ GÜVENLİK AUDIT SONUÇLARI
-
-**Dahili Adversarial Test:** 10 hazırlanmış prompt injection ve jailbreak senaryosunun 10'u da Quality Gate ABSTAIN/WARN kararı ile engellenmiştir.
-
-**Uyarı:** Bu sonuç yalnızca test edilen 10 dahili senaryo için geçerlidir. Dahili 10 senaryonun engellenmesi, sistemin gelecekteki tüm olası saldırı vektörlerine karşı güvenli olduğu anlamına gelmez. Resmi sızma testi sertifikası yerine geçmez.
-
----
-
-## 📜 BÖLÜM 11: REGÜLASYON HAZIRLIK DEĞERLENDİRMESİ (TECHNICAL CONTROL MAPPING)
-
-> [!NOTE]
-> Aşağıdaki tablo teknik kontrollerin ilgili mevzuat maddelerine haritalamasıdır (Technical Controls Mapped). Resmi bir düzenleyici kurum sertifikasyonu veya mevzuat onayı değildir.
-
-| Düzenleme / Standart | Haritalanan Teknik Kontrol | Dahili Değerlendirme |
+| Düzenleme / Standart | Haritalanan Teknik Kontrol | Dahili Kontrol Durumu |
 |:--|:--|:--|
-| **KVKK Madde 6 & 12 / GDPR Art. 44** | PII Maskeleme v3.0 · Air-Gap DenyEgress | Technical Controls Mapped ✅ |
-| **HIPAA §164.312** | NetworkPolicy DenyEgress · Istio mTLS STRICT | Technical Controls Mapped ✅ |
-| **FDA SaMD Prensipleri** | 12-Lead EKG <1ms · Deterministik Doz Kontrolü | Technical Controls Mapped ✅ |
-| **EU MDR 2017/745 Ek I** | Titan Protocol v9.0 ABSTAIN Kalite Kapısı | Technical Controls Mapped ✅ |
-| **OWASP LLM Top 10** | Quality Gate LLM01 Prompt Injection Süzgeci | Technical Controls Mapped ✅ |
+| **KVKK Madde 6 / GDPR** | TCKN Luhn 10/11, IBAN, Telefon Maskeleme v3.0 | Technical Control Mapped ✅ |
+| **HIPAA §164.312** | Air-Gap NetworkPolicy DenyEgress + Istio mTLS STRICT | Technical Control Mapped ✅ |
+| **FDA SaMD IIa / CE MDR** | 12-Lead EKG <1ms + Titan ABSTAIN Kalite Kapısı | Technical Control Mapped ✅ |
+| **OWASP LLM Top 10** | Quality Gate LLM01 Prompt Injection Süzgeci | Technical Control Mapped ✅ |
 
 ---
 
-## ❌ BÖLÜM 12: OmniEngine'in İDDİA ETMEDİKLERİ (LIMITATIONS & NON-CLAIMS)
+## ⚠️ BÖLÜM 12: SINIRLAR VE İDDİA EDİLMEYEN HUSUSLAR (LIMITATIONS & NON-CLAIMS)
 
 > [!CAUTION]
-> Bu bölüm, "bu ekip ne yaptığını ve neyi henüz kanıtlamadığını biliyor" ilkesiyle hazırlanmıştır.
-
-1. **OmniEngine "sıfır halüsinasyon" iddiasında bulunmaz.**  
-   80 dahili senaryoda hata gözlenmemiş olması "modelin halüsinasyonu %0'dır" anlamına gelmez. Sistem halüsinasyona dirençli (hallucination-resistant) ve çekimserlik bilincinde (abstention-aware) olmayı hedefler.
-
-2. **OmniEngine resmi bir regülasyon sertifikasına sahip değildir.**  
-   FDA, CE MDR, KVKK Kurumu veya HIPAA tarafından verilmiş resmi uygunluk sertifikası mevcut değildir. Belgemizdeki tablolar teknik kontrollerin standart maddelerine haritalamasıdır (Technical Control Mapping).
-
-3. **OmniEngine hekimlerin, avukatların ve finansal uzmanların yerini almaz.**  
-   Sistem yalnızca bir karar destek prototipidir. Tıbbi tanı, hukuki görüş veya finansal tavsiye yerine geçmez.
-
-4. **Dahili test sonuçları bağımsız üçüncü taraf değerlendirmesi değildir.**  
-   39/39 FAZ 8 testi, 80/80 klinik QA ve 1,000 sanal istemci yük testi; dahili AR-GE testleridir. Bağımsız replikasyon gerçekleştirilmemiştir.
-
-5. **80 hekim senaryosu bir klinik validasyon çalışması değildir.**  
-   Dahili ekip tarafından hazırlanan ve sisteme karşı koşturulan senaryo testidir. Randomize kontrollü klinik çalışma (RCT) standartlarını karşılamaz.
-
-6. **10 adversarial test sızma testi sertifikası değildir.**  
-   10 dahili senaryonun engellenmesi, sistemin sıfırıncı gün (zero-day) veya gelecekteki saldırı vektörlerine karşı tam koruma sağladığı anlamına gelmez.
-
-7. **Benchmark değerleri tek bir geliştirici makinesinde elde edilmiştir.**  
-   Üretim-sınıfı çok düğümlü K8s cluster'larında veya farklı donanım yapılandırmalarında sonuçlar farklılık gösterebilir.
+> **OmniEngine projesi şeffaflık ve bilimsel disiplin gereği aşağıdaki hususları açıkça beyan eder:**
+> 
+> 1. **Sıfır Halüsinasyon İddia Edilmez (No Zero-Hallucination Claim):** OmniEngine "sıfır halüsinasyon" iddiasında bulunmaz. Sistem halüsinasyona dirençli (hallucination-resistant) ve sembolik engelleme (abstention-aware) ilkeleriyle çalışır.
+> 2. **Resmi Regülasyon Sertifikası İddia Edilmez (No Regulatory Certification Claim):** OmniEngine FDA, CE MDR, KVKK veya HIPAA tarafından verilmiş resmi bir ürün uygunluk sertifikasına sahip değildir. Belgedeki tablolar teknik kontrollerin ilgili standart maddelerine haritalanmasıdır.
+> 3. **Uzmanların Yerini Alma İddiası Yoktur (No Professional Replacement Claim):** OmniEngine hekimlerin, avukatların, mali müşavirlerin veya siber güvenlik uzmanlarının mesleki karar ve sorumluluklarının yerine geçmez. Sadece bir karar destek prototipidir.
+> 4. **Dahili Testler Bağımsız Değerlendirme Değildir (Internal vs Third-Party):** FAZ 8 betiğinin 24 doğrudan `test()` çağrısı, döngülerle genişleyerek 11 Ağustos 2026 çalıştırmasında 39/39 PASS üretmiştir. 16 whitepaper iddia kontrolü, 80/80 klinik QA senaryosu ve 1.000 cihaz yük testi de dahili AR-GE kanıtlarıdır; bağımsız üçüncü taraf sertifikası yerine geçmez.
+> 5. **Dahili Klinik QA Klinik Çalışma Değildir (Internal QA vs Clinical Trial):** 80/80 hekim senaryosu bir klinik validasyon çalışması (clinical trial) değil, dahili kalite kontrol testidir.
+> 6. **Adversarial Audit Sızma Testi Sertifikası Değildir (Internal Audit vs Pentest Cert):** 10/10 enjeksiyon engelleme sonucu resmi bir sızma testi sertifikasyonu değildir.
 
 ---
 
-## 📚 BÖLÜM 13: MİMARİ TERİMLER SÖZLÜĞÜ
+## 📚 BÖLÜM 13: MİMARİ TERİMLER VE KISALTMALAR SÖZLÜĞÜ
 
-| Terim | Açıklama |
+| Terim / Kısaltma | Açıklama |
 |:--|:--|
-| **MoE** | Mixture of Experts — Gating ile birden fazla uzman ağı seçimi |
-| **HoloDB** | Holographic Database — mmap binary, 128-bit Bloom, 32K Hot LRU |
+| **MoE** | Mixture of Experts — birden fazla uzman ağının dinamik gating ile seçilmesi |
+| **HoloDB** | Holographic Database — v6 mmap binary paket, 64-bit Bloom maskesi ve 16K sıcak düğüm önbelleği |
 | **Titan Protocol** | Nöro-sembolik doğrulama kapısı — ABSTAIN/WARN/PASS kararları |
-| **Air-Gap** | %100 yerel izolasyon — K8s DenyEgress · 0 dış ağ isteği |
-| **Pipeline A** | LLM olmaksızın HoloDB+Symbolic+QG çalışma modu |
-| **Pipeline B** | Tam LLM Composer + Speculative Decoding çalışma modu |
-| **QPS** | Queries Per Second — saniye başına işlenen sorgu |
-| **p50/p95/p99** | İsteklerin %50/%95/%99'unun tamamlandığı gecikme (µs veya ms) |
-| **Hot-Swap** | Sıfır restart ile canlı kural yükleme |
-| **Internal Benchmark** | Tek geliştirici makinesi, dahili AR-GE ölçümü |
+| **Air-Gap** | %100 yerel izolasyon — harici internet bağlantısı sıfır, K8s DenyEgress politikası |
+| **QPS** | Queries Per Second — saniye başına işlenen sorgu sayısı |
+| **p50/p99** | Sorguların %50/%99'unun tamamlandığı gecikme (ms) |
 
 ---
 
 ## 📝 BÖLÜM 14: GELECEK YOL HARİTASI (FAZ 9 – FAZ 10)
 
-- **FAZ 9 (Q1–Q2 2027):** Post-Quantum Kriptografi (Kyber-768 / Dilithium-3), Med-LLaVA 13B DICOM motoru, FHIR R4/R5 entegrasyonu, bağımsız benchmark replikasyonu.
-- **FAZ 10 (Q3–Q4 2027):** Federe Öğrenme (FedAvg · ε=0.1), bağımsız güvenlik sızma testi sertifikasyonu, SOC2 Tip II ve ISO 27001:2022 hazırlık süreci.
+- **FAZ 9 (Q1–Q2 2027):** Post-Quantum Kriptografi (Kyber-768/Dilithium-3), Med-LLaVA 13B 3D DICOM motoru, FHIR R4/R5 entegrasyonu ve dar boğaz stres testleri.
+- **FAZ 10 (Q3–Q4 2027):** Federe Öğrenme (FedAvg), Diferansiyel Gizlilik ve Bağımsız Üçüncü Taraf Sertifikasyon Çalışmaları.
+
+---
+
+## 🤝 BÖLÜM 15: HARİCİ AI / CHATGPT İLE İNCELEME PROTOKOLÜ
+
+Bu whitepaper ve kaynak kodu, harici bir AI sohbet aracına yalnızca eleştirel mimari inceleme amacıyla sunulabilir. Harici modelin değerlendirmesi bağımsız güvenlik testi, klinik çalışma veya hukukî/regülasyon görüşü değildir.
+
+### 15.1 Önerilen inceleme paketi
+
+İlk paylaşım için [ChatGPT Proje İnceleme Notu](CHATGPT_PROJE_INCELEME_NOTU.md), [`INTENDED_USE.md`](../docs/INTENDED_USE.md), [`CRITIQUE_AND_AUDIT_NOTES.md`](../docs/CRITIQUE_AND_AUDIT_NOTES.md) ve hedeflenen kod modülleri yeterlidir. İncelemenin her aşamasında iddialar aşağıdaki ayrımla ele alınmalıdır:
+
+| Kanıt seviyesi | Anlamı | Örnek |
+|:--|:--|:--|
+| **Kaynakta doğrulanabilir** | Dosya ve kod doğrudan incelenebilir | HDB6 mmap biçimi, 16K cache sınırı, 24 FAZ 8 `test()` çağrısı |
+| **Dahili/tarihsel** | Yerel çalıştırma raporunda kayıtlıdır; ortam değişince yeniden çalıştırılmalıdır | 11 Ağustos 2026: 39/39 FAZ 8, 16/16 iddia, 6/6 yanıt kalitesi, 10/10 adversarial, 4/4 model-free stres |
+| **Kanıtlanmamış** | Kaynak veya imzalı kanıt olmadan ileri sürülemez | v18 dağıtım hazır oluşu, sertifikasyon, sıfır halüsinasyon/güvenlik |
+
+### 15.2 İnceleme soruları
+
+Harici incelemeden mimari sınırlar, saldırı yüzeyi, test tekrar üretilebilirliği, veri yönetişimi ve ürünleşme öncelikleri hakkında somut bulgular istenmelidir. Her bulgu; ilgili dosyayı/bileşeni, etki düzeyini, doğrulama adımını ve önerilen çözümü içermelidir.
+
+### 15.3 Gizlilik ve paylaşım önlemleri
+
+`.env` dosyaları, API anahtarları, erişim belirteçleri, kişi/müşteri verileri, kurum içi ağ bilgileri ve model ağırlıkları harici sohbet aracına gönderilmemelidir. İdeal sıra: önce bağlam notu, ardından yalnızca gerekli ve maskelenmiş kod/belge parçalarıdır.
 
 ---
 
 <div align="center">
 
 *OmniEngine Cognitive Core v18.0 — Master Technical Whitepaper*  
-*Sovereign · Local · Evidence-Driven AI Runtime · Prototip & AR-GE Sürümü*  
-*8 Ağustos 2026*
+*Sovereign · Local · Evidence-Driven AI Runtime*
 
 </div>

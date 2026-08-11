@@ -1,7 +1,7 @@
 # 🛡️ OmniEngine v18.0 — Dahili Güvenlik & Adversarial Denetim Raporu
 
 > **Tarih:** 8 Ağustos 2026  
-> **Sürüm:** v18.0 (FAZ 8 Full Deployment-Ready)  
+> **Sürüm:** v18.0 FAZ 8 dahili denetim snapshot'ı (dağıtım hazır oluş beyanı değildir)  
 > **Güvenlik Süiti:** Titan Protocol v9.0 Live Hot-Swap  
 > **Denetim Kapsamı:** OWASP Top 10 for LLM, Prompt Injection, Jailbreak, PII Maskeleme v3.0, Air-Gap İzolasyonu  
 > **Dahili Test Sonucu:** **10 / 10 Test Edilen Adversarial Senaryo Bloke Edildi (10/10 Tested Scenarios Blocked)**  
@@ -40,7 +40,7 @@ OmniEngine güvenlik mimarisi iki ana katmanda denetlenmiştir:
 
 ## 🎯 3. 10-TUZAK ADVERSARIAL ENJEKSİYON TESTİ SONUÇLARI
 
-`faz8_full_performance_test.py` testi kapsamında koşturulan 10 dahili prompt injection senaryosunun test sonuçları:
+`src/python/tests/adversarial_audit_v2.py` ile koşturulan 10 dahili adversarial senaryonun tarihsel test sonuçları:
 
 ```text
 =================================================================

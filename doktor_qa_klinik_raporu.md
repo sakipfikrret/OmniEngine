@@ -1,31 +1,36 @@
-# 🏥 OmniEngine v17.0 — Derin Klinik QA & Hekim Denetim Raporu
+# 🏥 OmniEngine v18.0 — Dahili Klinik QA & Hekim Senaryo Raporu (Internal Benchmark)
 
-> **Tarih:** 6 Ağustos 2026  
-> **Klinik Süit Sürümü:** v17.0 (FAZ 7.0 Deployment-Ready)  
-> **Kapsam:** 80 Kompleks Klinik Senaryo (STEMI, Anemi, Pediatrik Dozaj, eGFR Kontrendikasyonları, ESC 2025 Kılavuzları)  
-> **Genel Başarı Oranı:** **80/80 PASS (%100.0 Başarı)** · **Ortalama Puan:** **10.0 / 10.0**  
-> **Halüsinasyon / Dozaj İhlali:** **0 (%0.0 İhlal)**
+> **Tarih:** 8 Ağustos 2026  
+> **Sürüm:** v18.0 FAZ 8 dahili QA snapshot'ı (dağıtım hazır oluş beyanı değildir)  
+> **Kapsam:** 80 Dahili Klinik Senaryo (STEMI Acil, Anemi, Pediatrik Dozaj, eGFR Kontrendikasyonları, ESC 2025 Kılavuzu)  
+> **Dahili Test Sonucu:** **Internal Clinical QA — 80/80 PASS (%100.0 Dahili Başarı)** · **Ortalama Puan:** **10.0 / 10.0**  
+> **Dahili Test İhlal Sayısı:** **0 Hata Gözlendi (Bu 80 Dahili Senaryoda)**  
 
 ---
 
-## 🔬 1. KLİNİK DENETİM METODOLOJİSİ VE KAPILAR
+> [!IMPORTANT]
+> **Klinik Doğrulama Sınırı (Not a Clinical Validation Study):** Bu rapor bağımsız bir klinik doğrulama çalışması (clinical validation study) veya klinik araştırma (clinical trial) **değildir**. Dahili hekim ekibimiz tarafından hazırlanan 80 adet klinik senaryoda elde edilen dahili kalite kontrol (Internal QA) sonuçlarını yansıtır. OmniEngine hekimlerin, tıbbi uzmanların veya acil servis personelinin mesleki karar ve sorumluluğunun yerine geçmez; sadece bir karar destek prototipidir.
 
-Klinik soru seti, uzman hekim senaryoları üzerinden iki katmanlı olarak doğrulanmıştır:
+---
+
+## 🔬 1. DAHİLİ KLİNİK QA METODOLOJİSİ VE KAPILAR
+
+Klinik test seti, dahili hekim senaryoları üzerinden iki katmanlı olarak doğrulanmıştır:
 1. **Nöro-Sembolik Kontrendikasyon Kapısı (`symbolic_engine.py`):** İlaç-ilaç etkileşimleri, organ yetmezliği (eGFR < 30 ml/dk) ve pediatrik yaş sınırları (12 yaş altı Aspirin kullanımı) deterministik doğruluk tabloları ile kontrol edilmiştir.
 2. **Metacognitive Verifier (`composer_verifier.py`):** Üretilen yanıtın tıbbi doğruluk skoru 0.131 ms gecikmeyle puanlanmıştır.
 
 ---
 
-## 📊 2. KATEGORİK BAŞARI MATRİSİ
+## 📊 2. KATEGORİK DAHİLİ QA MATRİSİ
 
-| Klinik Katman / Uzmanlık | Soru Sayısı | Başarılı Soru | Halüsinasyon İhlali | Ortalama Puan |
+| Klinik Katman / Uzmanlık | Soru Sayısı | Dahili PASS | Gözlenen Doz Hatası | Ortalama Puan |
 |:--|:--|:--|:--|:--|
 | **Kardiyoloji & STEMI Acil** | 20 | 20 | 0 | **10.0 / 10** |
 | **Nefroloji & eGFR Dozajı** | 15 | 15 | 0 | **10.0 / 10** |
 | **Pediatrik Güvenlik & Aspirin** | 15 | 15 | 0 | **10.0 / 10** |
 | **Dahiliye & Diyabet Tedavisi** | 15 | 15 | 0 | **10.0 / 10** |
 | **Farmakoloji & İlaç Etkileşimi** | 15 | 15 | 0 | **10.0 / 10** |
-| **TOPLAM** | **80** | **80** | **0** | **10.0 / 10 (%100 PASS)** |
+| **TOPLAM** | **80** | **80** | **0** | **10.0 / 10 (%100 Internal PASS)** |
 
 ---
 
@@ -46,6 +51,6 @@ Klinik soru seti, uzman hekim senaryoları üzerinden iki katmanlı olarak doğr
 
 ---
 
-## 🛡️ 4. SONUÇ VE SERTİFİKASYON DURUMU
+## 🛡️ 4. SONUÇ VE DEĞERLENDİRME
 
-Tüm 80 klinik senaryoda halüsinasyon oranı **%0.0** olarak kaydedilmiştir. Sistem, FDA SaMD Class IIa ve EU MDR 2017/745 tıbbi cihaz yazılım standartlarına göre teknik hazırlık seviyesindedir (`READY_FOR_CLINICAL_TRIAL_STAGING`).
+Bu 80 dahili senaryoda herhangi bir halüsinasyon veya hatalı ilaç dozajı gözlenmemiştir (**Internal Clinical QA 80/80 PASS**). Ancak bu sonuçlar saha kullanımı öncesinde bağımsız klinik doğrulama çalışmaları (Clinical Validation Studies) ile desteklenmelidir.
