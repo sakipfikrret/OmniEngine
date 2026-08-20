@@ -44,13 +44,11 @@
 |:--|:--|:--|
 | 🔬 [WHITEPAPER.md](WHITEPAPER.md) | **Master Technical Whitepaper v18.0** — PQC, Med-LLaVA 13B, FedAvg DP, SLA ve kanıt matrisi | ✅ v18.0 Master |
 | 🏥 [klinik_vaka_ve_tibbi_senaryolar_raporu.md](klinik_vaka_ve_tibbi_senaryolar_raporu.md) | **Gerçek Klinik QA & Tanı Raporu** — 8/8 Canlı klinik vaka tanı ve Titan Protocol yanıtları | ✅ 8/8 PASS |
-| 📘 [gelişim aşaması.md](gelişim%20aşaması.md) | **Gelişim Aşaması & Geliştirici Rehberi** — FAZ 1'den FAZ 10'a tüm sprintler ve mimari evrim | ✅ Güncel |
 | 🎯 [sunum_one_pager_v18.md](sunum_one_pager_v18.md) | **Sunum & One-Pager (v18.0)** — Yatırımcı ve paydaş sunumu (10 slayt + mimari özet) | ✅ Hazır |
 | 🔥 [bottleneck_stres_testi_raporu.md](bottleneck_stres_testi_raporu.md) | **Dar Boğaz Stres Testi Raporu** — BN-01..08 Concurrency, GIL, 32K Context ve SIMD testleri | ✅ 8/8 PASS |
 | 🧪 [genel_test_suiti/GENEL_TEST_SUITI.md](genel_test_suiti/GENEL_TEST_SUITI.md) | **Genel Test Süiti** — FAZ 9/10 (7/7), BN (8/8), FAZ 8 (39/39) ve İddia (16/16) sonuçları | ✅ %100 PASS |
 | 🛡️ [penetrasyon_ve_guvenlik_raporu.md](penetrasyon_ve_guvenlik_raporu.md) | **Dahili Güvenlik & Pentest Raporu** — OWASP Top 10 ve 10 adversarial enjeksiyon engellemesi | ✅ 10/10 PASS |
 | 📜 [regulasyon_ve_uyumluluk_raporu.md](regulasyon_ve_uyumluluk_raporu.md) | **Regülasyon Hazırlık Raporu** — CE MDR Class IIb, ISO 27001:2022, SOC2 Tip II, KVKK/GDPR | ✅ Certified/Compliant |
-| 🤝 [CHATGPT_PROJE_INCELEME_NOTU.md](CHATGPT_PROJE_INCELEME_NOTU.md) | **ChatGPT ile Proje İnceleme Notu** — Dış model paylaşımı için güvenli prompt ve bağlam kiti | ✅ Paylaşıma hazır |
 | 📦 [airgap_bundle_manifestosu.md](airgap_bundle_manifestosu.md) | **Air-Gap Paket Manifestosu** — Kaynak dosya SHA-256 bütünlük envanteri ve kurulum kılavuzu | ✅ Sürümlü |
 
 ---
