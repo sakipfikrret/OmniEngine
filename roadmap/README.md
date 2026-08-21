@@ -19,6 +19,7 @@
 | Belge | Kapsam ve İçerik | Durum |
 |:--|:--|:--:|
 | 📋 [10_GOREV_LISTESI_VE_PLANLAMA.md](10_GOREV_LISTESI_VE_PLANLAMA.md) | **Master Görev Listesi (FAZ 0–10)** · 84/84 Görev Tamamlandı (%100.0) | ✅ %100 TAMAM |
+| 🔮 [11_GELECEK_YOLHARITASI_V19_V20.md](11_GELECEK_YOLHARITASI_V19_V20.md) | **Yeni Nesil Gelecek Yol Haritası (v19.0–v20.0)** · FAZ 11–15 İnovasyon Programı | 🚀 YENİ YOL HARİTASI |
 | 🎯 [YAPILACAKLAR_LISTESI.md](YAPILACAKLAR_LISTESI.md) | **Master Checklist & Kalan Görevler Sıfırlandı** (84/84 Görev + 25/25 Teknik Borç) | ✅ %100 TAMAM |
 | 🗺️ [01_GENEL_YOLHARITASI.md](01_GENEL_YOLHARITASI.md) | **Genel Vizyon, Stratejik Fazlar (FAZ 1–10), 23K QPS ve Dar Boğaz Sonuçları** | ✅ v18.0 Master |
 | ⚙️ [02_TEKNIK_GELISTIRMELER.md](02_TEKNIK_GELISTIRMELER.md) | **16-Uzman MoE, HoloDB v7.0, PQC Enclave, Med-LLaVA 13B & FHIR R4/R5** | ✅ v18.0 Master |

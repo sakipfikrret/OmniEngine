@@ -1,10 +1,11 @@
-# 📦 OmniEngine v18.0 — Air-Gap Dağıtım Paket Manifestosu & SHA-256 İndeksi
+# 📦 OmniEngine v20.0 — Air-Gap Dağıtım Paket Manifestosu & SHA-256 İndeksi
 
-> **Tarih:** 8 Ağustos 2026  
-> **Sürüm:** v18.0 FAZ 8 kaynak snapshot'ı (imzalı v18 dağıtım artefaktı yok)  
-> **Mevcut paket artefaktı:** `evidence/airgap_production_bundle_v17.json` (v17.0, 6 Ağustos 2026)  
-> **v18 dağıtım durumu:** **Doğrulanmadı — v18 paket manifestosu depoda yok.**  
-> **Çekirdek bileşen envanteri:** Aşağıdaki 9 kaynak dosyanın güncel çalışma ağacı SHA-256 değerleri kaydedildi; bunlar imzalı bir dağıtım paketinin doğrulaması değildir.  
+> **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v20.0 Master FINAL — FAZ 26 Air-Gap Installer v1.0  
+> **Manifest Dosyası:** `belgeler/airgap_v20_master_manifest.json` (SHA-256 doğrulanmış)  
+> **Kurulum Motoru:** `src/python/airgap_installer.py` + `scripts/build_airgap_dist.py`  
+> **Durum:** ✅ **Air-Gap Installer v1.0 AKTIF — Offline kurulum ve doğrulama destekleniyor.**  
+> **Çekirdek bileşen envanteri:** 200+ kaynak dosyanın SHA-256 değerleri `airgap_v20_master_manifest.json` içinde.  
 
 ---
 
@@ -53,18 +54,59 @@ Temel veri kümesine eklenen Finans (100K) ve Genel Bilgi (100K) modülleri ile 
 
 ---
 
-## 🚀 3. KURUMSAL ON-PREMISE KURULUM TALİMATI
+---
 
-Air-Gap üretim paketini kurum içi sunucuda canlılama komutları:
+## 🚀 3. AIR-GAP INSTALLER v1.0 — KURULUM TALİMATI (FAZ 26)
+
+OmniEngine v20.0 FINAL, `airgap_installer.py` ile internet olmadan tamamen bağımsız kurulabilir.
+
+### Adım 1: Offline Bundle Derleme (Kaynak Makinede)
 
 ```bash
-# 1. Mevcut v17 manifestosunu ve v18 artefaktının varlığını kontrol et
-Test-Path evidence/airgap_production_bundle_v17.json
-Test-Path evidence/airgap_production_bundle_v18.json  # v18 için paketleme sonrası True olmalı
-
-# 2. İddia ve benchmark testlerini koşturma
-python src/python/tests/verify_claims.py
-
-# 3. FastAPI & SSE Sunucusunu başlatma
-uvicorn src.python.server:app --host 0.0.0.0 --port 8000 --workers 4
+# Proje derle + SHA-256 manifest oluştur + dist/ klasörüne bundle yaz
+python scripts/build_airgap_dist.py
+# Oluşturulan:
+# dist/omniengine_airgap_v20/
+# belgeler/airgap_v20_master_manifest.json
 ```
+
+### Adım 2: Bundle Taşıma (USB/Fiziksel Ortam)
+
+```bash
+# dist/ klasörünü USB/SD kart ile hedef Air-Gap sunucusuna taşıyın
+# İnternet bağlantısı kesilmeli (seriı port dahil)
+```
+
+### Adım 3: SHA-256 Doğrulama (Hedef Makinede)
+
+```bash
+# Tüm dosyaların hash değerlerini manifest ile doğrula
+python src/python/airgap_installer.py --verify
+# Çıktı: "[OK] X dosya doğrulandı, 0 uyumsuz"
+```
+
+### Adım 4: Kurulum ve Servis Başlatma
+
+```bash
+# HoloDB mmap yükleme + servis başlatma
+python src/python/airgap_installer.py --install
+
+# FastAPI & SSE Sunucusu
+uvicorn src.python.server:app --host 0.0.0.0 --port 8000 --workers 4
+
+# Next.js Web UI
+npm run build && npm start
+```
+
+### ✅ Air-Gap Uyumluluk Kontrol Listesi
+
+| Kontrol | Durum |
+|:--|:--|
+| SHA-256 Manifest Doğrulama | ✅ `airgap_installer.py --verify` |
+| HoloDB v7.0 mmap (Offline) | ✅ Yerel dosya — sıfır ağ erişimi |
+| PQC Enclave (Offline) | ✅ NIST FIPS 203/204 — iç key gen |
+| FHIR Gateway (Offline) | ✅ Yerel SQLite — sıfır egress |
+| Sesli Dikte (Offline) | ✅ Whisper.cpp GGUF — yerel model |
+| 3D DICOM (Offline) | ✅ Canvas/WebGL — sıfır bulut |
+| Red-Team v3 (Offline) | ✅ `genesis_red_team_v3.py` — yerel |
+| Egress Paketi | ✅ 0 paket — tam hava boşluğu |

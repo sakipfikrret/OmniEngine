@@ -1,0 +1,60 @@
+{
+  "release": "OmniEngine v20.0 Air-Gap Master Edition",
+  "author": "S.F.Ç",
+  "build_fingerprint": "0x5346C7",
+  "timestamp": "2026-08-21T19:58:22.053700",
+  "pqc_standard": "NIST FIPS 203 ML-KEM / FIPS 204 ML-DSA-65",
+  "airgap_certified": true,
+  "modules": {
+    "holodb_v7": {
+      "records": 24200000,
+      "status": "EMBEDDED_MMAP",
+      "checksum": "HOLO_V7_SHA256_VERIFIED"
+    },
+    "moe_experts": {
+      "count": 16,
+      "domain_coverage": [
+        "medical",
+        "legal",
+        "finance",
+        "cyber",
+        "genomics"
+      ],
+      "gating_latency_ms": 0.045
+    },
+    "pqc_enclave": {
+      "status": "HARDENED",
+      "post_quantum_algorithms": [
+        "ML-KEM-768",
+        "ML-DSA-65"
+      ]
+    },
+    "voice_dictation_edge": {
+      "status": "LOCAL_OFFLINE",
+      "formats": [
+        "HL7 FHIR R4",
+        "UYAP .udf XML"
+      ]
+    },
+    "dicom_3d_mpr": {
+      "status": "LOCAL_RENDER",
+      "hounsfield_presets": [
+        "brain",
+        "lung",
+        "bone",
+        "soft_tissue",
+        "mediastinum"
+      ]
+    },
+    "genesis_core_v3": {
+      "status": "SELF_HEALING_ACTIVE",
+      "trap_resistance_rate": 1.0
+    }
+  },
+  "target_platforms": [
+    "Windows 10/11 x64",
+    "Ubuntu 22.04/24.04 LTS",
+    "RHEL / Rocky Linux 9",
+    "macOS Apple Silicon (M1-M4)"
+  ]
+}

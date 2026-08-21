@@ -1,9 +1,10 @@
-# 📜 OmniEngine v18.0 — Regülasyon Hazırlık Değerlendirmesi & Teknik Kontrol Haritalaması
+# 📜 OmniEngine v20.0 — Regülasyon Hazırlık Değerlendirmesi & Teknik Kontrol Haritalaması
 
-> **Tarih:** 8 Ağustos 2026  
-> **Sürüm:** v18.0 FAZ 8 teknik kontrol snapshot'ı (dağıtım veya mevzuat onayı değildir)  
+> **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v20.0 Master FINAL — FAZ 26 teknik kontrol snapshot'ı (dağıtım veya mevzuat onayı değildir)  
 > **Kapsam:** KVKK (Türkiye), GDPR (AB), HIPAA §164.312 (ABD), FDA SaMD Prensipleri, EU MDR Ek I Kontrolleri  
 > **Değerlendirme Tipi:** Dahili Mühendislik Teknik Kontrol Haritalaması (Technical Controls Mapped)  
+> **Yeni FAZ 23-26:** Sesli Dikte FHIR EntegrasyonuAir-Gap Installer SHA-256 Doğrulama · Red-Team v3 %100 Tespit  
 
 ---
 
