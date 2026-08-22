@@ -46,7 +46,6 @@
 |:--|:--|:--|
 | 🔬 [WHITEPAPER.md](WHITEPAPER.md) | **Master Technical Whitepaper v20.0 Release** — FAZ 1→26 kapsamlı teknik referans: PQC, Med-LLaVA 13B, 3D DICOM MPR, Sesli Dikte, Red-Team v3, Air-Gap Installer | ✅ v20.0 Release |
 | 🏥 [klinik_vaka_ve_tibbi_senaryolar_raporu.md](klinik_vaka_ve_tibbi_senaryolar_raporu.md) | **Gerçek Klinik QA & Tanı Raporu** — 8/8 Canlı klinik vaka tanı ve Titan Protocol yanıtları | ✅ 8/8 PASS |
-| 📘 [gelişim aşaması.md](gelişim%20aşaması.md) | **Gelişim Aşaması & Geliştirici Rehberi** — FAZ 1'den FAZ 26'ya tüm sprintler ve mimari evrim | ✅ Güncel |
 | 🎯 [sunum_one_pager_v18.md](sunum_one_pager_v18.md) | **Sunum & One-Pager (v18.0 temel)** — Yatırımcı ve paydaş sunumu (10 slayt + mimari özet) | ✅ Hazır |
 | 🔥 [bottleneck_stres_testi_raporu.md](bottleneck_stres_testi_raporu.md) | **Dar Boğaz Stres Testi Raporu** — BN-01..08 Concurrency, GIL, 32K Context ve SIMD testleri | ✅ 8/8 PASS |
 | 🧪 [genel_test_suiti/GENEL_TEST_SUITI.md](genel_test_suiti/GENEL_TEST_SUITI.md) | **Genel Test Süiti** — FAZ 9/10 (7/7), BN (8/8), FAZ 8 (39/39) ve İddia (16/16) sonuçları | ✅ %100 PASS |
@@ -57,7 +56,6 @@
 | 📦 [airgap_bundle_manifestosu.md](airgap_bundle_manifestosu.md) | **Air-Gap Paket Manifestosu** — SHA-256 bütünlük envanteri ve Air-Gap kurulum kılavuzu | ✅ v1.0 Hazır |
 | 🗂️ [airgap_v20_master_manifest.json](airgap_v20_master_manifest.json) | **Air-Gap SHA-256 Master Manifest** — 200+ dosyanın kriptografik hash envanteri | ✅ Güncel |
 | 📊 [10k_stress_test_raporu.md](10k_stress_test_raporu.md) | **10.000 Soru Şeffaf Stres Testi** — %97.84 Doğruluk · %95.00 Halüsinasyon Direnci | ✅ Şeffaf Rapor |
-| 🤝 [CHATGPT_PROJE_INCELEME_NOTU.md](CHATGPT_PROJE_INCELEME_NOTU.md) | **ChatGPT ile Proje İnceleme Notu** — Dış model paylaşımı için güvenli prompt ve bağlam kiti | ✅ Paylaşıma hazır |
 
 ---
 
