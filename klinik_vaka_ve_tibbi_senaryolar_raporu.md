@@ -1,4 +1,4 @@
-# 🏥 OmniEngine v18.0 — Gerçek Klinik QA & Tanı Testi Raporu
+# 🏥 OmniEngine v20.0 — Gerçek Klinik QA & Tanı Testi Raporu
 
 <div align='center'>
 
@@ -469,5 +469,5 @@ Klinik tabloya özgü tetkik ve izlem planı için tanı ya da semptom kompleksi
 ---
 
 <div align='center'>
-  <sub>OmniEngine v18.0 Gerçek API Klinik QA Raporu · 2026-08-21 01:06</sub>
+  <sub>OmniEngine v20.0 Gerçek API Klinik QA Raporu · 2026-08-21 01:06</sub>
 </div>

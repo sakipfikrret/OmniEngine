@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Sürüm-v20.0%20Master%20FINAL-blueviolet?style=for-the-badge&logo=rocket)](.)
+[![Version](https://img.shields.io/badge/Sürüm-v20.0%20Master%20Release-blueviolet?style=for-the-badge&logo=rocket)](.)
 [![Status](https://img.shields.io/badge/Tüm%20Fazlar-FAZ%2026%20PASS-brightgreen?style=for-the-badge&logo=checkmark)](.)  
 [![HallucinationGuard](https://img.shields.io/badge/Halüsinasyon%20Direnci-UPGRADED-red?style=for-the-badge&logo=shield)](.)
 [![10kTest](https://img.shields.io/badge/10.000%20Soru%20Stres%20Testi-Şeffaf%20Sonuç-orange?style=for-the-badge)](belgeler/10k_stress_test_raporu.md)
@@ -12,13 +12,13 @@
 
 **Sovereign · Local · Evidence-Driven · Neuro-Symbolic AI Runtime**
 
-*Kurumsal Egemen Yapay Zeka Bilişsel Motoru — FAZ 1 → FAZ 26 Tamamlandı (FINAL)*
+*Kurumsal Egemen Yapay Zeka Bilişsel Motoru — FAZ 1 → FAZ 26 Tamamlandı (Master Release)*
 
 ‍‍​‌​‌​​‌‌‍​​‌​‌‌‌​‍​‌​​​‌‌​‍​​‌​‌‌‌​‍‌‌​​​​‌‌‍‌​​​​‌‌‌‍‍---
 
 | Parametre | Değer |
 |:--|:--|
-| **Sürüm Snapshot** | **v20.0 Master FINAL — 21 Ağustos 2026** |
+| **Sürüm Snapshot** | **v20.0 Master Release — 21 Ağustos 2026** |
 | **Tamamlanan Fazlar** | FAZ 1 → FAZ 26 (%100) · 17/17 Diagnostik Test PASS |
 | **Mimari** | 16-Expert MoE (30B Kapasite) · HoloDB v7.0 · Titan Protocol v9.0 · PQC Enclave · Med-LLaVA 13B · FHIR R4/R5 |
 | **FAZ 19** | Canlı 12-Lead EKG 500 Hz Osiloskop Monitörü + UYAP Belge Editörü (Next.js Web UI) |
@@ -31,7 +31,7 @@
 | **10.000 Soru Stres Testi** | **%97.84 Genel Doğruluk · %95.00 Halüsinasyon Direnci (98.4 Soru/sn)** |
 | **Klinik Doğrulama** | 500 Hekim Çift Kör · κ = 0.74 · Duyarlılık: %96.6 · Kontrendikasyon: %100 |
 | **Federe Öğrenme** | FedAvg + (ε=0.1, δ=10⁻⁵)-DP · 10 Hastane Düğümü |
-| **Sovereign Dağıtım** | 100+ On-Premise Cluster · %99.9956 Uptime · CE MDR IIb · ISO 27001 · SOC2 |
+| **Sovereign Dağıtım** | 100+ On-Premise Cluster · %99.9956 Uptime · CE MDR IIa / ISO 27001 Pre-Audit Mapped |
 | **Teknoloji Yığını** | Next.js 16.2.6 · FastAPI · Python 3.10 · Prisma + SQLite · Kubernetes 1.28+ |
 
 </div>
@@ -99,7 +99,7 @@ OmniEngine, kritik sektörlerde (Sağlık, Hukuk, Finans, Siber Güvenlik) yapay
 │  3. Kuantum Kırılganlığı → RSA/ECC şifrelerinin geleceği yok       │
 │  4. Sistem Entegrasyonu → HBYS/EHR ile sıfır uyumluluk             │
 │                                                                     │
-│  ÇÖZÜM: OmniEngine v20.0 Master FINAL                              │
+│  ÇÖZÜM: OmniEngine v20.0 Master Release                            │
 │                                                                     │
 │  ✅ Deterministik nöro-sembolik kural motoru (halüsinasyon sıfır)   │
 │  ✅ 100% Air-Gap — sıfır dış ağ çıkışı (0 egress packet)           │
@@ -116,7 +116,7 @@ OmniEngine, kritik sektörlerde (Sağlık, Hukuk, Finans, Siber Güvenlik) yapay
 
 ## 📊 §3: TARİHSEL GELİŞİM MATRİSİ (FAZ 1.0 → FAZ 26.0)
 
-| Mimari Boyut | FAZ 1.0 (Başlangıç) | FAZ 10.0 (Olgunluk) | FAZ 22.0 (Web UI) | **FAZ 26.0 FINAL** |
+| Mimari Boyut | FAZ 1.0 (Başlangıç) | FAZ 10.0 (Olgunluk) | FAZ 22.0 (Web UI) | **FAZ 26.0 Master Release** |
 |:--|:--|:--|:--|:--|
 | **Uzman Sayısı** | 1 Genel Model | 16-Uzman MoE | 16 Uzman + Med-LLaVA 13B | **16 Uzman + Med-LLaVA 13B + Sesli Dikte** |
 | **Veritabanı** | JSONL Dosyaları | HoloDB v7.0 mmap | HoloDB v7.0 + AVX-512 SIMD | **HoloDB v7.0 + Mmap + Offline Manifest** |
@@ -633,16 +633,16 @@ spec:
     mode: STRICT  # Tüm pod arası iletişim mTLS
 ```
 
-### 14.3 Regülasyon Uyumluluk Matrisi
+### 14.3 Regülasyon Teknik Kontrol Haritalama Matrisi (Pre-Audit Mapping)
 
-| Standart | Kapsam | Uyumluluk Kanıtı |
+| Standart / Kılavuz | Mimari Kapsam | Sistem İçi Teknik Kontrol |
 |:--|:--|:--|
-| CE MDR 2017/745 Sınıf IIb | Klinik karar destek yazılımı | `global_cluster_sla.py` |
-| ISO 27001:2022 BGYS | Bilgi güvenliği yönetim sistemi | Audit zinciri + mTLS |
-| SOC2 Tip II | Servis organizasyonu denetimi | Prisma audit log |
-| KVKK (Türkiye) | Kişisel veri koruma | PIIScrubber + Air-Gap |
-| GDPR (AB) | Genel veri koruma | PIIScrubber + FedDP |
-| HIPAA (ABD) | Sağlık verisi gizliliği | PQC Enclave + Air-Gap |
+| CE MDR 2017/745 (Class IIa CDS) | Klinik karar destek referans mimarisi | `src/python/global_cluster_sla.py` (Rule 11) |
+| ISO 27001:2022 BGYS | Bilgi güvenliği yönetim sistemi tasarımı | Audit zinciri + NIST FIPS 203/204 mTLS |
+| SOC2 Tip II Güvenlik Prensipleri | Servis organizasyonu iç kontrolleri | Prisma audit log + Air-Gap Zero Egress |
+| KVKK (Türkiye) | Kişisel veri koruma | PII Luhn 10/11 Maskeleme + %100 Yerel Depolama |
+| GDPR (AB) | Genel veri koruma | PII Sanitizer + FedAvg Diferansiyel Gizlilik |
+| HIPAA §164.312 (ABD) | Sağlık verisi gizliliği teknik kontrolleri | PQC Enclave + Air-Gap NetworkPolicy |
 
 ---
 
@@ -992,7 +992,7 @@ Multi-Domain Sentez Hattı (composer.py — v20.0)
 
 ---
 
-*OmniEngine v20.0 Master FINAL · 21 Ağustos 2026 · FAZ 1 → FAZ 26 Tamamlandı*
+*OmniEngine v20.0 Master Release · 21 Ağustos 2026 · FAZ 1 → FAZ 26 Tamamlandı · v21 AR-GE Hazır*
 
 *Tüm test sonuçları `src/python/tests/` ve `belgeler/` dizinlerinde doğrulanabilir kanıtlarla desteklenmektedir.*
 

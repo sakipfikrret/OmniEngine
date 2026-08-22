@@ -1,58 +1,71 @@
-# 🏥 IEC 62304 / FDA SaMD Class III Medical Device Software Compliance v20.0
+# 🏥 IEC 62304 / EU MDR Class IIa Medical Device Software (SaMD) Architecture Reference v20.0
 
 <div align="center">
 
-[![Standard](https://img.shields.io/badge/Standart-IEC%2062304%20Class%20C-blueviolet?style=for-the-badge&logo=shield)](.)
-[![FDA](https://img.shields.io/badge/FDA-SaMD%20Class%20III-red?style=for-the-badge)](.) 
+[![Standard](https://img.shields.io/badge/Standart-IEC%2062304%20Class%20B-blueviolet?style=for-the-badge&logo=shield)](.)
+[![MDR](https://img.shields.io/badge/EU%20MDR-Class%20IIa%20CDS-blue?style=for-the-badge)](.) 
 [![Safety](https://img.shields.io/badge/Risk%20Management-ISO%2014971-brightgreen?style=for-the-badge)](.) 
-[![AirGap](https://img.shields.io/badge/Air--Gap-Installer%20v1.0-darkgreen?style=for-the-badge)](.) 
+[![AirGap](https://img.shields.io/badge/Air--Gap-Internal%20Pass-darkgreen?style=for-the-badge)](.) 
 
-**Deterministik Fail-Safe · Biyomedikal Gömülü Güvenlik · Yaşam Destek Cihazı Yazılımı**
+**Klinik Karar Destek Sistemi (CDS) · Deterministik Güvenlik Mimarisi · Biyomedikal Telemetri Analizi**
 
-*OmniEngine Cognitive Core v20.0 Master FINAL / FAZ 1→26 — IoMT Edge Runtime + Air-Gap Installer + Sesli Dikte*
+*OmniEngine Cognitive Core v20.0 Master Release — Klinik Karar Destek & IoMT Edge Referans Tasarımı*
 
 </div>
 
 ---
 
+## ⚠️ Yasal Uyarı ve Amaçlanan Kullanım Sınırı (Intended Use Boundary)
+
+> [!IMPORTANT]
+> **Araştırma ve Karar Destek Prototipi:**
+> Bu belge, OmniEngine'in yazılım yaşam döngüsü (IEC 62304:2006+AMD1:2015) ve tıbbi yazılım risk yönetimi (ISO 14971:2019) prensiplerine uygun olarak tasarlanmış **mimari referans modelini** açıklar.
+> 
+> **Kritik Sınırlar:**
+> 1. OmniEngine bağımsız bir klinik tanı aracı veya reçete üreticisi **değildir**; hekimin klinik kararını ikame etmez.
+> 2. OmniEngine yaşam destek cihazlarının (mekanik ventilatör valfi, diyaliz kan pompası vb.) doğrudan donanım aktüatörü veya kontrolörü **değildir**. Telemetri ve sinyal analiz modülleri yalnızca veri akışı izleme, alarm simülasyonu ve klinik karar destek senaryolarını test etmek içindir.
+> 3. Bu doküman resmi bir CE MDR veya FDA onay belgesi olmayıp, bağımsız akreditasyon öncesi dahili teknik mimari haritalamasıdır (`referans_belgeler/INTENDED_USE.md` ile tam uyumludur).
+
+---
+
 ## 📌 1. Amaç ve Kapsam
 
-Bu belge, OmniEngine v19.0 Biyomedikal Edge çalışma zamanının (`src/python/iomt_telemetry.py`, `src/python/holodb_embedded_edge.py` ve `src/python/voice_dictation_edge.py`) **IEC 62304:2006+AMD1:2015 Class C (Hayati Tehlike Taşıyan Yazılım)** ve **FDA SaMD Sınıf III** gereksinimlerine tam uyumluluğunu teknik kanıtlarla belgeler.
+Bu doküman, OmniEngine Biyomedikal Edge çalışma zamanının (`src/python/iomt_telemetry.py`, `src/python/holodb_embedded_edge.py`, `src/python/voice_dictation_edge.py` ve `src/python/vision_expert.py`) **IEC 62304 Class B (Ciddi Olmayan Yaralanma Riski / Karar Destek)** ve **EU MDR 2017/745 Class IIa (Klinik Karar Destek Yazılımı - SaMD)** ilkeleri doğrultusunda geliştirilen güvenlik ve risk hafifletme katmanlarını belgeler.
 
 ---
 
 ## 🛡️ 2. Yazılım Güvenlik Sınıflandırması (Software Safety Classification)
 
-| Standart / Regülasyon | Tanımlanan Sınıf | Gerekçe ve Tanım |
+| Standart / Regülasyon | Hedef Referans Sınıfı | Tanım ve Mimari Kapsam |
 |:---|:---:|:---|
-| **IEC 62304** | **Class C** | Yazılım hatası durumunda hastada ölüm veya kalıcı sakatlık riski doğurabilecek mekanik ventilatör ve diyaliz kritik karar destek sistemleri. |
-| **FDA SaMD** | **Class III** | Yaşamı sürdüren, kritik kriz anlarında saniyeden kısa sürede müdahale öneren otonom telemetri motoru. |
-| **ISO 14971:2019** | **Kritik Risk** | Tıbbi cihaz risk analizi ve hata modu etkileri analizi (FMEA). |
+| **IEC 62304:2015** | **Class B** | Yazılımın doğrudan donanım kontrolü yapmadığı, hekime kanıt temelli öneri sunduğu ve hekim denetiminin zorunlu olduğu Klinik Karar Destek (CDS) katmanı. |
+| **EU MDR 2017/745** | **Class IIa (Rule 11)** | Teşhis ve tedavi amaçlı kararlara bilgi sağlayan, hayati fonksiyonları doğrudan yönlendirmeyen bağımsız tıbbi yazılım (SaMD). |
+| **ISO 14971:2019** | **Tıbbi Risk Yönetimi** | Hata Modu ve Etkileri Analizi (FMEA), Titan Protocol kural engellemeleri ve otomatik fail-safe mekanizmaları. |
 
 ---
 
-## ⚡ 3. Deterministik Fail-Safe Mimarisi
+## ⚡ 3. Deterministik Güvenlik & Fail-Safe Mimarisi
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                    DETERMİNİSTİK FAIL-SAFE MİMARİSİ                         │
+│             KLİNİK KARAR DESTEK (CDS) FAIL-SAFE MİMARİSİ                    │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  [1000 Hz Biyosinyal] ──► 1. Donanım Sinyal Filtresi (Analog/Dijital)       │
-│                                  │                                          │
-│                                  ▼                                          │
-│                           2. HoloDB Embedded (<5 µs / <50MB RAM)            │
-│                                  │ (Deterministik Kural Kontrolü)           │
-│                                  ▼                                          │
-│                           3. Titan Protocol Sınıf C Güvenlik Kapısı         │
-│                                  │                                          │
-│                     ┌────────────┴────────────┐                             │
-│                     ▼                         ▼                             │
-│             [NORMAL ÇALIŞMA]          [ANOMALİ TESPİTİ]                     │
-│             Klinik Doğrulama          Fail-Safe Güvenli Durum Kilidi        │
-│             (CSL > 0.98)              - Tepe Basıncı Boşaltma (PIP Tahliye) │
-│                                       - Kan Pompasını Acil Durdurma         │
-│                                       - Donanım Sesli Alarm Tetikleme       │
+│  [Biyosinyal / Telemetri Verisi] ──► 1. Veri Doğrulama & PII Maskeleme     │
+│                                           │ (TCKN, İsim, Tarih Filtresi)    │
+│                                           ▼                                 │
+│                                      2. HoloDB Embedded (<5 µs)             │
+│                                           │ (Deterministik Kural Kontrolü)  │
+│                                           ▼                                 │
+│                                      3. Titan Protocol Güvenlik Kapısı      │
+│                                           │                                 │
+│                     ┌─────────────────────┴─────────────────────┐           │
+│                     ▼                                           ▼           │
+│             [NORMAL DOĞRULAMA]                          [KRİTİK UYARI]      │
+│             Klinik Karar Desteği                        Hekim Uyarı Kilidi  │
+│             - Referans Aralığı Uyumu                    - Kontrendikasyon   │
+│             - Kılavuz Önerisi (ESC/AHA)                 - Zehirlenme Riski  │
+│             - Hekim Onayına Sunum                       - ABSTAIN Durumu    │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -61,28 +74,31 @@ Bu belge, OmniEngine v19.0 Biyomedikal Edge çalışma zamanının (`src/python/
 
 ## 🔬 4. Risk Analizi ve Hata Modu Önleme Matrisi (FMEA)
 
-| Hata Modu (Failure Mode) | Potansiyel Klinik Risk | Güvenlik Mekanizması | Doğrulama Yöntemi |
+| Senaryo / Parametre | Potansiyel Risk | Güvenlik Mekanizması | Doğrulama Modülü |
 |:---|:---|:---|:---|
-| **PIP > 35 cmH2O (Barotravma)** | Akciğer rüptürü / Tansiyon pnömotoraks | Anlık ekspiratuar valf tahliye uyarısı (<0.05 ms) | `test_ventilator_barotrauma_alarm` |
-| **Auto-PEEP & Hava Hapsi** | Venöz dönüş azalması / Hipotansiyon | Ekspiratuar akım sıfırlanma denetimi | `test_auto_peep_detection` |
-| **Diyaliz Kan Sızıntısı** | Masif kan kaybı / Hipovolemik şok | Optik sensör tetiklemesi ile kan pompasını durdurma | `test_dialysis_blood_leak_emergency` |
-| **TMP > 250 mmHg** | Filtre liflerinin tamamen pıhtılaşması | Transmembran basınç gradiyenti erken uyarısı | `test_dialysis_tmp_clotting_alert` |
-| **Pediatrik Aspirin Dikte** | Reye Sendromu (Ölümcül ensefalopati) | Titan Protocol kural engellemesi (%100 ABSTAIN) | `test_pediatric_aspirin_block` |
+| **Pediatrik Aspirin Kullanımı** | Reye Sendromu (Ölümcül ensefalopati) | Titan Protocol kural engellemesi (%100 ABSTAIN) | `src/python/symbolic_engine.py` |
+| **Metformin + Böbrek Yetmezliği** | Laktik Asidoz (eGFR < 30 mL/dk) | Otomatik kontrendikasyon uyarısı ve doz kesme | `src/python/medical_expert.py` |
+| **Varfarin + NSAID Etkileşimi** | Gastrointestinal kanama riski | İlaç etkileşim uyarısı & INR takip önerisi | `src/python/composer.py` |
+| **Telemetri STEMI Tespiti** | Akut Miyokard Enfarktüsü gecikmesi | 500 Hz EKG ST elevasyon analizi + acil hekim bildirimi | `src/python/vision_expert.py` |
+| **Yetersiz/Bozuk Veri Girişi** | Hatalı karar desteği | Boş/belirsiz girdide otomatik ABSTAIN | `src/python/quality_gate.py` |
 
 ---
 
 ## 🧪 5. Doğrulama ve Test Komutları
 
 ```bash
-# FAZ 11 IoMT Edge & Biyomedikal Cihaz Güvenlik Süiti
+# Klinik Karar Destek & Biyomedikal Edge Test Süiti
 python src/python/tests/faz11_iomt_edge_test.py
+
+# Gerçek Klinik Acil Vaka QA Testi
+python src/python/tests/clinical_full_report.py
 ```
 
 ---
 
 <div align="center">
 
-*OmniEngine Cognitive Core v19.0 — IEC 62304 / FDA SaMD Class III Compliance*  
+*OmniEngine Cognitive Core v20.0 Master Release — IEC 62304 / EU MDR Architecture Reference*  
 *Tüm hakları saklıdır · Sahiplik İmzası: S.F.Ç*
 
 </div>

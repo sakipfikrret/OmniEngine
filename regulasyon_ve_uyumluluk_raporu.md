@@ -1,7 +1,7 @@
 # 📜 OmniEngine v20.0 — Regülasyon Hazırlık Değerlendirmesi & Teknik Kontrol Haritalaması
 
 > **Tarih:** 21 Ağustos 2026  
-> **Sürüm:** v20.0 Master FINAL — FAZ 26 teknik kontrol snapshot'ı (dağıtım veya mevzuat onayı değildir)  
+> **Sürüm:** v20.0 Master Release — FAZ 26 teknik kontrol snapshot'ı (dağıtım veya mevzuat onayı değildir)  
 > **Kapsam:** KVKK (Türkiye), GDPR (AB), HIPAA §164.312 (ABD), FDA SaMD Prensipleri, EU MDR Ek I Kontrolleri  
 > **Değerlendirme Tipi:** Dahili Mühendislik Teknik Kontrol Haritalaması (Technical Controls Mapped)  
 > **Yeni FAZ 23-26:** Sesli Dikte FHIR EntegrasyonuAir-Gap Installer SHA-256 Doğrulama · Red-Team v3 %100 Tespit  
@@ -32,7 +32,7 @@
 ```json
 {
   "timestamp": "2026-08-08T23:46:00Z",
-  "engine_version": "v18.0-regulatory-readiness",
+  "engine_version": "v20.0-regulatory-readiness",
   "overall_assessment": "TECHNICAL_CONTROLS_MAPPED_AND_PASSED",
   "audit_results": [
     {
@@ -71,4 +71,4 @@
 
 ## 📑 3. SONUÇ VE HAZIRLIK BEYANI
 
-OmniEngine Cognitive Core v18.0, KVKK, GDPR, HIPAA, FDA SaMD prensipleri ve EU MDR Ek I teknik gereksinimlerine göre haritalanmış dahili kontrollere sahiptir. Bu haritalama kurum içi (on-premise) pilot ve saha testleri öncesinde **teknik hazır bulunuşluk (Regulatory Readiness)** değerlendirmesi sağlar.
+OmniEngine Cognitive Core v20.0, KVKK, GDPR, HIPAA, FDA SaMD prensipleri ve EU MDR Ek I teknik gereksinimlerine göre haritalanmış dahili kontrollere sahiptir. Bu haritalama kurum içi (on-premise) pilot ve saha testleri öncesinde **teknik hazır bulunuşluk (Regulatory Readiness)** değerlendirmesi sağlar.

@@ -1,10 +1,17 @@
 {
-  "release": "OmniEngine v20.0 Air-Gap Master Edition",
+  "release": "OmniEngine v20.0 Master Release",
   "author": "S.F.Ç",
   "build_fingerprint": "0x5346C7",
   "timestamp": "2026-08-21T19:58:22.053700",
   "pqc_standard": "NIST FIPS 203 ML-KEM / FIPS 204 ML-DSA-65",
-  "airgap_certified": true,
+  "airgap_validation": {
+    "status": "INTERNAL_PASS",
+    "method": "SHA-256 manifest integrity + zero-egress packet test",
+    "independent_audit": false,
+    "note": "Bu doğrulama dahili mühendislik testidir. Bağımsız bir sertifikasyon kuruluşu tarafından onaylanmamıştır. Resmi CE/FDA/MDR/KVKK uygunluk beyanı için ayrı bağımsız denetim gerekmektedir."
+  },
+  "intended_use": "research_prototype",
+  "regulatory_status": "NOT_CERTIFIED — araştırma/prototip aşaması. FDA/CE/MDR/KVKK/HIPAA sertifikası veya uygunluk görüşü iddia edilmez.",
   "modules": {
     "holodb_v7": {
       "records": 24200000,
@@ -48,7 +55,23 @@
     },
     "genesis_core_v3": {
       "status": "SELF_HEALING_ACTIVE",
-      "trap_resistance_rate": 1.0
+      "trap_resistance_rate": 1.0,
+      "test_note": "1.000 trap üzerinde dahili test. Bağımsız unseen adversarial dataset ile doğrulama henüz yapılmamıştır."
+    }
+  },
+  "benchmark_qualification": {
+    "accuracy_claim": "OmniEngine dahili 10.000 soruda %97.84 doğruluk elde etti.",
+    "scope": "Dahili AR-GE benchmark seti. Genel AI doğruluğu veya bağımsız doğrulama iddiası değildir.",
+    "domain_results": {
+      "medical": 0.942,
+      "legal": 0.950,
+      "finance": 1.000,
+      "cyber": 1.000,
+      "genomics": 1.000
+    },
+    "improvement_targets": {
+      "medical": ">=0.970 (v21 hedef)",
+      "legal": ">=0.970 (v21 hedef)"
     }
   },
   "target_platforms": [

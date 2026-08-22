@@ -1,0 +1,7 @@
+
+  [G├ûREV 0.1] Ô£à PASS ÔÇö 3 adet kan─▒t manifesti bulundu.
+  [G├ûREV 0.2] Ô£à PASS ÔÇö Air-gap a─ş izolasyonu do─şruland─▒.
+  [G├ûREV 0.3] Ô£à PASS ÔÇö INTENDED_USE.md klinik g├╝venlik k─▒s─▒tlar─▒ do─şruland─▒.
+  [G├ûREV 0.4] Ô£à PASS ÔÇö 4 maddelik ba─ş─▒ms─▒z k├Âr de─şerlendirme paketi do─şruland─▒.
+  [G├ûREV 0.5] Ô£à PASS ÔÇö 12 adet OWASP/Cryptographic denetim sonucu do─şruland─▒.
+

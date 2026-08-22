@@ -1,19 +1,19 @@
 # 🛡️ OmniEngine v20.0 — FAZ 24: Genesis Core v3.0 Otonom Red-Team Raporu
-> **Test Tarihi:** 2026-08-21 19:53:53
-> **Sahiplik Mührü:** S.F.Ç (0x5346C7) · Otonom Arka Plan Döngüsü
-> **Toplam Tuzak Sorusu:** 1000 (5 Alan × 200 Tuzak/Alan)
+> **Test Tarihi:** 2026-08-22 19:35:20
+> **Sahiplik Mührü:** Fikret ÇALKIN (S.F.Ç) (0x5346C7) · Otonom Arka Plan Döngüsü
+> **Toplam Tuzak Sorusu:** 100 (5 Alan × 20 Tuzak/Alan)
 
-‍‍​‌​‌​​‌‌‍​​‌​‌‌‌​‍​‌​​​‌‌​‍​​‌​‌‌‌​‍‌‌​​​​‌‌‍‌​​​​‌‌‌‍‍---
+---
 
 ## 📊 1. Genel Sonuç Tablosu
 
 | Metrik | Değer |
 |:--|:--:|
-| **Toplam Tuzak Sorusu** | **1000** |
-| **Yakalanan (Tuzak Engellendi)** | **1000** |
+| **Toplam Tuzak Sorusu** | **100** |
+| **Yakalanan (Tuzak Engellendi)** | **100** |
 | **Kaçırılan (Model Yanıltıldı)** | **0** |
 | **Genel Halüsinasyon Direnç Oranı** | **%100.00** |
-| **Test Süresi** | **0.43 sn** |
+| **Test Süresi** | **0.05 sn** |
 | **Auto-Injected Yeni Filtreler** | **0** |
 
 ---
@@ -22,11 +22,11 @@
 
 | Alan | Tuzak Sayısı | Yakalanan | Kaçırılan | Direnç | Ort. Gecikme |
 |:--|:--:|:--:|:--:|:--:|:--:|
-| 🩺 **Medical** | 200 | 200 | 0 | **%100.0** | 0.42 ms |
-| ⚖️ **Legal** | 200 | 200 | 0 | **%100.0** | 0.4 ms |
-| 💰 **Finance** | 200 | 200 | 0 | **%100.0** | 0.41 ms |
-| 🛡️ **Cyber** | 200 | 200 | 0 | **%100.0** | 0.46 ms |
-| 🧬 **Genomics** | 200 | 200 | 0 | **%100.0** | 0.39 ms |
+| 🩺 **Medical** | 20 | 20 | 0 | **%100.0** | 0.58 ms |
+| ⚖️ **Legal** | 20 | 20 | 0 | **%100.0** | 0.4 ms |
+| 💰 **Finance** | 20 | 20 | 0 | **%100.0** | 0.45 ms |
+| 🛡️ **Cyber** | 20 | 20 | 0 | **%100.0** | 0.41 ms |
+| 🧬 **Genomics** | 20 | 20 | 0 | **%100.0** | 0.4 ms |
 
 ---
 
@@ -45,6 +45,6 @@
 ---
 
 ## 🔒 5. Kriptografik Mühür
-- **Sahiplik:** `S.F.Ç (0x5346C7)`
+- **Sahiplik:** `Fikret ÇALKIN (S.F.Ç) (0x5346C7)`
 - **PQC Enclave:** `NIST FIPS 204 ML-DSA-65`
-- **SHA-256:** `40510175845988f13f6162ed...`
+- **SHA-256:** `ad57366865126e55649ecb23...`

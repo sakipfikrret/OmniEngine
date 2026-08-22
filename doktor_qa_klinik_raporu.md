@@ -1,7 +1,7 @@
 # 🏥 OmniEngine v20.0 — Dahili Klinik QA & Hekim Senaryo Raporu (Internal Benchmark)
 
 > **Tarih:** 21 Ağustos 2026  
-> **Sürüm:** v20.0 Master FINAL — FAZ 26 dahili QA snapshot'ı (dağıtım hazır oluş beyanı değildir)  
+> **Sürüm:** v20.0 Master Release — FAZ 26 dahili QA snapshot'ı (dağıtım hazır oluş beyanı değildir)  
 > **Kapsam:** 80 Dahili Klinik Senaryo (STEMI Acil, Anemi, Pediatrik Dozaj, eGFR Kontrendikasyonları, ESC 2025 Kılavuzu) + Sesli Dikte Transkripsiyon Doğrulama  
 > **Dahili Test Sonucu:** **Internal Clinical QA — 80/80 PASS (%100.0 Dahili Başarı)** · **Ortalama Puan:** **10.0 / 10.0**  
 > **Dahili Test İhlal Sayısı:** **0 Hata Gözlendi (Bu 80 Dahili Senaryoda)**  

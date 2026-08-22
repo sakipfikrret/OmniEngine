@@ -1,10 +1,10 @@
 # 📦 OmniEngine v20.0 — Air-Gap Dağıtım Paket Manifestosu & SHA-256 İndeksi
 
 > **Tarih:** 21 Ağustos 2026  
-> **Sürüm:** v20.0 Master FINAL — FAZ 26 Air-Gap Installer v1.0  
+> **Sürüm:** v20.0 Master Release — FAZ 26 Air-Gap Installer v1.0  
 > **Manifest Dosyası:** `belgeler/airgap_v20_master_manifest.json` (SHA-256 doğrulanmış)  
 > **Kurulum Motoru:** `src/python/airgap_installer.py` + `scripts/build_airgap_dist.py`  
-> **Durum:** ✅ **Air-Gap Installer v1.0 AKTIF — Offline kurulum ve doğrulama destekleniyor.**  
+> **Durum:** ✅ **Air-Gap Dahili Doğrulama (INTERNAL_PASS) — Offline kurulum ve bütünlük kontrolü destekleniyor.**  
 > **Çekirdek bileşen envanteri:** 200+ kaynak dosyanın SHA-256 değerleri `airgap_v20_master_manifest.json` içinde.  
 
 ---
