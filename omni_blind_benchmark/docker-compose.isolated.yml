@@ -1,0 +1,76 @@
+name: omniengine-blind-benchmark
+
+services:
+  runtime:
+    build:
+      context: ..
+      dockerfile: omni_blind_benchmark/Dockerfile.runtime
+    read_only: true
+    user: "10001:10001"
+    network_mode: "none"
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    environment:
+      PYTHONPATH: /app
+    volumes:
+      - type: bind
+        source: ${OMNI_BLIND_PUBLIC_DIR:?set OMNI_BLIND_PUBLIC_DIR}
+        target: /bench/public
+        read_only: true
+      - type: bind
+        source: ${OMNI_BLIND_ANSWERS_DIR:?set OMNI_BLIND_ANSWERS_DIR}
+        target: /bench/answers
+    command:
+      - /app/omni_blind_benchmark/runner/run.py
+      - --public
+      - /bench/public/input.jsonl
+      - --output
+      - /bench/answers/run.jsonl
+      - --adapter
+      - omni_blind_benchmark.runner.omniengine_composer_adapter:answer
+
+  scorer:
+    build:
+      context: ..
+      dockerfile: omni_blind_benchmark/Dockerfile.runtime
+    read_only: true
+    user: "10001:10001"
+    network_mode: "none"
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    environment:
+      PYTHONPATH: /app
+    volumes:
+      - type: bind
+        source: ${OMNI_BLIND_PUBLIC_DIR:?set OMNI_BLIND_PUBLIC_DIR}
+        target: /bench/public
+        read_only: true
+      - type: bind
+        source: ${OMNI_BLIND_ANSWERS_DIR:?set OMNI_BLIND_ANSWERS_DIR}
+        target: /bench/answers
+        read_only: true
+      - type: bind
+        source: ${OMNI_BLIND_REFERENCE_DIR:?set OMNI_BLIND_REFERENCE_DIR}
+        target: /bench/reference
+        read_only: true
+      - type: bind
+        source: ${OMNI_BLIND_REPORTS_DIR:?set OMNI_BLIND_REPORTS_DIR}
+        target: /bench/reports
+    command:
+      - /app/omni_blind_benchmark/evaluator/evaluate.py
+      - --public
+      - /bench/public/input.jsonl
+      - --reference
+      - /bench/reference/reference.jsonl
+      - --run
+      - /bench/answers/run.jsonl
+      - --reports
+      - /bench/reports
+      - --config
+      - /app/omni_blind_benchmark/config/v1.0.json
+      - --seed
+      - "42"

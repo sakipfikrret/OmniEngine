@@ -1,0 +1,46 @@
+{
+  "benchmark_version": "External Blind Benchmark v1.0",
+  "benchmark_sha256": "ae85b44304e849f21132c80c8566a3aacb70b8853fbee717f8c789cd253d0035",
+  "reference_sha256": "c1103ce9b3a3c062f5079285c025c65fbbaf2a1b353da0e78b569dd04d8bd055",
+  "run_sha256": "6e7f23c27a95ec29efa96f2063965c6a6690bed9f29d9aa16774b75b0a536858",
+  "benchmark_config_sha256": "250704c82b3d74fecd0af8f7937e413f00ce094f9b4fb8c8365e427b4c209ec6",
+  "omniengine_git_commit": "8d4104759821ba25f364531a6fdd4791a1d1476d",
+  "model_identifier": "not_applicable",
+  "model_sha256": "not_collected",
+  "holodb_snapshot_identifier": "not_applicable",
+  "holodb_snapshot_sha256": "not_collected",
+  "runtime_version": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "python_version": "3.12.13",
+  "operating_system": "Windows-11-10.0.26200-SP0",
+  "hardware_information": "AMD64",
+  "gpu_information": "not_collected",
+  "timestamp": "2026-08-25T11:50:20.177425+00:00",
+  "random_seed": 42,
+  "relevant_configuration_values": {
+    "version": "External Blind Benchmark v1.0",
+    "target_size": 10000,
+    "profiles": {
+      "dry_run": 100,
+      "pilot": 1000,
+      "full": 10000
+    },
+    "domains": {
+      "medical": 2000,
+      "legal": 2000,
+      "finance": 2000,
+      "cyber": 2000,
+      "genomics": 1000,
+      "general": 1000
+    },
+    "question_types": {
+      "normal": 0.4,
+      "adversarial": 0.2,
+      "unanswerable": 0.15,
+      "conflicting_evidence": 0.1,
+      "high_risk": 0.1,
+      "out_of_distribution": 0.05
+    }
+  },
+  "objective_evaluator": true,
+  "llm_as_judge": false
+}

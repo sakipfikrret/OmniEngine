@@ -1,0 +1,7 @@
+{
+  "version": "External Blind Benchmark v1.0",
+  "target_size": 10000,
+  "profiles": {"dry_run": 100, "pilot": 1000, "full": 10000},
+  "domains": {"medical": 2000, "legal": 2000, "finance": 2000, "cyber": 2000, "genomics": 1000, "general": 1000},
+  "question_types": {"normal": 0.4, "adversarial": 0.2, "unanswerable": 0.15, "conflicting_evidence": 0.1, "high_risk": 0.1, "out_of_distribution": 0.05}
+}

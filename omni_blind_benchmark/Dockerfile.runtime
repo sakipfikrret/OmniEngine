@@ -1,0 +1,14 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+# This image intentionally includes only runtime code.  .dockerignore excludes
+# hidden references, reports, local data and environment files from its context.
+COPY omni_blind_benchmark /app/omni_blind_benchmark
+COPY src/python /app/src/python
+
+RUN useradd --create-home --uid 10001 benchmark && chown -R benchmark:benchmark /app
+USER benchmark
+
+ENTRYPOINT ["python"]

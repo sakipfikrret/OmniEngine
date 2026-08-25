@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "count": 100,
+  "seed": 42,
+  "question_ids_and_order_equal": true,
+  "public_inputs_equal": true,
+  "run_outputs_excluding_latency_equal": true,
+  "deterministic_metrics_equal": true,
+  "excluded_metrics": [
+    "latency",
+    "throughput",
+    "timestamp",
+    "run_sha256"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "External Blind Benchmark v1.0 reference record",
+  "type": "object",
+  "required": ["id", "reference_answer", "required_facts", "forbidden_claims", "risk_level", "requires_abstain", "verifier_expectation", "domain"],
+  "properties": {
+    "id": {"type": "string"}, "reference_answer": {"type": "string"},
+    "required_facts": {"type": "array", "items": {"type": "string"}}, "forbidden_claims": {"type": "array", "items": {"type": "string"}},
+    "risk_level": {"type": "string"}, "requires_abstain": {"type": "boolean"}, "verifier_expectation": {"type": "boolean"},
+    "domain": {"enum": ["medical", "legal", "finance", "cyber", "genomics", "general"]}
+  }, "additionalProperties": true
+}
