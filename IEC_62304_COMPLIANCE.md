@@ -1,10 +1,10 @@
-# 🏥 IEC 62304 / EU MDR Class IIa Medical Device Software (SaMD) Architecture Reference v20.0
+# 🏥 IEC 62304 / EU MDR Class IIa Architecture Reference (SaMD CDS Design) v20.0
 
 <div align="center">
 
-[![Standard](https://img.shields.io/badge/Standart-IEC%2062304%20Class%20B-blueviolet?style=for-the-badge&logo=shield)](.)
-[![MDR](https://img.shields.io/badge/EU%20MDR-Class%20IIa%20CDS-blue?style=for-the-badge)](.) 
-[![Safety](https://img.shields.io/badge/Risk%20Management-ISO%2014971-brightgreen?style=for-the-badge)](.) 
+[![Standard](https://img.shields.io/badge/Architecture_Model-IEC%2062304%20Class%20B-blueviolet?style=for-the-badge&logo=shield)](.)
+[![MDR](https://img.shields.io/badge/EU%20MDR_Reference-Class%20IIa%20CDS-blue?style=for-the-badge)](.) 
+[![Safety](https://img.shields.io/badge/Risk_Management-ISO%2014971%20Mapped-brightgreen?style=for-the-badge)](.) 
 [![AirGap](https://img.shields.io/badge/Air--Gap-Internal%20Pass-darkgreen?style=for-the-badge)](.) 
 
 **Klinik Karar Destek Sistemi (CDS) · Deterministik Güvenlik Mimarisi · Biyomedikal Telemetri Analizi**
@@ -99,6 +99,6 @@ python src/python/tests/clinical_full_report.py
 <div align="center">
 
 *OmniEngine Cognitive Core v20.0 Master Release — IEC 62304 / EU MDR Architecture Reference*  
-*Tüm hakları saklıdır · Sahiplik İmzası: S.F.Ç*
+*Tüm hakları saklıdır · Sahiplik İmzası: Fikret ÇALKIN (S.F.Ç — 0x5346C7)*
 
 </div>
