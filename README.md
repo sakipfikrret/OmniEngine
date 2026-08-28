@@ -191,7 +191,6 @@ Sistem yerel olarak başlatıldığında:
 | 🔬 **[Master Technical Whitepaper v21.1](WHITEPAPER.md)** | FAZ 1→26 tam teknik referans: PQC, Med-LLaVA 13B, 3D DICOM MPR, Sesli Dikte, Red-Team v3, Air-Gap Installer, 150K benchmark. |
 | 🏆 **[150.000 Soru Stres Test Raporu](belgeler/150k_stress_test_raporu.md)** | 6 Alan · %99.50 Genel Doğruluk · Şeffaf Hata ve Gecikme Dağılımı. |
 | 📖 **[150K Soru & Cevap Kataloğu](belgeler/150k_benchmark_soru_cevap_katalogu.md)** | OmniEngine'in 6 alandaki gerçek ve doğrulanmış model yanıtları (600 Q&A). |
-| 🎯 **[Gelişim Yol Haritası & Yapılacaklar](roadmap/YAPILACAKLAR_LISTESI.md)** | 26 Planlanan Geliştirme Fazı Envanteri ve Kapanış Matrisi. |
 | 🏥 **[Gerçek Klinik QA & Tanı Raporu](belgeler/klinik_vaka_ve_tibbi_senaryolar_raporu.md)** | 8/8 canlı klinik acil vaka tanı ve Titan Protokol sentez raporu. |
 | 📋 **[IEC 62304 / EU MDR Mimari Referansı](belgeler/IEC_62304_COMPLIANCE.md)** | Class B CDS Yazılım yaşam döngüsü ve risk hafifletme referans modeli. |
 | 🔥 **[Dar Boğaz Stres Testi Raporu](belgeler/bottleneck_stres_testi_raporu.md)** | BN-01..BN-08 dar boğaz testleri — 8/8 PASS. |
