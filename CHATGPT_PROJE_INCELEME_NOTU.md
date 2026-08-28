@@ -26,14 +26,14 @@ Sistemin kritik ilkesi, üretken model yanıtının tek başına yeterli sayılm
 ### Kaynakta doğrulanabilir
 
 - `package.json`: Next.js `16.2.6`, React `19.2.4`, Prisma `6.2.1`.
-- `faz8_full_performance_test.py`: 24 adet açık `test()` çağrısı içerir; veri dosyası döngüleriyle 11 Ağustos 2026 çalıştırmasında toplam 39 kontrol yürütülmüş ve 39/39 PASS alınmıştır.
+- `faz8_full_performance_test.py`: 24 adet açık `test()` çağrısı içerir; veri dosyası döngüleriyle 28 Ağustos 2026 çalıştırmasında toplam 39 kontrol yürütülmüş ve 39/39 PASS alınmıştır.
 - `verify_claims.py`: 16 dar kapsamlı iddia tanımı içerir; HoloDB iddiası betikte **v5.0** olarak geçer.
 - `adversarial_audit_v2.py`: 10 adversarial tuzak tanımlar; depoda 10/10 bloklandığını gösteren tarihsel kanıt JSON'u vardır.
 - `holodb_v6_query.py`: HDB6 biçimini, 64-bit Bloom maskesini ve 16K düğüm cache sınırını uygular.
 
 ### Tarihsel/dahili kanıt olarak ele alınmalı
 
-- 17.762 QPS ve 760.147 kayıt gibi rakamlar dahili rapor/kayıt niteliğindedir. 11 Ağustos 2026'da yeniden çalıştırılan 39/39 FAZ 8, 16/16 iddia, 6/6 yanıt kalitesi, 10/10 adversarial ve 4/4 model-free stres sonuçları [Genel Test Süiti](genel_test_suiti/GENEL_TEST_SUITI.md) içinde saklanır.
+- 17.762 QPS ve 760.147 kayıt gibi rakamlar dahili rapor/kayıt niteliğindedir. 28 Ağustos 2026'da yeniden çalıştırılan 39/39 FAZ 8, 16/16 iddia, 6/6 yanıt kalitesi, 10/10 adversarial ve 4/4 model-free stres sonuçları [Genel Test Süiti](genel_test_suiti/GENEL_TEST_SUITI.md) içinde saklanır.
 - Bunlar sürüm, makine, veri kümesi ve ham log ile yeniden çalıştırılmadan güncel ürün performansı veya bağımsız doğrulama kabul edilmemelidir.
 - `OMNI_NO_MODELS=1` ile yürütülen stres testi stub retrieval kullanır; gerçek HoloDB veya gerçek LLM uçtan uca performansını ölçmez.
 
@@ -71,3 +71,5 @@ Web tabanlı bir modele kaynak kodu veya belgeler paylaşmadan önce `.env` dosy
 - [Test ve benchmark portalı](test_sonuclari.md)
 - [Master technical whitepaper](WHITEPAPER.md)
 - [Teknik borç envanteri](../roadmap/08_TEKNIK_BORC_ENVANTERI.md)
+
+

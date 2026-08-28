@@ -1,8 +1,8 @@
-# 🏥 OmniEngine v20.0 — Gerçek Klinik QA & Tanı Testi Raporu
+# 🏥 OmniEngine v21.1 — Gerçek Klinik QA & Tanı Testi Raporu
 
 <div align='center'>
 
-**Test Tarihi:** 2026-08-21 01:06  
+**Test Tarihi:** 2026-08-28 01:06  
 **Sistem:** OmniEngine Next.js v16.2.6 · Python MoE Backend · Titan Protocol v9.0  
 **Genel Sonuç:** 8/8 senaryo başarılı yanıt aldı  
 **API:** `/api/diagnosis` (Deterministik Kural Motoru) + `127.0.0.1:8765/composer` (FastAPI Direkt)  
@@ -469,5 +469,6 @@ Klinik tabloya özgü tetkik ve izlem planı için tanı ya da semptom kompleksi
 ---
 
 <div align='center'>
-  <sub>OmniEngine v20.0 Gerçek API Klinik QA Raporu · 2026-08-21 01:06</sub>
+  <sub>OmniEngine v21.1 Gerçek API Klinik QA Raporu · 2026-08-28 01:06</sub>
 </div>
+

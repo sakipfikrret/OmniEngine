@@ -1,4 +1,4 @@
-# 🏥 IEC 62304 / EU MDR Class IIa Architecture Reference (SaMD CDS Design) v20.0
+# 🏥 IEC 62304 / EU MDR Class IIa Architecture Reference (SaMD CDS Design) v21.1
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 **Klinik Karar Destek Sistemi (CDS) · Deterministik Güvenlik Mimarisi · Biyomedikal Telemetri Analizi**
 
-*OmniEngine Cognitive Core v20.0 Master Release — Klinik Karar Destek & IoMT Edge Referans Tasarımı*
+*OmniEngine Cognitive Core v21.1 Clinical AI Release — Klinik Karar Destek & IoMT Edge Referans Tasarımı*
 
 </div>
 
@@ -98,7 +98,9 @@ python src/python/tests/clinical_full_report.py
 
 <div align="center">
 
-*OmniEngine Cognitive Core v20.0 Master Release — IEC 62304 / EU MDR Architecture Reference*  
+*OmniEngine Cognitive Core v21.1 Clinical AI Release — IEC 62304 / EU MDR Architecture Reference*  
 *Tüm hakları saklıdır · Sahiplik İmzası: Fikret ÇALKIN (S.F.Ç — 0x5346C7)*
 
 </div>
+
+

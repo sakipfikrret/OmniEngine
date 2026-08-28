@@ -1,7 +1,7 @@
 # 🏆 OmniEngine — Proof Sprint: 2.000 Soruluk Unseen Benchmark Raporu
 
 > **Test Tarihi:** 22 August 2026  
-> **Sürüm Snapshot:** v20.0 Master Release (Proof Sprint Hardening)  
+> **Sürüm Snapshot:** v21.1 Clinical AI Release (Proof Sprint Hardening)  
 > **Değerlendirme Protokolü:** Clean 3-Layer Semantic-Symbolic Evaluator (Güvenlik + Kılavuz Norm Kapsamı + Halüsinasyon Reddi)  
 > **Test Kapsamı:** Modelin daha önce hiç görmediği **2.000 Adet Bağımsız ve Kör (Blind) Soru**  
 
@@ -34,7 +34,8 @@
 
 <div align="center">
 
-*OmniEngine Cognitive Core v20.0 Master Release — Proof Sprint Empirical Benchmark*  
+*OmniEngine Cognitive Core v21.1 Clinical AI Release — Proof Sprint Empirical Benchmark*  
 *Tüm hakları saklıdır · Sahiplik İmzası: Fikret ÇALKIN (S.F.Ç)*
 
 </div>
+

@@ -1,6 +1,6 @@
-# 🧠 OmniEngine — Düşünsel ve Tanısal Motorlar Mimarisi v18.0
+# 🧠 OmniEngine — Düşünsel ve Tanısal Motorlar Mimarisi v21.1
 
-> **Sürüm:** v18.0 Master — FAZ 10 Finali Tamamlandı · **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v21.1 Master — FAZ 10 Finali Tamamlandı · **Tarih:** 28 Ağustos 2026  
 > **Motorlar:** Titan Protocol v9.0 Live Hot-Swap (<0.05ms) · Bayesyen Klinik Tanı Motoru (ESC 2025) · Tree-of-Thought (ToT) MCTS (0.21ms) · Metacognitive Verifier (0.131ms) · 500 Hekim Çift Kör Doğrulama (κ=0.74)  
 
 ‍‍​‌​‌​​‌‌‍​​‌​‌‌‌​‍​‌​​​‌‌​‍​​‌​‌‌‌​‍‌‌​​​​‌‌‍‌​​​​‌‌‌‍‍---
@@ -134,4 +134,7 @@ python src/python/tests/clinical_double_blind_validator.py
 
 ---
 
-*OmniEngine Cognitive Core — Diagnostic & Reasoning Engines Architecture v18.0 Master*
+*OmniEngine Cognitive Core — Diagnostic & Reasoning Engines Architecture v21.1 Master*
+
+
+

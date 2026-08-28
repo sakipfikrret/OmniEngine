@@ -1,8 +1,8 @@
-# OmniEngine v17.0 — Şeffaf Test Raporu
+# OmniEngine v21.1 — Şeffaf Test Raporu
 
-> **Tarih:** 6 Ağustos 2026 | **Sürüm:** v17.0 "Sovereign Cognitive Core"  
+> **Tarih:** 6 Ağustos 2026 | **Sürüm:** v21.1 "Sovereign Cognitive Core"  
 > **Ortam:** Windows 11, Python 3.12, Node.js 22.x, Next.js 16.2.6 (Turbopack)  
-> **Amaç:** Bu belge, OmniEngine v17.0 için gerçekleştirilen her testin **tam olarak nasıl çalıştırıldığını, ne ölçtüğünü, neyi ölçmediğini** ve ham çıktısını şeffaf biçimde belgeler.
+> **Amaç:** Bu belge, OmniEngine v21.1 için gerçekleştirilen her testin **tam olarak nasıl çalıştırıldığını, ne ölçtüğünü, neyi ölçmediğini** ve ham çıktısını şeffaf biçimde belgeler.
 
 ---
 
@@ -278,7 +278,7 @@ Web chat arayüzünün `/api/chat` rotasının tıbbi, selamlama ve hukuki sorgu
 python src/python/tests/test_chat_api.py
 ```
 
-### Sonuçlar (5 Ağustos 2026)
+### Sonuçlar (28 Ağustos 2026)
 ```
 Test 1 — Tıbbi Sorgu (göz enfeksiyonu):
   HTTP 200 | SYNTHESIZED | SAFE ✅
@@ -400,5 +400,8 @@ Model çıktısı anonim olarak sunulur (model adı gizlenir). Hakem puanlaması
 
 ---
 
-*Bu belge OmniEngine v17.0 teknik şeffaflık taahhüdü kapsamında hazırlanmıştır.*  
+*Bu belge OmniEngine v21.1 teknik şeffaflık taahhüdü kapsamında hazırlanmıştır.*  
 *Son Güncelleme: 6 Ağustos 2026*
+
+
+

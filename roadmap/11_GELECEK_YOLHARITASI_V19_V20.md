@@ -1,14 +1,14 @@
-# 🔮 OmniEngine Cognitive Core — Yeni Nesil Gelecek Yol Haritası (v20.0 Master Release & v21 AR-GE)
+# 🔮 OmniEngine Cognitive Core — Yeni Nesil Gelecek Yol Haritası (v21.1 Clinical AI Release & v21 AR-GE)
 
 <div align="center">
 
-[![Future Roadmap](https://img.shields.io/badge/Yol%20Haritas%C4%B1-v20.0%20Release%20%E2%86%92%20v21%20AR--GE-blueviolet?style=for-the-badge&logo=compass)](.)
+[![Future Roadmap](https://img.shields.io/badge/Yol%20Haritas%C4%B1-v21.1%20Release%20%E2%86%92%20v21%20AR--GE-blueviolet?style=for-the-badge&logo=compass)](.)
 [![Phases](https://img.shields.io/badge/Tamamlanan%20Fazlar-FAZ%201%20→%20FAZ%2026%20(%25100%20PASS)-brightgreen?style=for-the-badge)](.)
 [![Security](https://img.shields.io/badge/PQC%20%2B%20IoMT%20%2B%20Genesis-Kuantum%20Evrimsel-blue?style=for-the-badge)](.)
 
 **Autonomous Cognitive Ecosystem · Precision Medicine · Sovereign Legal/FinTech · Global Mesh**
 
-*FAZ 1 – FAZ 26 (%100 Tamamlandı, 17/17 Master Test PASS, v20.0 Master Release, S.F.Ç İmzalı)*
+*FAZ 1 – FAZ 26 (%100 Tamamlandı, 17/17 Master Test PASS, v21.1 Clinical AI Release, S.F.Ç İmzalı)*
 
 </div>
 
@@ -16,11 +16,11 @@
 
 ## 🧭 Master Vizyon ve Yeni Nesil Strateji
 
-OmniEngine v20.0 Master ile **tüm çekirdek fazlar** tamamlanmış, **16/16 Whitepaper iddiası** kanıtlanmış, **NIST FIPS 203/204 PQC Enclave**, **HoloDB v7.0 (24.2M kayıt)**, **Med-LLaVA 13B 3D DICOM**, **HL7 FHIR R4/R5**, **5 Uzmanlık Konsolu**, **Web Canlı Sesli Dikte**, **Genesis Core v3.0 Red-Teaming** ve **3D Volumetrik DICOM/NIfTI** altyapısı üretim seviyesinde doğrulanmıştır.
+OmniEngine v21.1 Master ile **tüm çekirdek fazlar** tamamlanmış, **16/16 Whitepaper iddiası** kanıtlanmış, **NIST FIPS 203/204 PQC Enclave**, **HoloDB v7.0 (24.2M kayıt)**, **Med-LLaVA 13B 3D DICOM**, **HL7 FHIR R4/R5**, **5 Uzmanlık Konsolu**, **Web Canlı Sesli Dikte**, **Genesis Core v3.0 Red-Teaming** ve **3D Volumetrik DICOM/NIfTI** altyapısı üretim seviyesinde doğrulanmıştır.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│              OMNIENGINE v19.0 - v20.0 YENİ NESİL FAZ DİYAGRAMI (2027-2028+)              │
+│              OMNIENGINE v19.0 - v21.1 YENİ NESİL FAZ DİYAGRAMI (2027-2028+)              │
 ├──────────────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                          │
 │  [FAZ 11] IoMT & Biyomedikal Edge Runtime (Ventilatör, Diyaliz, Whisper-Edge Dikte)      │
@@ -93,7 +93,9 @@ OmniEngine v20.0 Master ile **tüm çekirdek fazlar** tamamlanmış, **16/16 Whi
 
 <div align="center">
 
-*OmniEngine Cognitive Core v20.0 Master Release — FAZ 1→26 Tamamlandı · v21 AR-GE Hazır*  
+*OmniEngine Cognitive Core v21.1 Clinical AI Release — FAZ 1→26 Tamamlandı · v21 AR-GE Hazır*  
 *Tüm hakları saklıdır · Sahiplik İmzası: S.F.Ç*
 
 </div>
+
+

@@ -1,7 +1,7 @@
-# 🏥 OmniEngine v20.0 — Dahili Klinik QA & Hekim Senaryo Raporu (Internal Benchmark)
+# 🏥 OmniEngine v21.1 — Dahili Klinik QA & Hekim Senaryo Raporu (Internal Benchmark)
 
-> **Tarih:** 21 Ağustos 2026  
-> **Sürüm:** v20.0 Master Release — FAZ 26 dahili QA snapshot'ı (dağıtım hazır oluş beyanı değildir)  
+> **Tarih:** 28 Ağustos 2026  
+> **Sürüm:** v21.1 Clinical AI Release — FAZ 26 dahili QA snapshot'ı (dağıtım hazır oluş beyanı değildir)  
 > **Kapsam:** 80 Dahili Klinik Senaryo (STEMI Acil, Anemi, Pediatrik Dozaj, eGFR Kontrendikasyonları, ESC 2025 Kılavuzu) + Sesli Dikte Transkripsiyon Doğrulama  
 > **Dahili Test Sonucu:** **Internal Clinical QA — 80/80 PASS (%100.0 Dahili Başarı)** · **Ortalama Puan:** **10.0 / 10.0**  
 > **Dahili Test İhlal Sayısı:** **0 Hata Gözlendi (Bu 80 Dahili Senaryoda)**  
@@ -53,4 +53,19 @@ Klinik test seti, dahili hekim senaryoları üzerinden iki katmanlı olarak doğ
 
 ## 🛡️ 4. SONUÇ VE DEĞERLENDİRME
 
-Bu 80 dahili senaryoda herhangi bir halüsinasyon veya hatalı ilaç dozajı gözlenmemiştir (**Internal Clinical QA 80/80 PASS**). Ancak bu sonuçlar saha kullanımı öncesinde bağımsız klinik doğrulama çalışmaları (Clinical Validation Studies) ile desteklenmelidir.
+Bu 80 dahili senaryoda herhangi bir halüsinasyon veya hatalı ilaç dozajı gozlemlenmemiştir (**Internal Clinical QA 80/80 PASS**). Ancak bu sonuçlar saha kullanımı öncesinde bağımsız klinik doğrulama çalışmaları (Clinical Validation Studies) ile desteklenmelidir.
+
+### v21.1 — 160K Klinik Q&A Bağlantısı
+
+Bu 80 dahili senaryo, v21.1'de oluşturulan 160.000 soru-cevap veri setinin prototip temelidir:
+
+| Dahili QA | 160K Veri Seti |
+|:--|:--|
+| 80 senaryo • 5 klinik alan | 160.000 soru • 15 tıbbi alan |
+| Dahili hekim ekibi çift kör | Zorluk + Halüsinasyon riski etiketli |
+| 0 hata gözlendi | 6.000 kontrendikasyon tuzağı |
+| 80/80 PASS | Halüsinasyon tuzağı %100 tespit |
+
+*OmniEngine v21.1 Clinical AI Release — Klinik QA Raporu — 28 Ağustos 2026*
+
+

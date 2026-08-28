@@ -1,6 +1,6 @@
-# 🎨 OmniEngine — UX/UI Yol Haritası ve Arayüz Tasarım Sistemi v18.0
+# 🎨 OmniEngine — UX/UI Yol Haritası ve Arayüz Tasarım Sistemi v21.1
 
-> **Sürüm:** v18.0 FAZ 8 kaynak snapshot'ı · **Tarih:** 8 Ağustos 2026
+> **Sürüm:** v21.1 FAZ 8 kaynak snapshot'ı · **Tarih:** 28 Ağustos 2026
 > **Teknoloji:** Next.js 16.2.6 (App Router, Turbopack, React 19 Server Components)  
 > **Tasarım:** Pure Vanilla CSS (0 Tailwind Bağımlılığı), Custom CSS Variables, Glassmorphism (`backdrop-filter: blur(12px)`)  
 > **Performans:** 55 Statik Sayfa · 17.5 Saniye Derleme Süresi · 0 TypeScript Hatası  
@@ -105,4 +105,7 @@ FAZ 9 kapsamında `/benchmark/bottlenecks` sayfasına eklenecek canlı dar boğa
 
 ---
 
-*OmniEngine Cognitive Core — Modern Enterprise UX/UI Roadmap v18.0*
+*OmniEngine Cognitive Core — Modern Enterprise UX/UI Roadmap v21.1*
+
+
+

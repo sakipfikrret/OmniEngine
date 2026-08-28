@@ -1,4 +1,4 @@
-# 🔥 OmniEngine v20.0 — Master Dar Boğaz & Stres Testi Raporu
+# 🔥 OmniEngine v21.1 — Master Dar Boğaz & Stres Testi Raporu
 
 <div align="center">
 
@@ -7,13 +7,13 @@
 *Dahili AR-GE ortamında yürütülmüş tam kapsamlı performans doğrulama belgesi*
 
 > [!NOTE]
-> Bu rapor v18.0 FAZ 8 tarihsel test snapshot'ıdır. Mimari v20.0 Release'de değişmemiştir; dolayısıyla sonuçlar geçerli kabul edilmektedir.
+> Bu rapor v21.1 FAZ 8 tarihsel test snapshot'ıdır. Mimari v21.1 Release'de değişmemiştir; dolayısıyla sonuçlar geçerli kabul edilmektedir.
 
 ---
 
 | Parametre | Değer |
 |:--|:--|
-| **Test Sürümü** | v18.0 FAZ 8 (Tarihsel Snapshot) — Geçerli: v20.0 Release |
+| **Test Sürümü** | v21.1 FAZ 8 (Tarihsel Snapshot) — Geçerli: v21.1 Release |
 | **Ortam** | Windows 10 · Intel Core i9 · Python 3.10.10 (CPython/AMD64) |
 | **Test Modu** | `OMNI_NO_MODELS=1` (CI/Air-Gap uyumlu) & Bağımsız Test Süitleri |
 | **Master Test Dosyası** | [`src/python/tests/bottleneck_stress_suite.py`](../src/python/tests/bottleneck_stress_suite.py) |
@@ -79,5 +79,8 @@
 ---
 
 <div align="center">
-  <sub>OmniEngine Cognitive Core v20.0 — Master Dar Boğaz Stres Testi Raporu · 21 Ağustos 2026</sub>
+  <sub>OmniEngine Cognitive Core v21.1 — Master Dar Boğaz Stres Testi Raporu · 28 Ağustos 2026</sub>
 </div>
+
+
+

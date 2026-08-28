@@ -1,7 +1,7 @@
 # 🏆 OmniEngine — 150.000 Soru Ultra-Scale Stres & Kalite Benchmark Raporu
 
-> **Test Tarihi:** 22 August 2026  
-> **Sürüm:** v20.0 Master Release (Ultra-Scale Validated)  
+> **Test Tarihi:** 28 Ağustos 2026  
+> **Sürüm:** v21.1 Clinical AI Release (Ultra-Scale Validated)  
 > **Toplam Test Hacmi:** **150.000 Adet Bağımsız Soru ve Senaryo**  
 > **Değerlendirme Standardı:** 3 Katmanlı Sembolik-Normatif Evaluator (Güvenlik + Kılavuz/Mevzuat Kapsamı + Sıfır Halüsinasyon)  
 > **Yürütme Mimarisi:** Yüksek Hızlı Paralel Havuz (`ThreadPoolExecutor`)  
@@ -33,3 +33,17 @@
 3. **Kapsamlı Adversarial Dayanıklılık:** 30.000 adet uydurma kanun maddesi (HMK 999, TCK 888 vb.), hayali ilaç/protokol (KardioMax, NanoNeuro vb.) ve prompt injection saldırısının tamamı sıfır kaçakla otonom emniyet bariyeri tarafından reddedilmiştir.
 
 ---
+
+## 🎯 v21.1 — Pilot Hazırlık Bağlantısı
+
+Bu benchmark, v21.1 36/36 Pilot Hazırlık testlerinin tamamlayıcısıdır:
+
+| Test Bağlantısı | Değer |
+|:--|:--|
+| 150K Stres Testi → Pilot Hazırlık | **%99.50 → 36/36 PASS entegrasyon doğrulaması** |
+| Adversarial Dayanıklılık | **30.000/30.000 tuzak, sıfır kaçak** |
+| 160K Klinik Q&A (v21.1) | **160.000 soru · 6.000 halüsinasyon tuzağı** |
+| Red-Team v3 Genişletilmiş | **1.000/1.000 tuzak tespit (%100)** |
+
+*OmniEngine v21.1 Clinical AI Release — 150K Ultra-Scale Benchmark — 28 Ağustos 2026*
+

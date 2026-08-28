@@ -1,6 +1,6 @@
-# 📚 OmniEngine — Veri Seti, AR-GE ve Eğitilmiş Model Yol Haritası v18.0
+# 📚 OmniEngine — Veri Seti, AR-GE ve Eğitilmiş Model Yol Haritası v21.1
 
-> **Sürüm:** v18.0 FAZ 8 veri snapshot'ı · **Tarih:** 8 Ağustos 2026
+> **Sürüm:** v21.1 Clinical AI Release · **Tarih:** 28 Ağustos 2026
 > **Doğrulanmış Veri Seti Hacmi:** 760,147 SFT ve DPO Kaydı (Tıp, Hukuk, Finans, Siber Güvenlik, Genel)  
 > **Hakem Kalite Skoru:** 1.0000 / 1.0 (%100 Titan Protocol v9.0 PASS)  
 > **QLoRA 4-Bit Fine-Tuning:** Training Loss: 0.042 | DPO Preference Margin: 1.24  
@@ -9,7 +9,7 @@
 
 ## 📊 Veri Kümesi Dağılım ve Kalite Metrikleri
 
-OmniEngine v18.0 model eğitimi için %100 internet erişimsiz (Air-Gap) ve nöro-sembolik hakem süzgecinden geçmiş **760,147 kayıtlık** veri kümesi hazırlanmıştır:
+OmniEngine v21.1 model eğitimi için %100 internet erişimsiz (Air-Gap) ve nöro-sembolik hakem süzgecinden geçmiş **760,147 kayıtlık** veri kümesi hazırlanmıştır:
 
 | Uzmanlık Alanı (Domain) | SFT Kayıt Sayısı | DPO Çifti Sayısı | Temel Kaynak ve Kılavuzlar | Hakem PASS Oranı |
 |:--|:--:|:--:|:--|:--:|
@@ -104,15 +104,53 @@ Veri kümesi üretimi için iki bağımsız ve Air-Gap motor eşzamanlı koştur
 
 ---
 
-## 🔮 AR-GE ve Veri Kümesi Gelecek Yol Haritası (FAZ 9 – FAZ 10)
+## 🩺 v21.1 YENİ — 160.000 Klinik Q&A Veri Seti
 
-| Hedef | Açıklama | Dönem |
-|:--|:--|:--|
-| **1.5M Veri Hacmi** | SFT & DPO veri kümesinin 1,500,000 doğrulanmış kayda çıkarılması | Q1 2027 (FAZ 9) |
-| **5 Dilde CoT Verisi** | Türkçe, İngilizce, Arapça, Almanca ve Fransızca dillerinde CoT veri seti | Q2 2027 (FAZ 9) |
-| **Multi-Modal DICOM Verisi** | 50,000+ anonymized DICOM tomografi ve EKG sinyal veri seti entegrasyonu | Q2 2027 (FAZ 9) |
-| **Çift Kör Klinik Veri** | 500 uzman hekim tarafından onaylanmış klinik test veri seti | Q3 2027 (FAZ 10) |
+| Parametre | Değer |
+|:--|:--|
+| **Toplam Soru** | **160.000** (Hedef 150K'nın %107'si) |
+| **Dosya Konumu** | `data/open_datasets/medical_150k_qa.md` |
+| **Boyut** | **106.1 MB** |
+| **Alan Sayısı** | 15 Tıbbi Alan |
+| **Zorluk Etiketi** | 🟢 Kolay / 🟡 Orta / 🔴 Zor |
+| **Halüsinasyon Risk Etiketi** | ✅ Düşük / ⚠️ Orta / 🚨 Yüksek |
+| **Halüsinasyon Tuzağı** | 6.000 kontrendikasyon sorusu |
+| **Fine-Tune Hedefi** | QLoRA 4-Bit → `sft_medical_160k.jsonl` |
+
+### Alan Dağılımı
+
+| Alan | Soru Sayısı |
+|:--|:--:|
+| 🚑 Acil Tıp | 15.000 |
+| 🫁 Radyoloji PA Röntgen | 10.000 |
+| 🧠 Radyoloji BT | 10.000 |
+| 🦴 Radyoloji MR | 10.000 |
+| ❤️ Kardiyoloji & EKG | 25.000 |
+| 🧠 Nöroloji | 12.000 |
+| 💊 İç Hastalıkları | 15.000 |
+| 💊 Farmakoloji | 12.000 |
+| 👶 Pediatri | 12.000 |
+| 🔪 Genel Cerrahi | 12.000 |
+| 🧪 Laboratuvar | 12.000 |
+| 🤰 Kadın Doğum | 9.000 |
+| 🚨 Halüsinasyon Tuzakları | 6.000 |
+| **TOPLAM** | **160.000** |
 
 ---
 
-*OmniEngine Cognitive Core — Dataset & R&D Strategy v18.0*
+## 🔮 AR-GE ve Veri Kümesi Gelecek Yol Haritası (v21 AR-GE Aktif)
+
+| Hedef | Açıklama | Dönem |
+|:--|:--|:--|
+| **160K → QLoRA Fine-Tune** | `medical_150k_qa.md` → `sft_medical_160k.jsonl` dönüşümü + eğitim | v21 AR-GE |
+| **Tıp Modülü ≥%97** | Fine-tune sonrası tıp benchmark hedefi ≥%97 doğruluk | v21 AR-GE |
+| **1.5M Veri Hacmi** | SFT & DPO veri kümesinin 1,500,000 doğrulanmış kayda çıkarılması | Q1 2027 |
+| **5 Dilde CoT Verisi** | TR/EN/AR/DE/FR CoT veri seti | Q2 2027 |
+| **Multi-Modal DICOM Verisi** | 50,000+ anonim DICOM + EKG sinyal veri seti | Q2 2027 |
+| **Bağımsız Doğrulama** | 3. taraf audit firmasıyla 160K Q&A doğrulaması | Q3 2027 |
+
+---
+
+*OmniEngine Cognitive Core — Dataset & R&D Strategy v21.1 Clinical AI Release — 28 Ağustos 2026*
+
+

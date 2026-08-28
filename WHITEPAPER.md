@@ -1,8 +1,8 @@
-# 🔬 OmniEngine Cognitive Core — Master Technical Whitepaper v20.0
+# 🔬 OmniEngine Cognitive Core — Master Technical Whitepaper v21.1
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/Sürüm-v20.0%20Master%20Release-blueviolet?style=for-the-badge&logo=rocket)](.)
+[![Version](https://img.shields.io/badge/Sürüm-v21.1%20Master%20Release-blueviolet?style=for-the-badge&logo=rocket)](.)
 [![Development Phases](https://img.shields.io/badge/Planlanan_Fazlar-26%2F26_Tamamland%C4%B1-22c55e?style=for-the-badge&logo=gitbook&logoColor=white)](../roadmap/YAPILACAKLAR_LISTESI.md)  
 [![HallucinationGuard](https://img.shields.io/badge/Halüsinasyon%20Direnci-UPGRADED-red?style=for-the-badge&logo=shield)](.)
 [![150kBenchmark](https://img.shields.io/badge/150.000_Soru_Stres_Testi-%2599.50_Do%C4%9Fruluk-22c55e?style=for-the-badge&logo=speedtest&logoColor=white)](150k_stress_test_raporu.md)
@@ -18,7 +18,7 @@
 
 | Parametre | Değer |
 |:--|:--|
-| **Sürüm Snapshot** | **v20.0 Master Release — 21 Ağustos 2026** |
+| **Sürüm Snapshot** | **v21.1 Clinical AI Release — 28 Ağustos 2026** |
 | **Tamamlanan Fazlar** | 26/26 Planlanan Geliştirme Fazı Tamamlandı · 17/17 Diagnostik Test PASS |
 | **Mimari** | 16-Expert MoE (30B Kapasite) · HoloDB v7.0 · Titan Protocol v9.0 · PQC Enclave · Med-LLaVA 13B · FHIR R4/R5 |
 | **FAZ 19** | Canlı 12-Lead EKG 500 Hz Osiloskop Monitörü + UYAP Belge Editörü (Next.js Web UI) |
@@ -99,7 +99,7 @@ OmniEngine, kritik sektörlerde (Sağlık, Hukuk, Finans, Siber Güvenlik) yapay
 │  3. Kuantum Kırılganlığı → RSA/ECC şifrelerinin geleceği yok       │
 │  4. Sistem Entegrasyonu → HBYS/EHR ile sıfır uyumluluk             │
 │                                                                     │
-│  ÇÖZÜM: OmniEngine v20.0 Master Release                            │
+│  ÇÖZÜM: OmniEngine v21.1 Clinical AI Release                            │
 │                                                                     │
 │  ✅ Deterministik nöro-sembolik kural motoru (halüsinasyon sıfır)   │
 │  ✅ 100% Air-Gap — sıfır dış ağ çıkışı (0 egress packet)           │
@@ -377,7 +377,7 @@ sequenceDiagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                  OmniEngine v18.0 Katman Haritası                   │
+│                  OmniEngine v21.1 Katman Haritası                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │  KULLANICI    │  KORUMA   │  KÖPRü    │  MOE      │  VERİ         │
 │  ARABIRIMI    │  KATMANI  │  KATMANI  │  ÇEKİRDEK │  KATMANI      │
@@ -760,7 +760,7 @@ udf_document_generator.py — Adalet Bakanlığı UYAP Doküman Editörü Uyumlu
   │  dava_dilekcesi.udf (ZIP arşivi)                                  │
   │  ├── mimetype          (MIME: application/vnd.uyap.document)      │
   │  ├── content.xml       (HMK m.119 Tam Uyumlu XML)                 │
-  │  └── manifest.json     (Belge Meta: OmniEngine v20.0, SHA-256)    │
+  │  └── manifest.json     (Belge Meta: OmniEngine v21.1, SHA-256)    │
   │                                                                    │
   │  Boyut: ~2.4 KB  │  HMK m.119: ✅  │  UYAP Editör: ✅           │
   └──────────────────────────────┬─────────────────────────────────────┘
@@ -888,7 +888,7 @@ Toplam  2.000  2.000   2.000   2.000      2.000 = 10.000 Soru
 ### 18.3 Halüsinasyon Koruması — Mimari Gelişim
 
 ```
-Halüsinasyon Koruması Katmanları (v20.0 — Güncel Mimari)
+Halüsinasyon Koruması Katmanları (v21.1 — Güncel Mimari)
 
   Gelen Sorgu
        │
@@ -929,7 +929,7 @@ Halüsinasyon Koruması Katmanları (v20.0 — Güncel Mimari)
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                  OMNIENGINE v20.0 ENTERPRISE WEB KOKPİTİ                   │
+│                  OMNIENGINE v21.1 ENTERPRISE WEB KOKPİTİ                   │
 ├────────────────────────────────────────────────────────────────────────────┤
 │                                                                            │
 │  1. 🫀 /ecg-monitor         │  2. 🏛️ /legal-editor     │  3. 💹 /finance-terminal  │
@@ -952,7 +952,7 @@ Halüsinasyon Koruması Katmanları (v20.0 — Güncel Mimari)
 ### 19.2 Derin Uzman Panelleri v2 (Domain Accuracy v2)
 
 ```
-Multi-Domain Sentez Hattı (composer.py — v20.0)
+Multi-Domain Sentez Hattı (composer.py — v21.1)
 
   [Gelen Sorgu]
        │
@@ -992,7 +992,7 @@ Multi-Domain Sentez Hattı (composer.py — v20.0)
 
 ---
 
-*OmniEngine v20.0 Master Release · 21 Ağustos 2026 · FAZ 1 → FAZ 26 Tamamlandı · v21 AR-GE Hazır*
+*OmniEngine v21.1 Clinical AI Release · 28 Ağustos 2026 · FAZ 1 → FAZ 26 Tamamlandı · v21 AR-GE Hazır*
 
 *Tüm test sonuçları `src/python/tests/` ve `belgeler/` dizinlerinde doğrulanabilir kanıtlarla desteklenmektedir.*
 
@@ -1085,3 +1085,6 @@ Kurulum Süreci:
 ```
 
 </div>
+
+
+

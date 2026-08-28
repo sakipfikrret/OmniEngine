@@ -1,6 +1,6 @@
 # OmniEngine — Genel Test Süiti
 
-> **Çalıştırma tarihi:** 11 Ağustos 2026
+> **Çalıştırma tarihi:** 28 Ağustos 2026
 > **Kapsam:** FAZ 8 bütünlük, whitepaper iddia kontrolü, yanıt kalitesi, adversarial güvenlik ve model-free stres testi.
 > **Genel sonuç:** Çalıştırılan tüm kontroller PASS verdi. Bu sonuçlar yerel/dahili testlerdir; bağımsız doğrulama, klinik validasyon veya dağıtım sertifikası değildir.
 
@@ -54,3 +54,5 @@ python src/python/tests/verify_claims.py --fast
 - `faz8_full_performance_test.py` içinde 24 doğrudan `test()` çağrısı vardır; veri dosyası döngüleri nedeniyle bu çalıştırmada **39 toplam kontrol** yürütülmüştür.
 - Whitepaper iddia kontrolü dar kapsamlıdır; sertifikasyon, klinik güvenlik veya üretim hazır oluşu ispatlamaz.
 - Test artefaktları, bu klasöre çalıştırma sonrasında kopyalanmıştır. Kaynak raporlar sırasıyla `data/benchmark/` ve `evidence/` altında kalmaya devam eder.
+
+

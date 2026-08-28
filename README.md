@@ -12,7 +12,7 @@
 ```
 
 ### 🧠 OmniEngine Cognitive Core
-### *Sovereign · Local · Evidence-Driven AI Runtime — v20.0 Master Release*
+### *Sovereign · Local · Evidence-Driven AI Runtime — v21.1 Clinical AI Release*
 
 *Kurumların hassas verilerini kendi altyapılarında tutarak, kanıtlanabilir ve denetlenebilir yapay zekâ uygulamaları geliştirmesine yönelik nöro-sembolik AI platformu.*
 
@@ -188,7 +188,7 @@ Sistem yerel olarak başlatıldığında:
 
 | Belge | Açıklama |
 |:--|:--|
-| 🔬 **[Master Technical Whitepaper v20.0](WHITEPAPER.md)** | FAZ 1→26 tam teknik referans: PQC, Med-LLaVA 13B, 3D DICOM MPR, Sesli Dikte, Red-Team v3, Air-Gap Installer, 150K benchmark. |
+| 🔬 **[Master Technical Whitepaper v21.1](WHITEPAPER.md)** | FAZ 1→26 tam teknik referans: PQC, Med-LLaVA 13B, 3D DICOM MPR, Sesli Dikte, Red-Team v3, Air-Gap Installer, 150K benchmark. |
 | 🏆 **[150.000 Soru Stres Test Raporu](belgeler/150k_stress_test_raporu.md)** | 6 Alan · %99.50 Genel Doğruluk · Şeffaf Hata ve Gecikme Dağılımı. |
 | 📖 **[150K Soru & Cevap Kataloğu](belgeler/150k_benchmark_soru_cevap_katalogu.md)** | OmniEngine'in 6 alandaki gerçek ve doğrulanmış model yanıtları (600 Q&A). |
 | 🎯 **[Gelişim Yol Haritası & Yapılacaklar](roadmap/YAPILACAKLAR_LISTESI.md)** | 26 Planlanan Geliştirme Fazı Envanteri ve Kapanış Matrisi. |
@@ -232,7 +232,7 @@ Bug raporu, teknik öneri, akademik iş birliği veya herhangi bir geri bildirim
 
 Bildirimlerinizde lütfen şunları belirtin:
 - **Konu:** `[OmniEngine Geri Bildirim]` veya `[OmniEngine Bug Report]` etiketiyle başlayın
-- **Sürüm:** v20.0 Master Release
+- **Sürüm:** v21.1 Clinical AI Release
 - **Alan:** Tıp / Hukuk / Finans / Siber / Genomik / Genel
 - **Açıklama:** Karşılaştığınız sorun veya önerinizin kısa özeti
 
@@ -241,7 +241,9 @@ Güncel olmayan test sonuçları, sürüm uyuşmazlıkları veya belgeleme hatal
 ---
 
 <div align="center">
-  <sub>OmniEngine Cognitive Core v20.0 Master Release — Sovereign · Local · Evidence-Driven AI Runtime · 26/26 Planned Phases Completed</sub>
+  <sub>OmniEngine Cognitive Core v21.1 Clinical AI Release — Sovereign · Local · Evidence-Driven AI Runtime · 26/26 Planned Phases Completed</sub>
   <br/>
   <sub>© 2026 Fikret ÇALKIN (S.F.Ç — 0x5346C7) — All Rights Reserved — Proprietary Source License v2.0</sub>
 </div>
+
+

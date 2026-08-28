@@ -1,9 +1,9 @@
-# 🧠 OmniEngine v18.0 — Tam Kapsamlı Kod Tabanı & Dosya Denetim Raporu
+# 🧠 OmniEngine v21.1 — Tam Kapsamlı Kod Tabanı & Dosya Denetim Raporu
 *(AI Bilgilendirmesi, Mimari Haritası ve Dosya İşe Yararlık Analizi)*
 
 <div align='center'>
 
-**Denetim Tarihi:** 2026-08-21 &nbsp;|&nbsp; **Taranan Toplam Dosya:** 995 adet &nbsp;|&nbsp; **Toplam Boyut:** 53825.85 MB
+**Denetim Tarihi:** 2026-08-28 &nbsp;|&nbsp; **Taranan Toplam Dosya:** 995 adet &nbsp;|&nbsp; **Toplam Boyut:** 53825.85 MB
 
 **Sistem Altyapısı:** Next.js 16.2.6 · FastAPI MoE Runtime · HoloDB v7.0 mmap · NIST FIPS PQC Enclave · HL7 FHIR R4
 
@@ -116,8 +116,8 @@ Canlı ekran kaydı alınırken üretilen ara karelerdir. WebP animasyonu `belge
 | `evidence/v16.6-evidence-20260804/manifest.json` | 1.5 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
 | `evidence/v16.6-phase0-20260804/README.md` | 0.3 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
 | `evidence/v16.6-phase0-20260804/manifest.json` | 1.5 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
-| `evidence/v17.0-release-20260806/README.md` | 0.3 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
-| `evidence/v17.0-release-20260806/manifest.json` | 1.5 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
+| `evidence/v21.1-release-20260806/README.md` | 0.3 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
+| `evidence/v21.1-release-20260806/manifest.json` | 1.5 KB | Eski sürümlerin benchmark kayıtlarıdır. Geriye dönük denetim için tutulabilir veya arşivlenebilir. |
 
 ---
 
@@ -306,7 +306,7 @@ Bu dosyalar OmniEngine'in kullanıcı arayüzü, API yönlendirmeleri, MoE uzman
 | [`Dockerfile`](file:///Dockerfile) | 0 | 1.7 | Derleme, paket yönetimi, ortam değişkenleri ve servis başlatma betikleri. Kesinlikle korunmalıdır. |
 | [`Dockerfile.trainer`](file:///Dockerfile.trainer) | 0 | 0.3 | Derleme, paket yönetimi, ortam değişkenleri ve servis başlatma betikleri. Kesinlikle korunmalıdır. |
 | [`README.md`](file:///README.md) | 182 | 16.3 | 🧠 OmniEngine Cognitive Core |
-| [`WHITEPAPER.md`](file:///WHITEPAPER.md) | 212 | 13.6 | 🔬 OmniEngine Cognitive Core — Master Technical Whitepaper v18.0 |
+| [`WHITEPAPER.md`](file:///WHITEPAPER.md) | 212 | 13.6 | 🔬 OmniEngine Cognitive Core — Master Technical Whitepaper v21.1 |
 | [`data/omniengine.db`](file:///data/omniengine.db) | 0 | 388.0 | Oturumlar, mesajlar, kullanıcı rolleri ve kriptografik denetim zinciri veritabanı. Korunmalıdır. |
 | [`docker-compose.monitoring.yml`](file:///docker-compose.monitoring.yml) | 65 | 2.5 | ───────────────────────────────────────────────────────────────────────────── |
 | [`docker-compose.yml`](file:///docker-compose.yml) | 47 | 1.3 | Air-Gapped: Kalıcı veri ve model önbelleği diske bağlı kalır |
@@ -576,3 +576,4 @@ graph TD
 | **Federe Öğrenme & Diferansiyel Gizlilik** | [`src/python/federated_differential_privacy.py`](file:///src/python/federated_differential_privacy.py) | [`src/python/tests/test_federated_dp.py`](file:///src/python/tests/test_federated_dp.py) |
 | **Yeni Model Eğitimi (SFT / LoRA)** | [`src/python/training/sft_train_v11_fast.py`](file:///src/python/training/sft_train_v11_fast.py) | [`src/python/tools/dataset_curator.py`](file:///src/python/tools/dataset_curator.py) |
 | **Proje Belgelerini Güncelleme** | [`belgeler/gelişim aşaması.md`](file:///belgeler/gelişim aşaması.md), [`README.md`](file:///README.md), [`WHITEPAPER.md`](file:///WHITEPAPER.md) | — |
+

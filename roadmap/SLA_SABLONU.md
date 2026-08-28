@@ -1,6 +1,6 @@
-# 📜 OmniEngine — Kurumsal Hizmet Seviyesi Sözleşmesi (SLA) v18.0
+# 📜 OmniEngine — Kurumsal Hizmet Seviyesi Sözleşmesi (SLA) v21.1
 
-> **Sürüm:** v18.0 Master — FAZ 10 Platinum SLA · **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v21.1 Master — FAZ 10 Platinum SLA · **Tarih:** 28 Ağustos 2026  
 > **Kapsam:** Platinum Sovereign On-Premise & Air-Gap Kubernetes Kurulumları (100+ Cluster Desteği)  
 
 ‍‍​‌​‌​​‌‌‍​​‌​‌‌‌​‍​‌​​​‌‌​‍​​‌​‌‌‌​‍‌‌​​​​‌‌‍‌​​​​‌‌‌‍‍---
@@ -74,4 +74,7 @@ Aylık Uptime oranına bağlı olarak müşteriye sağlanacak hizmet kredisi tab
 
 ---
 
-*OmniEngine Cognitive Core — Enterprise Platinum SLA Document v18.0 Master*
+*OmniEngine Cognitive Core — Enterprise Platinum SLA Document v21.1 Master*
+
+
+

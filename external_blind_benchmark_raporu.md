@@ -66,7 +66,7 @@
 ---
 
 <div align="center">
-  <sub>OmniEngine Cognitive Core v20.0 Master Release — Cryptographic External Blind Assessment Protocol</sub>
+  <sub>OmniEngine Cognitive Core v21.1 Clinical AI Release — Cryptographic External Blind Assessment Protocol</sub>
   <br/>
   <sub>© 2026 Fikret ÇALKIN (S.F.Ç — 0x5346C7) — All Rights Reserved</sub>
 </div>

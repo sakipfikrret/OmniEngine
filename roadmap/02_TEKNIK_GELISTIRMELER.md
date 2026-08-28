@@ -1,17 +1,17 @@
-# ⚙️ OmniEngine — Teknik Geliştirmeler ve Mimari Yol Haritası v18.0
+# ⚙️ OmniEngine — Teknik Geliştirmeler ve Mimari Yol Haritası v21.1
 
-> **Sürüm:** v18.0 Master — FAZ 10 Finali Tamamlandı · **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v21.1 Master — FAZ 10 Finali Tamamlandı · **Tarih:** 28 Ağustos 2026  
 > **Modüller:** 16-Expert MoE Router · HoloDB v7.0 mmap · NIST PQC Enclave · Med-LLaVA 13B · HL7 FHIR R4/R5 · FedDP Engine · Platinum SLA  
 
 ‍‍​‌​‌​​‌‌‍​​‌​‌‌‌​‍​‌​​​‌‌​‍​​‌​‌‌‌​‍‌‌​​​​‌‌‍‌​​​​‌‌‌‍‍---
 
 ## 🛠️ Çekirdek Teknik Mimari Bileşenleri
 
-OmniEngine Cognitive Core v18.0 mimarisi, yüksek başarım (throughput), deterministik güvenlik ve kuantum-geçirmez gizlilik sağlamak üzere aşağıdaki 8 temel teknik bileşen üzerine kurulmuştur:
+OmniEngine Cognitive Core v21.1 mimarisi, yüksek başarım (throughput), deterministik güvenlik ve kuantum-geçirmez gizlilik sağlamak üzere aşağıdaki 8 temel teknik bileşen üzerine kurulmuştur:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                   OMNIENGINE v18.0 MASTER TEKNİK MİMARİSİ               │
+│                   OMNIENGINE v21.1 MASTER TEKNİK MİMARİSİ               │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │  1. Kişisel Veri Maskeleme Motoru (PII Sanitizer v3.0 / PIIScrubber.ts) │
@@ -125,4 +125,7 @@ Kuantum sonrası kriptografi katmanı:
 
 ---
 
-*OmniEngine Cognitive Core — Technical Architecture & Enhancements v18.0 Master*
+*OmniEngine Cognitive Core — Technical Architecture & Enhancements v21.1 Master*
+
+
+

@@ -1,6 +1,6 @@
-# 🔧 OmniEngine — Teknik Borç Envanteri ve Giderim Planı v18.0
+# 🔧 OmniEngine — Teknik Borç Envanteri ve Giderim Planı v21.1
 
-> **Sürüm:** v18.0 FAZ 8 kaynak snapshot'ı · **Tarih:** 21 Ağustos 2026  
+> **Sürüm:** v21.1 FAZ 8 kaynak snapshot'ı · **Tarih:** 28 Ağustos 2026  
 > **Durum:** TD-001 – TD-025 (%100.0 TAMAMLANDI — 25 / 25 Borç Giderildi)  
 
 ---
@@ -58,4 +58,7 @@ $env:OMNI_NO_MODELS="1"; python src/python/tests/bottleneck_stress_suite.py
 
 ---
 
-*OmniEngine Cognitive Core — Technical Debt Inventory v18.0 (25/25 Giderildi)*
+*OmniEngine Cognitive Core — Technical Debt Inventory v21.1 (25/25 Giderildi)*
+
+
+

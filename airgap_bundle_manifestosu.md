@@ -1,7 +1,7 @@
-# 📦 OmniEngine v20.0 — Air-Gap Dağıtım Paket Manifestosu & SHA-256 İndeksi
+# 📦 OmniEngine v21.1 — Air-Gap Dağıtım Paket Manifestosu & SHA-256 İndeksi
 
-> **Tarih:** 21 Ağustos 2026  
-> **Sürüm:** v20.0 Master Release — FAZ 26 Air-Gap Installer v1.0  
+> **Tarih:** 28 Ağustos 2026  
+> **Sürüm:** v21.1 Clinical AI Release — FAZ 26 Air-Gap Installer v1.0  
 > **Manifest Dosyası:** `belgeler/airgap_v20_master_manifest.json` (SHA-256 doğrulanmış)  
 > **Kurulum Motoru:** `src/python/airgap_installer.py` + `scripts/build_airgap_dist.py`  
 > **Durum:** ✅ **Air-Gap Dahili Doğrulama (INTERNAL_PASS) — Offline kurulum ve bütünlük kontrolü destekleniyor.**  
@@ -42,7 +42,7 @@ Veri kümesi rakamlarındaki şeffaflığı sağlamak için temel modül veri se
 | `dpo_ollama_multi_agent_v17.jsonl` | — | 328,623 | DPO Pairs | %100 Maskeli | 1.0000 / 1.0 |
 | **TEMEL TOPLAM** | **328,623** | **328,623** | **JSONL** | **%100 PASS** | **1.0000 / 1.0** |
 
-### 2.2 Güncel Veri Kümesi Snapshot (2026-08-08 Snapshot)
+### 2.2 Güncel Veri Kümesi Snapshot (2026-08-28 v21.1)
 
 Temel veri kümesine eklenen Finans (100K) ve Genel Bilgi (100K) modülleri ile güncel snapshot toplamı:
 
@@ -50,7 +50,14 @@ Temel veri kümesine eklenen Finans (100K) ve Genel Bilgi (100K) modülleri ile 
 |:--|:--:|:--:|:--:|
 | Temel Modüller (Tıp, Hukuk, Siber, Multi-Agent) | 328,623 | 328,623 | 657,246 |
 | Genişletme Modülleri (Finans & Genel Bilgi) | 51,453 | 51,448 | 102,901 |
-| **GÜNCEL SNAPSHOT TOPLAM (2026-08-08)** | **380,076** | **380,071** | **760,147** |
+| **GÜNCEL SNAPSHOT TOPLAM (2026-08-28)** | **380,076** | **380,071** | **760,147** |
+
+### 2.3 Klinik Q&A Veri Seti (v21.1 YENİ)
+
+| Veri Seti | Soru Sayısı | Boyut | Format | Halüsinasyon Etiketi |
+|:--|:--:|:--|:--|:--|
+| `medical_150k_qa.md` (Klinik Q&A) | **160.000** | 106.1 MB | Markdown | ✅/⚠️/🚨 3 seviye |
+| **Hedef Fine-Tune Çıktısı:** `sft_medical_160k.jsonl` | — | ~85 MB (JSONL) | — | — |
 
 ---
 
@@ -58,7 +65,7 @@ Temel veri kümesine eklenen Finans (100K) ve Genel Bilgi (100K) modülleri ile 
 
 ## 🚀 3. AIR-GAP INSTALLER v1.0 — KURULUM TALİMATI (FAZ 26)
 
-OmniEngine v20.0 FINAL, `airgap_installer.py` ile internet olmadan tamamen bağımsız kurulabilir.
+OmniEngine v21.1 FINAL, `airgap_installer.py` ile internet olmadan tamamen bağımsız kurulabilir.
 
 ### Adım 1: Offline Bundle Derleme (Kaynak Makinede)
 
@@ -109,4 +116,11 @@ npm run build && npm start
 | Sesli Dikte (Offline) | ✅ Whisper.cpp GGUF — yerel model |
 | 3D DICOM (Offline) | ✅ Canvas/WebGL — sıfır bulut |
 | Red-Team v3 (Offline) | ✅ `genesis_red_team_v3.py` — yerel |
+| Klinik Q&A 160K (Offline) | ✅ `medical_150k_qa.md` — 106 MB yerel |
 | Egress Paketi | ✅ 0 paket — tam hava boşluğu |
+
+---
+
+*OmniEngine v21.1 Clinical AI Release — Air-Gap Bundle Manifestosu — 28 Ağustos 2026*
+
+

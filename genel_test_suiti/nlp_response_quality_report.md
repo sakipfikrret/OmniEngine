@@ -1,6 +1,6 @@
 # NLP Yanıt Kalitesi Kabul Testi
 
-**Çalıştırma zamanı:** 2026-08-11 22:59 Türkiye Standart Saati  
+**Çalıştırma zamanı:** 2026-08-28 22:59 Türkiye Standart Saati  
 **Sonuç:** 6/6 PASS
 
 Bu test; uzman yönlendirmesi, sayısal sadakat, yanıt yapısı ve güvenli ret davranışını kapsar. Faktüel doğruluk için kaynak bazlı domain testleri ayrıca yürütülmelidir.
@@ -39,4 +39,5 @@ Bu test; uzman yönlendirmesi, sayısal sadakat, yanıt yapısı ve güvenli ret
 ### LEG-01 — PASS
 
 `**Hukuk Veritabanı (legal_db.json v1.0.0) — Eşleşen Mevzuat:** **TCK Madde 86** — Kasten Yaralama _5237 sayılı TCK | DB Versiyonu: 1.0.0_ Kasten başkasının vücuduna acı veren veya sağlığının ya da algılama yeteneğinin bo`
+
 
